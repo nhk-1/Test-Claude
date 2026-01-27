@@ -219,7 +219,7 @@ export default function NewTemplatePage() {
                         value={exercise.weight}
                         onChange={(e) => handleUpdateExercise(index, { weight: parseFloat(e.target.value) || 0 })}
                         min={0}
-                        step={2.5}
+                        step={1}
                         className="w-full bg-transparent font-semibold text-gray-900 dark:text-white focus:outline-none"
                       />
                     </div>
