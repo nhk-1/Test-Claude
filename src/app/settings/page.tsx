@@ -2,11 +2,21 @@
 
 import { useState, useRef } from 'react';
 import { useApp } from '@/context/AppContext';
+import { useAuth } from '@/context/AuthContext';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function SettingsPage() {
   const { data, exportData, importDataFromFile, resetData } = useApp();
+  const { user, isConfigured, signOut } = useAuth();
+  const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [importStatus, setImportStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+  const handleSignOut = async () => {
+    await signOut();
+    router.push('/login');
+  };
 
   const handleExport = () => {
     exportData();
@@ -57,6 +67,62 @@ export default function SettingsPage() {
         <p className="text-gray-600 dark:text-gray-400 mt-1">
           Gérez vos données et préférences
         </p>
+      </div>
+
+      {/* Account */}
+      <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+          Compte
+        </h2>
+        {user ? (
+          <div className="space-y-4">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-full bg-indigo-100 dark:bg-indigo-900 flex items-center justify-center">
+                <span className="text-xl font-bold text-indigo-600 dark:text-indigo-400">
+                  {user.email?.charAt(0).toUpperCase()}
+                </span>
+              </div>
+              <div>
+                <p className="font-medium text-gray-900 dark:text-white">
+                  {user.user_metadata?.name || user.email?.split('@')[0]}
+                </p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  {user.email}
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={handleSignOut}
+              className="w-full py-3 px-4 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-xl transition-colors"
+            >
+              Se déconnecter
+            </button>
+          </div>
+        ) : isConfigured ? (
+          <div className="text-center py-4">
+            <p className="text-gray-600 dark:text-gray-400 mb-4">
+              Connectez-vous pour synchroniser vos données
+            </p>
+            <div className="flex gap-3 justify-center">
+              <Link
+                href="/login"
+                className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl transition-colors"
+              >
+                Connexion
+              </Link>
+              <Link
+                href="/register"
+                className="px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-xl transition-colors"
+              >
+                Créer un compte
+              </Link>
+            </div>
+          </div>
+        ) : (
+          <p className="text-gray-600 dark:text-gray-400 text-center py-4">
+            Mode hors-ligne - Configurez Supabase pour activer les comptes utilisateurs
+          </p>
+        )}
       </div>
 
       {/* Stats */}

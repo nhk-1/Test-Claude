@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import { AuthProvider } from "@/context/AuthContext";
 import { AppProvider } from "@/context/AppContext";
 import Navigation from "@/components/Navigation";
 
@@ -46,14 +47,16 @@ export default function RootLayout({
       <body
         className="font-sans antialiased bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 overscroll-none"
       >
-        <AppProvider>
-          <Navigation />
-          <main className="pb-24 md:pb-4 md:pt-20 min-h-screen safe-area-bottom safe-area-top">
-            <div className="max-w-4xl mx-auto px-4 pt-2 pb-6">
-              {children}
-            </div>
-          </main>
-        </AppProvider>
+        <AuthProvider>
+          <AppProvider>
+            <Navigation />
+            <main className="pb-24 md:pb-4 md:pt-20 min-h-screen safe-area-bottom safe-area-top">
+              <div className="max-w-4xl mx-auto px-4 pt-2 pb-6">
+                {children}
+              </div>
+            </main>
+          </AppProvider>
+        </AuthProvider>
       </body>
     </html>
   );
