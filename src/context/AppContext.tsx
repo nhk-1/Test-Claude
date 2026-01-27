@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
+import React, { createContext, useContext, useEffect, useState, useCallback, useRef } from 'react';
 import { AppData, WorkoutTemplate, WorkoutSession, TemplateExercise, SessionExercise } from '@/lib/types';
 import {
   loadData,
@@ -8,11 +8,17 @@ import {
   getDefaultData,
   downloadAsFile,
   importData,
+  forceSync,
+  loadLocalData,
+  saveLocalData,
 } from '@/lib/storage';
+import { isSupabaseConfigured } from '@/lib/supabase';
 
 interface AppContextType {
   data: AppData;
   isLoading: boolean;
+  isSyncing: boolean;
+  isCloudEnabled: boolean;
 
   // Templates
   addTemplate: (name: string, description?: string) => WorkoutTemplate;
@@ -36,6 +42,7 @@ interface AppContextType {
   exportData: () => void;
   importDataFromFile: (file: File) => Promise<boolean>;
   resetData: () => void;
+  syncNow: () => Promise<{ success: boolean; message: string }>;
 }
 
 const AppContext = createContext<AppContextType | null>(null);
@@ -43,19 +50,60 @@ const AppContext = createContext<AppContextType | null>(null);
 export function AppProvider({ children }: { children: React.ReactNode }) {
   const [data, setData] = useState<AppData>(getDefaultData());
   const [isLoading, setIsLoading] = useState(true);
+  const [isSyncing, setIsSyncing] = useState(false);
+  const [isCloudEnabled, setIsCloudEnabled] = useState(false);
+  const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Charger les données au démarrage
   useEffect(() => {
-    const loaded = loadData();
-    setData(loaded);
-    setIsLoading(false);
+    const initData = async () => {
+      setIsCloudEnabled(isSupabaseConfigured());
+
+      // Charger d'abord les données locales pour affichage rapide
+      const localData = loadLocalData();
+      setData(localData);
+      setIsLoading(false);
+
+      // Ensuite synchroniser avec le cloud si disponible
+      if (isSupabaseConfigured()) {
+        setIsSyncing(true);
+        try {
+          const cloudData = await loadData();
+          setData(cloudData);
+        } catch (error) {
+          console.error('Erreur de synchronisation initiale:', error);
+        }
+        setIsSyncing(false);
+      }
+    };
+
+    initData();
   }, []);
 
-  // Sauvegarder à chaque changement
+  // Sauvegarder à chaque changement (avec debounce pour le cloud)
   useEffect(() => {
-    if (!isLoading) {
-      saveData(data);
+    if (isLoading) return;
+
+    // Sauvegarde locale immédiate
+    saveLocalData(data);
+
+    // Sauvegarde cloud avec debounce
+    if (isSupabaseConfigured()) {
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current);
+      }
+      saveTimeoutRef.current = setTimeout(async () => {
+        setIsSyncing(true);
+        await saveData(data);
+        setIsSyncing(false);
+      }, 1000);
     }
+
+    return () => {
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current);
+      }
+    };
   }, [data, isLoading]);
 
   // Templates
@@ -257,7 +305,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const importDataFromFile = useCallback(async (file: File): Promise<boolean> => {
     return new Promise((resolve) => {
       const reader = new FileReader();
-      reader.onload = (e) => {
+      reader.onload = async (e) => {
         const content = e.target?.result as string;
         const imported = importData(content);
         if (imported) {
@@ -272,13 +320,36 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     });
   }, []);
 
-  const resetData = useCallback(() => {
-    setData(getDefaultData());
+  const resetData = useCallback(async () => {
+    const defaultData = getDefaultData();
+    setData(defaultData);
+  }, []);
+
+  const syncNow = useCallback(async (): Promise<{ success: boolean; message: string }> => {
+    if (!isSupabaseConfigured()) {
+      return { success: false, message: 'Synchronisation cloud non configurée' };
+    }
+
+    setIsSyncing(true);
+    try {
+      const result = await forceSync();
+      if (result.success) {
+        const newData = await loadData();
+        setData(newData);
+      }
+      setIsSyncing(false);
+      return result;
+    } catch (error) {
+      setIsSyncing(false);
+      return { success: false, message: 'Erreur de synchronisation' };
+    }
   }, []);
 
   const value: AppContextType = {
     data,
     isLoading,
+    isSyncing,
+    isCloudEnabled,
     addTemplate,
     updateTemplate,
     deleteTemplate,
@@ -296,6 +367,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     exportData: exportDataFn,
     importDataFromFile,
     resetData,
+    syncNow,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

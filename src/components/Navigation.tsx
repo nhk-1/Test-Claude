@@ -2,13 +2,14 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useApp } from '@/context/AppContext';
 
 const navItems = [
   { href: '/', label: 'Accueil', icon: HomeIcon },
   { href: '/templates', label: 'Templates', icon: TemplateIcon },
   { href: '/session', label: 'Séance', icon: PlayIcon },
   { href: '/history', label: 'Historique', icon: HistoryIcon },
-  { href: '/settings', label: 'Paramètres', icon: SettingsIcon },
+  { href: '/settings', label: 'Réglages', icon: SettingsIcon },
 ];
 
 function HomeIcon({ className }: { className?: string }) {
@@ -52,16 +53,40 @@ function SettingsIcon({ className }: { className?: string }) {
   );
 }
 
+function CloudIcon({ className, syncing }: { className?: string; syncing?: boolean }) {
+  if (syncing) {
+    return (
+      <svg className={`${className} animate-spin-slow`} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+      </svg>
+    );
+  }
+  return (
+    <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15a4.5 4.5 0 0 0 4.5 4.5H18a3.75 3.75 0 0 0 1.332-7.257 3 3 0 0 0-3.758-3.848 5.25 5.25 0 0 0-10.233 2.33A4.502 4.502 0 0 0 2.25 15Z" />
+    </svg>
+  );
+}
+
 export default function Navigation() {
   const pathname = usePathname();
+  const { isSyncing, isCloudEnabled } = useApp();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 z-50 md:top-0 md:bottom-auto md:border-t-0 md:border-b">
+    <nav className="fixed bottom-0 left-0 right-0 glass border-t border-slate-200/50 dark:border-slate-700/50 z-50 md:top-0 md:bottom-auto md:border-t-0 md:border-b safe-bottom">
       <div className="max-w-4xl mx-auto px-4">
-        <div className="flex justify-around md:justify-start md:gap-8 items-center h-16">
-          <div className="hidden md:block font-bold text-xl text-indigo-600 dark:text-indigo-400 mr-8">
-            FitTracker
-          </div>
+        <div className="flex justify-around md:justify-start md:gap-2 items-center h-16">
+          {/* Logo - Desktop only */}
+          <Link href="/" className="hidden md:flex items-center gap-2 mr-6">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/25">
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+              </svg>
+            </div>
+            <span className="font-bold text-lg gradient-text">FitTracker</span>
+          </Link>
+
+          {/* Nav Items */}
           {navItems.map((item) => {
             const isActive = pathname === item.href;
             const Icon = item.icon;
@@ -69,10 +94,10 @@ export default function Navigation() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex flex-col md:flex-row items-center gap-1 md:gap-2 px-3 py-2 rounded-lg transition-all ${
+                className={`flex flex-col md:flex-row items-center gap-1 md:gap-2 px-3 py-2 rounded-xl transition-all btn-press ${
                   isActive
-                    ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/30'
-                    : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800'
+                    ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/10'
+                    : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800'
                 }`}
               >
                 <Icon className="w-6 h-6" />
@@ -80,8 +105,23 @@ export default function Navigation() {
               </Link>
             );
           })}
+
+          {/* Sync indicator - Desktop */}
+          {isCloudEnabled && (
+            <div className="hidden md:flex items-center gap-2 ml-auto px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800">
+              <CloudIcon className={`w-4 h-4 ${isSyncing ? 'text-indigo-500' : 'text-emerald-500'}`} syncing={isSyncing} />
+              <span className="text-xs font-medium text-slate-600 dark:text-slate-400">
+                {isSyncing ? 'Sync...' : 'Cloud'}
+              </span>
+            </div>
+          )}
         </div>
       </div>
+
+      {/* Sync indicator bar - Mobile */}
+      {isCloudEnabled && isSyncing && (
+        <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-500 animate-pulse" />
+      )}
     </nav>
   );
 }
