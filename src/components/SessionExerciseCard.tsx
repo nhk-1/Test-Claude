@@ -96,7 +96,9 @@ export default function SessionExerciseCard({
         <div className="grid grid-cols-3 gap-3 mb-4">
           <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-2 text-center">
             <p className="text-xs text-gray-500 dark:text-gray-400">Reps</p>
-            <p className="font-semibold text-gray-900 dark:text-white">{exercise.reps}</p>
+            <p className="font-semibold text-gray-900 dark:text-white">
+              {exercise.maxReps ? `${exercise.minReps ?? exercise.reps}-${exercise.maxReps}` : exercise.reps}
+            </p>
           </div>
           <div
             className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-2 text-center cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"

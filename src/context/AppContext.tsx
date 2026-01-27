@@ -1,7 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState, useCallback, useRef } from 'react';
-import { AppData, WorkoutTemplate, WorkoutSession, TemplateExercise, SessionExercise } from '@/lib/types';
+import { AppData, WorkoutTemplate, WorkoutSession, TemplateExercise, SessionExercise, WeightEntry } from '@/lib/types';
 import {
   loadData,
   saveData,
@@ -37,6 +37,11 @@ interface AppContextType {
   abandonSession: (sessionId: string) => void;
   deleteSession: (id: string) => void;
   getActiveSession: () => WorkoutSession | undefined;
+
+  // Weight tracking
+  addWeightEntry: (weight: number, notes?: string) => void;
+  updateWeightEntry: (id: string, updates: Partial<WeightEntry>) => void;
+  deleteWeightEntry: (id: string) => void;
 
   // Data management
   exportData: () => void;
@@ -296,6 +301,36 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     return data.sessions.find((s) => s.status === 'in_progress');
   }, [data.sessions]);
 
+  // Weight tracking
+  const addWeightEntry = useCallback((weight: number, notes?: string) => {
+    const entry: WeightEntry = {
+      id: `weight-${Date.now()}`,
+      date: new Date().toISOString(),
+      weight,
+      notes,
+    };
+    setData((prev) => ({
+      ...prev,
+      weightEntries: [...(prev.weightEntries || []), entry],
+    }));
+  }, []);
+
+  const updateWeightEntry = useCallback((id: string, updates: Partial<WeightEntry>) => {
+    setData((prev) => ({
+      ...prev,
+      weightEntries: (prev.weightEntries || []).map((e) =>
+        e.id === id ? { ...e, ...updates } : e
+      ),
+    }));
+  }, []);
+
+  const deleteWeightEntry = useCallback((id: string) => {
+    setData((prev) => ({
+      ...prev,
+      weightEntries: (prev.weightEntries || []).filter((e) => e.id !== id),
+    }));
+  }, []);
+
   // Data management
   const exportDataFn = useCallback(() => {
     const date = new Date().toISOString().split('T')[0];
@@ -364,6 +399,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     abandonSession,
     deleteSession,
     getActiveSession,
+    addWeightEntry,
+    updateWeightEntry,
+    deleteWeightEntry,
     exportData: exportDataFn,
     importDataFromFile,
     resetData,
