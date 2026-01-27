@@ -70,13 +70,13 @@ export default function ExerciseSelector({ onSelect, onClose }: ExerciseSelector
             </div>
 
             {/* Categories */}
-            <div className="p-4 border-b border-gray-200 dark:border-gray-700 overflow-x-auto">
-              <div className="flex gap-2">
+            <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+              <div className="grid grid-cols-5 gap-2">
                 <button
                   onClick={() => setSelectedCategory('all')}
-                  className={`px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
+                  className={`px-2 py-3 rounded-xl text-xs font-semibold transition-all ${
                     selectedCategory === 'all'
-                      ? 'bg-indigo-600 text-white'
+                      ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/30'
                       : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
@@ -86,9 +86,9 @@ export default function ExerciseSelector({ onSelect, onClose }: ExerciseSelector
                   <button
                     key={cat}
                     onClick={() => setSelectedCategory(cat)}
-                    className={`px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
+                    className={`px-2 py-3 rounded-xl text-xs font-semibold transition-all ${
                       selectedCategory === cat
-                        ? 'bg-indigo-600 text-white'
+                        ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/30'
                         : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}
                   >
