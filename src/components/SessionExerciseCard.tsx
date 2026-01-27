@@ -94,15 +94,15 @@ export default function SessionExerciseCard({
 
         {/* Stats */}
         <div className="grid grid-cols-3 gap-3 mb-4">
-          <div className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-3 text-center">
-            <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Reps</p>
-            <p className="font-bold text-lg text-gray-900 dark:text-white">{exercise.reps}</p>
+          <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-2 text-center">
+            <p className="text-xs text-gray-500 dark:text-gray-400">Reps</p>
+            <p className="font-semibold text-gray-900 dark:text-white">{exercise.reps}</p>
           </div>
           <div
-            className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-3 text-center cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors btn-press"
+            className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-2 text-center cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
             onClick={() => setEditingWeight(true)}
           >
-            <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Poids</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400">Poids</p>
             {editingWeight ? (
               <input
                 type="number"
@@ -110,18 +110,18 @@ export default function SessionExerciseCard({
                 onChange={(e) => setTempWeight(Number(e.target.value))}
                 onBlur={handleWeightSave}
                 onKeyDown={(e) => e.key === 'Enter' && handleWeightSave()}
-                className="w-full font-bold text-lg text-gray-900 dark:text-white bg-transparent text-center focus:outline-none"
+                className="w-full font-semibold text-gray-900 dark:text-white bg-transparent text-center focus:outline-none"
                 autoFocus
               />
             ) : (
-              <p className="font-bold text-lg text-gray-900 dark:text-white">
+              <p className="font-semibold text-gray-900 dark:text-white">
                 {exercise.actualWeight ?? exercise.weight} kg
               </p>
             )}
           </div>
-          <div className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-3 text-center">
-            <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Repos</p>
-            <p className="font-bold text-lg text-gray-900 dark:text-white">{exercise.restTime}s</p>
+          <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-2 text-center">
+            <p className="text-xs text-gray-500 dark:text-gray-400">Repos</p>
+            <p className="font-semibold text-gray-900 dark:text-white">{exercise.restTime}s</p>
           </div>
         </div>
 
@@ -129,9 +129,9 @@ export default function SessionExerciseCard({
         {!isCompleted && (
           <button
             onClick={handleCompleteSet}
-            className="w-full py-4 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl transition-colors flex items-center justify-center gap-2 btn-press shadow-lg shadow-indigo-500/25 text-lg"
+            className="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl transition-colors flex items-center justify-center gap-2"
           >
-            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
             </svg>
             Valider la série {exercise.completedSets + 1}
