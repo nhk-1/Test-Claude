@@ -13,6 +13,7 @@ import {
   saveLocalData,
 } from '@/lib/storage';
 import { isSupabaseConfigured } from '@/lib/supabase';
+import { useAuth } from './AuthContext';
 
 interface AppContextType {
   data: AppData;
@@ -53,44 +54,58 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | null>(null);
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
+  const { user, isLoading: authLoading } = useAuth();
+  const userId = user?.id;
+
   const [data, setData] = useState<AppData>(getDefaultData());
   const [isLoading, setIsLoading] = useState(true);
   const [isSyncing, setIsSyncing] = useState(false);
   const [isCloudEnabled, setIsCloudEnabled] = useState(false);
   const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const lastUserIdRef = useRef<string | undefined>(undefined);
 
-  // Charger les données au démarrage
+  // Charger les données au démarrage et quand l'utilisateur change
   useEffect(() => {
+    if (authLoading) return;
+
     const initData = async () => {
       setIsCloudEnabled(isSupabaseConfigured());
+      setIsLoading(true);
 
-      // Charger d'abord les données locales pour affichage rapide
-      const localData = loadLocalData();
-      setData(localData);
-      setIsLoading(false);
+      // Si l'utilisateur a changé, recharger les données
+      if (lastUserIdRef.current !== userId) {
+        lastUserIdRef.current = userId;
 
-      // Ensuite synchroniser avec le cloud si disponible
-      if (isSupabaseConfigured()) {
-        setIsSyncing(true);
-        try {
-          const cloudData = await loadData();
-          setData(cloudData);
-        } catch (error) {
-          console.error('Erreur de synchronisation initiale:', error);
+        // Charger d'abord les données locales pour affichage rapide
+        const localData = loadLocalData(userId);
+        setData(localData);
+        setIsLoading(false);
+
+        // Ensuite synchroniser avec le cloud si disponible
+        if (isSupabaseConfigured()) {
+          setIsSyncing(true);
+          try {
+            const cloudData = await loadData(userId);
+            setData(cloudData);
+          } catch (error) {
+            console.error('Erreur de synchronisation initiale:', error);
+          }
+          setIsSyncing(false);
         }
-        setIsSyncing(false);
+      } else {
+        setIsLoading(false);
       }
     };
 
     initData();
-  }, []);
+  }, [userId, authLoading]);
 
   // Sauvegarder à chaque changement (avec debounce pour le cloud)
   useEffect(() => {
-    if (isLoading) return;
+    if (isLoading || authLoading) return;
 
     // Sauvegarde locale immédiate
-    saveLocalData(data);
+    saveLocalData(data, userId);
 
     // Sauvegarde cloud avec debounce
     if (isSupabaseConfigured()) {
@@ -99,7 +114,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       }
       saveTimeoutRef.current = setTimeout(async () => {
         setIsSyncing(true);
-        await saveData(data);
+        await saveData(data, userId);
         setIsSyncing(false);
       }, 1000);
     }
@@ -109,7 +124,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         clearTimeout(saveTimeoutRef.current);
       }
     };
-  }, [data, isLoading]);
+  }, [data, isLoading, authLoading, userId]);
 
   // Templates
   const addTemplate = useCallback((name: string, description?: string): WorkoutTemplate => {
@@ -367,18 +382,18 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
     setIsSyncing(true);
     try {
-      const result = await forceSync();
+      const result = await forceSync(userId);
       if (result.success) {
-        const newData = await loadData();
+        const newData = await loadData(userId);
         setData(newData);
       }
       setIsSyncing(false);
       return result;
-    } catch (error) {
+    } catch {
       setIsSyncing(false);
       return { success: false, message: 'Erreur de synchronisation' };
     }
-  }, []);
+  }, [userId]);
 
   const value: AppContextType = {
     data,
