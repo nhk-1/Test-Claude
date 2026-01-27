@@ -22,6 +22,8 @@ export interface TemplateExercise {
   exerciseId: string;
   sets: number;
   reps: number;
+  minReps?: number; // Pour les fourchettes ex: 6-8
+  maxReps?: number;
   weight: number; // en kg
   restTime: number; // en secondes
 }
@@ -52,9 +54,17 @@ export interface WorkoutSession {
   notes?: string;
 }
 
+export interface WeightEntry {
+  id: string;
+  date: string;
+  weight: number; // en kg
+  notes?: string;
+}
+
 export interface AppData {
   templates: WorkoutTemplate[];
   sessions: WorkoutSession[];
+  weightEntries: WeightEntry[];
   version: string;
 }
 

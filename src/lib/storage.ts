@@ -9,6 +9,7 @@ export function getDefaultData(): AppData {
   return {
     templates: [],
     sessions: [],
+    weightEntries: [],
     version: CURRENT_VERSION,
   };
 }
@@ -159,6 +160,11 @@ function getLatestTimestamp(data: AppData): number {
 
   for (const session of data.sessions) {
     const time = new Date(session.completedAt || session.startedAt).getTime();
+    if (time > latest) latest = time;
+  }
+
+  for (const entry of (data.weightEntries || [])) {
+    const time = new Date(entry.date).getTime();
     if (time > latest) latest = time;
   }
 

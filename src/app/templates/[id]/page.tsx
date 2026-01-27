@@ -218,13 +218,34 @@ export default function EditTemplatePage() {
                     </div>
                     <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-2">
                       <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Reps</p>
-                      <input
-                        type="number"
-                        value={exercise.reps}
-                        onChange={(e) => handleUpdateExercise(index, { reps: parseInt(e.target.value) || 1 })}
-                        min={1}
-                        className="w-full bg-transparent font-semibold text-gray-900 dark:text-white focus:outline-none"
-                      />
+                      <div className="flex items-center gap-1">
+                        <input
+                          type="number"
+                          value={exercise.minReps ?? exercise.reps}
+                          onChange={(e) => {
+                            const val = parseInt(e.target.value) || 1;
+                            handleUpdateExercise(index, {
+                              minReps: val,
+                              reps: val,
+                              maxReps: exercise.maxReps && exercise.maxReps > val ? exercise.maxReps : undefined
+                            });
+                          }}
+                          min={1}
+                          className="w-full bg-transparent font-semibold text-gray-900 dark:text-white focus:outline-none text-center"
+                        />
+                        <span className="text-gray-400">-</span>
+                        <input
+                          type="number"
+                          value={exercise.maxReps ?? ''}
+                          onChange={(e) => {
+                            const val = e.target.value ? parseInt(e.target.value) : undefined;
+                            handleUpdateExercise(index, { maxReps: val });
+                          }}
+                          min={exercise.minReps ?? exercise.reps}
+                          placeholder="?"
+                          className="w-full bg-transparent font-semibold text-gray-900 dark:text-white focus:outline-none text-center placeholder:text-gray-300 dark:placeholder:text-gray-600"
+                        />
+                      </div>
                     </div>
                     <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-2">
                       <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Poids (kg)</p>
