@@ -3,10 +3,12 @@
   "short_name": "FitTracker",
   "description": "Application de suivi et gestion de vos entraînements sportifs",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "#f9fafb",
+  "background_color": "#0f172a",
   "theme_color": "#4f46e5",
   "orientation": "portrait-primary",
+  "categories": ["fitness", "health", "lifestyle"],
   "icons": [
     {
       "src": "/icon-192.png",

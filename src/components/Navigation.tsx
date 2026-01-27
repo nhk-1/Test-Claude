@@ -73,7 +73,7 @@ export default function Navigation() {
   const { isSyncing, isCloudEnabled } = useApp();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 glass border-t border-slate-200/50 dark:border-slate-700/50 z-50 md:top-0 md:bottom-auto md:border-t-0 md:border-b safe-bottom">
+    <nav className="fixed bottom-0 left-0 right-0 glass border-t border-slate-200/50 dark:border-slate-700/50 z-50 md:top-0 md:bottom-auto md:border-t-0 md:border-b nav-safe-area">
       <div className="max-w-4xl mx-auto px-4">
         <div className="flex justify-around md:justify-start md:gap-2 items-center h-16">
           {/* Logo - Desktop only */}
