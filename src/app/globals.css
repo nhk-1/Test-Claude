@@ -185,8 +185,12 @@ body {
   transform: scale(0.97);
 }
 
-/* Safe area padding for iPhone notch and home indicator */
-@supports (padding-bottom: env(safe-area-inset-bottom)) {
+/* Safe area padding for iPhone notch/Dynamic Island and home indicator */
+@supports (padding: env(safe-area-inset-top)) {
+  .safe-area-top {
+    padding-top: env(safe-area-inset-top);
+  }
+
   .safe-bottom {
     padding-bottom: env(safe-area-inset-bottom);
   }

@@ -48,8 +48,8 @@ export default function RootLayout({
       >
         <AppProvider>
           <Navigation />
-          <main className="pb-24 md:pb-4 md:pt-20 min-h-screen safe-area-bottom">
-            <div className="max-w-4xl mx-auto px-4 py-6">
+          <main className="pb-24 md:pb-4 md:pt-20 min-h-screen safe-area-bottom safe-area-top">
+            <div className="max-w-4xl mx-auto px-4 pt-2 pb-6">
               {children}
             </div>
           </main>
