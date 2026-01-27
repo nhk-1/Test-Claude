@@ -29,10 +29,20 @@
 
 * {
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html {
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+html, body {
+  overscroll-behavior: none;
+}
+
+.touch-manipulation {
+  touch-action: manipulation;
 }
 
 body {
@@ -175,10 +185,37 @@ body {
   transform: scale(0.97);
 }
 
-/* Safe area padding for mobile */
+/* Safe area padding for iPhone notch and home indicator */
 @supports (padding-bottom: env(safe-area-inset-bottom)) {
   .safe-bottom {
     padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .nav-safe-area {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* PWA standalone mode */
+@media (display-mode: standalone) {
+  body {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .btn-press:active {
+    transform: scale(0.95);
+  }
+
+  .card-hover:hover {
+    transform: none;
+    box-shadow: none;
   }
 }
 
