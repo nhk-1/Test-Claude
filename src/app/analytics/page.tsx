@@ -74,6 +74,19 @@ export default function AnalyticsPage() {
     return Array.from(exerciseMap.values()).sort((a, b) => b.count - a.count);
   }, [data.sessions]);
 
+  // Helper to get weights used in a session exercise
+  const getSessionWeights = (exercise: typeof data.sessions[0]['exercises'][0]) => {
+    // Priorité: actualWeightsPerSet > weightsPerSet > actualWeight > weight
+    if (exercise.actualWeightsPerSet?.length) {
+      return exercise.actualWeightsPerSet.slice(0, exercise.completedSets);
+    }
+    if (exercise.weightsPerSet?.length) {
+      return exercise.weightsPerSet.slice(0, exercise.completedSets);
+    }
+    const w = exercise.actualWeight ?? exercise.weight;
+    return Array(exercise.completedSets).fill(w);
+  };
+
   // Performance data for selected exercise
   const performanceData = useMemo(() => {
     if (!selectedExercise) return null;
@@ -82,30 +95,37 @@ export default function AnalyticsPage() {
       .filter((s) => s.status === 'completed')
       .sort((a, b) => new Date(a.startedAt).getTime() - new Date(b.startedAt).getTime());
 
-    const dataPoints: { date: string; weight: number; reps: number; volume: number }[] = [];
+    const dataPoints: { date: string; weight: number; maxWeight: number; reps: number; volume: number; weightsPerSet: number[] }[] = [];
 
     for (const session of sessions) {
       const exercise = session.exercises.find((e) => e.exerciseId === selectedExercise);
       if (exercise && exercise.completedSets > 0) {
-        const weight = exercise.actualWeight ?? exercise.weight;
-        const volume = weight * exercise.reps * exercise.completedSets;
+        const weights = getSessionWeights(exercise);
+        const maxW = Math.max(...weights);
+        const avgW = weights.reduce((a, b) => a + b, 0) / weights.length;
+        // Volume = somme des (poids x reps) pour chaque série
+        const volume = weights.reduce((total, w) => total + w * exercise.reps, 0);
+
         dataPoints.push({
           date: session.startedAt,
-          weight,
+          weight: avgW, // Poids moyen pour le graphique
+          maxWeight: maxW, // Poids max de la séance
           reps: exercise.reps,
           volume,
+          weightsPerSet: weights,
         });
       }
     }
 
     if (dataPoints.length === 0) return null;
 
-    const weights = dataPoints.map((d) => d.weight);
+    const allMaxWeights = dataPoints.map((d) => d.maxWeight);
+    const avgWeights = dataPoints.map((d) => d.weight);
     const volumes = dataPoints.map((d) => d.volume);
-    const maxWeight = Math.max(...weights);
-    const minWeight = Math.min(...weights);
-    const latestWeight = weights[weights.length - 1];
-    const firstWeight = weights[0];
+    const maxWeight = Math.max(...allMaxWeights);
+    const minWeight = Math.min(...allMaxWeights);
+    const latestWeight = allMaxWeights[allMaxWeights.length - 1];
+    const firstWeight = allMaxWeights[0];
     const progression = latestWeight - firstWeight;
     const maxVolume = Math.max(...volumes);
 
@@ -431,10 +451,10 @@ export default function AnalyticsPage() {
 
               {/* Weight progression chart */}
               <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm">
-                <h2 className="font-semibold text-gray-900 dark:text-white mb-4">Progression des charges</h2>
+                <h2 className="font-semibold text-gray-900 dark:text-white mb-4">Progression des charges (max par séance)</h2>
                 <LineChart
                   data={performanceData.dataPoints}
-                  getY={(d) => d.weight}
+                  getY={(d) => d.maxWeight}
                   color="#10b981"
                 />
               </div>
@@ -455,30 +475,45 @@ export default function AnalyticsPage() {
                 <h2 className="font-semibold text-gray-900 dark:text-white p-4 border-b border-gray-100 dark:border-gray-700">
                   Historique des séances
                 </h2>
-                <div className="max-h-64 overflow-y-auto">
+                <div className="max-h-80 overflow-y-auto">
                   {[...performanceData.dataPoints].reverse().map((dp, i) => (
                     <div
                       key={i}
-                      className="flex items-center justify-between p-4 border-b border-gray-100 dark:border-gray-700 last:border-b-0"
+                      className="p-4 border-b border-gray-100 dark:border-gray-700 last:border-b-0"
                     >
-                      <div>
-                        <p className="font-medium text-gray-900 dark:text-white">
-                          {dp.weight} kg x {dp.reps} reps
-                        </p>
-                        <p className="text-sm text-gray-500">
-                          {new Date(dp.date).toLocaleDateString('fr-FR', {
-                            weekday: 'short',
-                            day: 'numeric',
-                            month: 'short',
-                          })}
-                        </p>
+                      <div className="flex items-center justify-between mb-2">
+                        <div>
+                          <p className="font-medium text-gray-900 dark:text-white">
+                            Max: {dp.maxWeight} kg x {dp.reps} reps
+                          </p>
+                          <p className="text-sm text-gray-500">
+                            {new Date(dp.date).toLocaleDateString('fr-FR', {
+                              weekday: 'short',
+                              day: 'numeric',
+                              month: 'short',
+                            })}
+                          </p>
+                        </div>
+                        <div className="text-right">
+                          <p className="font-medium text-purple-600 dark:text-purple-400">
+                            {dp.volume} kg
+                          </p>
+                          <p className="text-xs text-gray-500">volume</p>
+                        </div>
                       </div>
-                      <div className="text-right">
-                        <p className="font-medium text-purple-600 dark:text-purple-400">
-                          {dp.volume} kg
-                        </p>
-                        <p className="text-xs text-gray-500">volume</p>
-                      </div>
+                      {/* Poids par série */}
+                      {dp.weightsPerSet.length > 1 && (
+                        <div className="flex gap-1 flex-wrap">
+                          {dp.weightsPerSet.map((w, idx) => (
+                            <span
+                              key={idx}
+                              className="text-xs px-2 py-0.5 bg-gray-100 dark:bg-gray-700 rounded-full text-gray-600 dark:text-gray-300"
+                            >
+                              S{idx + 1}: {w}kg
+                            </span>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>

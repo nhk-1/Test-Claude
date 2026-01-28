@@ -24,8 +24,16 @@ export interface TemplateExercise {
   reps: number;
   minReps?: number; // Pour les fourchettes ex: 6-8
   maxReps?: number;
-  weight: number; // en kg
+  weight: number; // en kg (poids par défaut)
+  weightsPerSet?: number[]; // Poids différent par série ex: [20, 18, 16]
   restTime: number; // en secondes
+  // Superset
+  supersetExerciseId?: string; // ID du 2ème exercice pour superset
+  supersetReps?: number;
+  supersetMinReps?: number;
+  supersetMaxReps?: number;
+  supersetWeight?: number;
+  supersetWeightsPerSet?: number[];
 }
 
 export interface WorkoutTemplate {
@@ -39,7 +47,9 @@ export interface WorkoutTemplate {
 
 export interface SessionExercise extends TemplateExercise {
   completedSets: number;
-  actualWeight?: number;
+  actualWeight?: number; // Deprecated: use actualWeightsPerSet
+  actualWeightsPerSet?: number[]; // Poids réellement utilisés par série
+  actualSupersetWeightsPerSet?: number[]; // Poids pour le superset par série
   notes?: string;
 }
 

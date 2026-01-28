@@ -231,6 +231,15 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       exercises: template.exercises.map((e) => ({
         ...e,
         completedSets: 0,
+        // Initialiser les poids par série si définis dans le template
+        actualWeightsPerSet: e.weightsPerSet
+          ? [...e.weightsPerSet]
+          : Array(e.sets).fill(e.weight),
+        actualSupersetWeightsPerSet: e.supersetExerciseId
+          ? (e.supersetWeightsPerSet
+            ? [...e.supersetWeightsPerSet]
+            : Array(e.sets).fill(e.supersetWeight ?? 0))
+          : undefined,
       })),
       status: 'in_progress',
     };
