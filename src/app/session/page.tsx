@@ -64,9 +64,36 @@ export default function SessionPage() {
     completeSet(activeSession.id, exerciseIndex);
   };
 
-  const handleUpdateWeight = (exerciseIndex: number, weight: number) => {
+  const handleUpdateWeight = (exerciseIndex: number, weight: number, setIndex?: number) => {
     if (!activeSession) return;
-    updateSessionExercise(activeSession.id, exerciseIndex, { actualWeight: weight });
+    const exercise = activeSession.exercises[exerciseIndex];
+
+    if (setIndex !== undefined) {
+      // Mise à jour du poids pour une série spécifique
+      const currentWeights = exercise.actualWeightsPerSet ||
+        exercise.weightsPerSet ||
+        Array(exercise.sets).fill(exercise.actualWeight ?? exercise.weight);
+      const newWeights = [...currentWeights];
+      newWeights[setIndex] = weight;
+      updateSessionExercise(activeSession.id, exerciseIndex, { actualWeightsPerSet: newWeights });
+    } else {
+      // Mise à jour du poids global (rétrocompatibilité)
+      updateSessionExercise(activeSession.id, exerciseIndex, { actualWeight: weight });
+    }
+  };
+
+  const handleUpdateSupersetWeight = (exerciseIndex: number, weight: number, setIndex?: number) => {
+    if (!activeSession) return;
+    const exercise = activeSession.exercises[exerciseIndex];
+
+    if (setIndex !== undefined) {
+      const currentWeights = exercise.actualSupersetWeightsPerSet ||
+        exercise.supersetWeightsPerSet ||
+        Array(exercise.sets).fill(exercise.supersetWeight ?? 0);
+      const newWeights = [...currentWeights];
+      newWeights[setIndex] = weight;
+      updateSessionExercise(activeSession.id, exerciseIndex, { actualSupersetWeightsPerSet: newWeights });
+    }
   };
 
   const handleFinishSession = () => {
@@ -177,7 +204,8 @@ export default function SessionPage() {
             index={index}
             isActive={index === activeExerciseIndex}
             onCompleteSet={() => handleCompleteSet(index)}
-            onUpdateWeight={(weight) => handleUpdateWeight(index, weight)}
+            onUpdateWeight={(weight, setIndex) => handleUpdateWeight(index, weight, setIndex)}
+            onUpdateSupersetWeight={(weight, setIndex) => handleUpdateSupersetWeight(index, weight, setIndex)}
           />
         ))}
       </div>

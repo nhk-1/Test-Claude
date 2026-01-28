@@ -204,6 +204,41 @@ export default function EditTemplatePage() {
                     </button>
                   </div>
 
+                  {/* Superset indicator */}
+                  {exercise.supersetExerciseId && (
+                    <div className="mb-3 pl-3 border-l-2 border-purple-400">
+                      {(() => {
+                        const supersetData = getExerciseById(exercise.supersetExerciseId!);
+                        return supersetData ? (
+                          <div className="flex items-center gap-2">
+                            <span className="px-2 py-0.5 bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300 text-xs font-medium rounded-full">
+                              Superset
+                            </span>
+                            <span className="text-sm text-purple-700 dark:text-purple-300 font-medium">
+                              + {supersetData.name}
+                            </span>
+                            <span className="text-xs text-purple-500 dark:text-purple-400">
+                              ({exercise.supersetReps} reps, {exercise.supersetWeight}kg)
+                            </span>
+                          </div>
+                        ) : null;
+                      })()}
+                    </div>
+                  )}
+
+                  {/* Weights per set indicator */}
+                  {exercise.weightsPerSet && (
+                    <div className="mb-3 text-xs text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-700/30 rounded-lg p-2">
+                      <span className="font-medium">Poids par série:</span>{' '}
+                      {exercise.weightsPerSet.map((w, i) => (
+                        <span key={i}>
+                          {i > 0 && ' → '}
+                          <span className="font-semibold text-gray-700 dark:text-gray-300">{w}kg</span>
+                        </span>
+                      ))}
+                    </div>
+                  )}
+
                   {/* Exercise Config */}
                   <div className="grid grid-cols-4 gap-2">
                     <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-2">
@@ -251,7 +286,7 @@ export default function EditTemplatePage() {
                       <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Poids (kg)</p>
                       <input
                         type="number"
-                        value={exercise.weight}
+                        value={exercise.weightsPerSet ? exercise.weightsPerSet[0] : exercise.weight}
                         onChange={(e) => handleUpdateExercise(index, { weight: parseFloat(e.target.value) || 0 })}
                         min={0}
                         step={1}
