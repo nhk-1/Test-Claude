@@ -245,7 +245,15 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     };
     setData((prev) => ({
       ...prev,
-      sessions: [...prev.sessions, session],
+      // Abandonner automatiquement toute session active existante
+      sessions: [
+        ...prev.sessions.map((s) =>
+          s.status === 'in_progress'
+            ? { ...s, status: 'abandoned' as const, completedAt: new Date().toISOString() }
+            : s
+        ),
+        session,
+      ],
     }));
     return session;
   }, []);
