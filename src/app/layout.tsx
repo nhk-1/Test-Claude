@@ -51,11 +51,13 @@ export default function RootLayout({
           <AuthProvider>
             <AppProvider>
               <KeyboardShortcutsProvider>
-                {/* Simple wrapper - content + nav */}
+                {/* App wrapper */}
                 <div className="app">
-                  <div className="content">
-                    {children}
-                  </div>
+                  <main className="content">
+                    <div className="page-container">
+                      {children}
+                    </div>
+                  </main>
                   <Navigation />
                 </div>
               </KeyboardShortcutsProvider>
