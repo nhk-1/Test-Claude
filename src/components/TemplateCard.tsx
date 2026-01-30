@@ -130,56 +130,66 @@ export default function TemplateCard({ template, onStart, onDelete }: TemplateCa
 
       {/* Share Modal */}
       {showShareModal && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={() => setShowShareModal(false)}>
-          <div className="bg-white dark:bg-gray-800 rounded-2xl max-w-md w-full p-6" onClick={(e) => e.stopPropagation()}>
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Partager le template</h3>
+        <div
+          className="fixed inset-0 bg-black/50 z-50 flex items-end md:items-center justify-center p-4"
+          onClick={() => setShowShareModal(false)}
+        >
+          <div
+            className="bg-white dark:bg-gray-800 rounded-t-2xl md:rounded-2xl w-full max-w-sm p-6 safe-area-bottom"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center">
+                  <svg className="w-5 h-5 text-indigo-600 dark:text-indigo-400" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Partager</h3>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">{template.name}</p>
+                </div>
+              </div>
               <button
                 onClick={() => setShowShareModal(false)}
-                className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors"
+                className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors touch-target flex items-center justify-center"
               >
-                <svg className="w-5 h-5 text-gray-500" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                <svg className="w-6 h-6 text-gray-500" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
                 </svg>
               </button>
             </div>
 
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-              Partagez ce code avec vos amis pour qu'ils puissent importer votre template.
-            </p>
+            {/* Copy Button */}
+            <button
+              onClick={handleCopyCode}
+              className={`w-full py-4 px-4 font-medium rounded-xl transition-all flex items-center justify-center gap-3 touch-target text-lg ${
+                copied
+                  ? 'bg-green-500 text-white'
+                  : 'bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white'
+              }`}
+            >
+              {copied ? (
+                <>
+                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                  </svg>
+                  Code copié !
+                </>
+              ) : (
+                <>
+                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 0 1 1.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 0 0-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 0 1-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H9.75" />
+                  </svg>
+                  Copier le code
+                </>
+              )}
+            </button>
 
-            <div className="bg-gray-50 dark:bg-gray-700 rounded-xl p-4 mb-4">
-              <p className="text-xs text-gray-500 dark:text-gray-400 mb-2 font-medium">Code de partage</p>
-              <div className="bg-white dark:bg-gray-800 rounded-lg p-3 border border-gray-200 dark:border-gray-600 font-mono text-sm text-gray-900 dark:text-white break-all">
-                {generateTemplateCode(template)}
-              </div>
-            </div>
-
-            <div className="flex gap-3">
-              <button
-                onClick={handleCopyCode}
-                className="flex-1 py-2.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl transition-colors flex items-center justify-center gap-2"
-              >
-                {copied ? (
-                  <>
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
-                    </svg>
-                    Copié !
-                  </>
-                ) : (
-                  <>
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 0 1 1.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 0 0-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 0 1-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H9.75" />
-                    </svg>
-                    Copier le code
-                  </>
-                )}
-              </button>
-            </div>
-
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-4 text-center">
-              Pour importer : Templates → Importer un template partagé
+            {/* Info */}
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-4 text-center">
+              Partagez ce code à vos amis pour qu'ils importent le template
             </p>
           </div>
         </div>
