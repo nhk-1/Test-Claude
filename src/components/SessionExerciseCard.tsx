@@ -318,6 +318,47 @@ export default function SessionExerciseCard({
           </div>
         </div>
 
+        {/* Notes et Form Cues */}
+        {(exercise.notes || exercise.formCues || exercise.videoUrl) && (
+          <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+            {exercise.formCues && (
+              <div className="mb-2">
+                <div className="flex items-center gap-2 mb-1">
+                  <svg className="w-4 h-4 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z" />
+                  </svg>
+                  <span className="text-xs font-semibold text-blue-700 dark:text-blue-300">Form Cues</span>
+                </div>
+                <p className="text-sm text-blue-800 dark:text-blue-200">{exercise.formCues}</p>
+              </div>
+            )}
+            {exercise.notes && (
+              <div className="mb-2">
+                <div className="flex items-center gap-2 mb-1">
+                  <svg className="w-4 h-4 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                  </svg>
+                  <span className="text-xs font-semibold text-blue-700 dark:text-blue-300">Notes</span>
+                </div>
+                <p className="text-sm text-blue-800 dark:text-blue-200">{exercise.notes}</p>
+              </div>
+            )}
+            {exercise.videoUrl && (
+              <a
+                href={exercise.videoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 text-xs text-blue-600 dark:text-blue-400 hover:underline"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z" />
+                </svg>
+                Voir vidéo de référence
+              </a>
+            )}
+          </div>
+        )}
+
         {/* Repos */}
         <div className="flex items-center justify-between mb-4 text-sm text-gray-500 dark:text-gray-400">
           <span>Temps de repos</span>

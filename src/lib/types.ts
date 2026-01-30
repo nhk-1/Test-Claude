@@ -34,6 +34,10 @@ export interface TemplateExercise {
   supersetMaxReps?: number;
   supersetWeight?: number;
   supersetWeightsPerSet?: number[];
+  // Notes et indices
+  notes?: string; // Notes techniques, sensations
+  formCues?: string; // Rappels de technique (form cues)
+  videoUrl?: string; // URL vidéo de référence
 }
 
 export interface WorkoutTemplate {

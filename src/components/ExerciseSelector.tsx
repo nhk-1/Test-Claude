@@ -31,6 +31,12 @@ export default function ExerciseSelector({ onSelect, onClose }: ExerciseSelector
   const [useSupersetWeightsPerSet, setUseSupersetWeightsPerSet] = useState(false);
   const [supersetWeightsPerSet, setSupersetWeightsPerSet] = useState<number[]>([20, 20, 20]);
 
+  // Notes et indices
+  const [showNotes, setShowNotes] = useState(false);
+  const [notes, setNotes] = useState('');
+  const [formCues, setFormCues] = useState('');
+  const [videoUrl, setVideoUrl] = useState('');
+
   const categories = getAllCategories();
 
   const filteredExercises = exercises.filter((e) => {
@@ -74,6 +80,11 @@ export default function ExerciseSelector({ onSelect, onClose }: ExerciseSelector
         exercise.supersetWeight = useSupersetWeightsPerSet ? supersetWeightsPerSet[0] : supersetWeight;
         exercise.supersetWeightsPerSet = useSupersetWeightsPerSet ? supersetWeightsPerSet : undefined;
       }
+
+      // Add notes
+      if (notes) exercise.notes = notes;
+      if (formCues) exercise.formCues = formCues;
+      if (videoUrl) exercise.videoUrl = videoUrl;
 
       onSelect(exercise);
     }
@@ -277,6 +288,83 @@ export default function ExerciseSelector({ onSelect, onClose }: ExerciseSelector
             )}
           </div>
         )}
+
+        {/* Notes et indices - Collapsible Section */}
+        <div className="mb-6">
+          <button
+            onClick={() => setShowNotes(!showNotes)}
+            className="w-full p-3 rounded-xl border-2 border-gray-200 dark:border-gray-700 hover:border-indigo-300 dark:hover:border-indigo-700 transition-all flex items-center justify-between"
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
+                <svg className="w-5 h-5 text-gray-600 dark:text-gray-400" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                </svg>
+              </div>
+              <div className="text-left">
+                <p className="font-medium text-gray-900 dark:text-white">Notes et indices</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  {notes || formCues || videoUrl ? 'Modifié' : 'Optionnel'}
+                </p>
+              </div>
+            </div>
+            <svg
+              className={`w-5 h-5 text-gray-400 transition-transform ${showNotes ? 'rotate-180' : ''}`}
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={2}
+              stroke="currentColor"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+            </svg>
+          </button>
+
+          {showNotes && (
+            <div className="mt-3 space-y-4 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+              {/* Notes */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Notes techniques
+                </label>
+                <textarea
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
+                  placeholder="Ex: Bien creuser le bas du dos, coudes serrés..."
+                  rows={3}
+                  className="w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none"
+                />
+              </div>
+
+              {/* Form Cues */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Rappels de forme
+                </label>
+                <textarea
+                  value={formCues}
+                  onChange={(e) => setFormCues(e.target.value)}
+                  placeholder="Ex: Pousser avec les talons, engagement des abdos..."
+                  rows={2}
+                  className="w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none"
+                />
+              </div>
+
+              {/* Video URL */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  URL vidéo de référence
+                </label>
+                <input
+                  type="url"
+                  value={videoUrl}
+                  onChange={(e) => setVideoUrl(e.target.value)}
+                  placeholder="https://youtube.com/..."
+                  className="w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                />
+              </div>
+            </div>
+          )}
+        </div>
 
         <div className="space-y-6">
           {/* Sets */}
