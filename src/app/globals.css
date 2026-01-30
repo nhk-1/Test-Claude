@@ -62,59 +62,45 @@ body {
 }
 
 /* ===========================================
-   MAIN APP LAYOUT - SIMPLE FLEXBOX
+   MAIN APP LAYOUT
    =========================================== */
 
 .app {
-  /* Fill at minimum the full viewport height */
   min-height: 100vh;
   min-height: 100dvh;
-  min-height: -webkit-fill-available;
-
-  /* Flex layout: content grows, nav stays at bottom */
-  display: flex;
-  flex-direction: column;
-
   background: var(--background);
 }
 
 .content {
-  /* Grow to fill available space */
-  flex: 1 1 auto;
-
-  /* Scrollable content */
-  overflow-y: auto;
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
-
-  /* Safe area for notch */
+  /* Leave space for fixed nav at bottom */
+  padding-bottom: calc(4rem + env(safe-area-inset-bottom, 0px));
+  /* Safe area for notch at top */
   padding-top: env(safe-area-inset-top, 0);
-  padding-left: env(safe-area-inset-left, 0);
-  padding-right: env(safe-area-inset-right, 0);
 }
 
-.content > * {
+.page-container {
   max-width: 56rem;
   margin: 0 auto;
-  padding: 0.5rem 1rem 2rem;
+  padding: 1rem 1.25rem 2rem;
+}
+
+/* Ensure proper spacing for page content */
+.page-container > * + * {
+  margin-top: 1.5rem;
 }
 
 /* ===========================================
-   NAVIGATION
+   NAVIGATION - FIXED AT BOTTOM
    =========================================== */
 
 .nav {
-  /* Don't shrink */
-  flex: 0 0 auto;
-
-  /* Stick to bottom */
-  position: sticky;
+  position: fixed;
   bottom: 0;
-
-  /* Background */
+  left: 0;
+  right: 0;
+  z-index: 50;
   background: var(--background);
   border-top: 1px solid rgba(148, 163, 184, 0.2);
-
   /* Safe area for home indicator */
   padding-bottom: env(safe-area-inset-bottom, 0);
 }
@@ -131,22 +117,18 @@ body {
 
 /* Desktop: nav at top */
 @media (min-width: 768px) {
-  .app {
-    flex-direction: column-reverse;
+  .content {
+    padding-bottom: 2rem;
+    padding-top: calc(4.5rem + env(safe-area-inset-top, 0px));
   }
 
   .nav {
-    position: sticky;
     top: 0;
     bottom: auto;
     border-top: none;
     border-bottom: 1px solid rgba(148, 163, 184, 0.2);
     padding-bottom: 0;
     padding-top: env(safe-area-inset-top, 0);
-  }
-
-  .content {
-    padding-top: 0;
   }
 
   .nav-inner {
