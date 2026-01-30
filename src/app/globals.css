@@ -9,6 +9,8 @@
   --success: #10b981;
   --warning: #f59e0b;
   --danger: #ef4444;
+  /* Default vh fallback */
+  --vh: 1vh;
 }
 
 @theme inline {
@@ -29,25 +31,20 @@
 
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
   -webkit-tap-highlight-color: transparent;
 }
 
-/* ============================================
-   CRITICAL: Full viewport coverage for iOS
-   ============================================ */
+/* ===========================================
+   ROOT ELEMENTS - Fill entire screen
+   =========================================== */
 
 html {
-  -webkit-text-size-adjust: 100%;
   background: var(--background);
-}
-
-html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
   height: 100%;
+  width: 100%;
   overflow: hidden;
-  overscroll-behavior: none;
 }
 
 body {
@@ -56,84 +53,80 @@ body {
   font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-/* Background layer - covers ENTIRE screen including safe areas */
-.app-bg {
-  position: fixed;
-  top: -100px;
-  left: -100px;
-  right: -100px;
-  bottom: -100px;
-  background: var(--background);
-  z-index: -1;
-}
-
-/* Main container - uses ALL available space */
-.app-container {
+  /* Use JS-calculated height, fallback to 100vh, then 100% */
+  height: calc(var(--vh, 1vh) * 100);
+  width: 100%;
+  overflow: hidden;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
+}
+
+/* ===========================================
+   APP STRUCTURE
+   =========================================== */
+
+#app-root {
   display: flex;
   flex-direction: column;
-  /* On mobile, content first, then nav at bottom */
+  height: 100%;
+  width: 100%;
+  background: var(--background);
 }
 
-/* Desktop: reverse order so nav is at top */
-@media (min-width: 768px) {
-  .app-container {
-    flex-direction: column;
-  }
-}
-
-/* Main content area */
-.app-main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-  overflow: hidden;
-  /* Padding for safe areas */
-  padding-top: env(safe-area-inset-top, 0px);
-}
-
-/* Scrollable content */
-.app-content {
+#app-content {
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-y: contain;
-  touch-action: pan-y;
-  padding: 0.5rem 1rem 1.5rem;
+  padding: env(safe-area-inset-top, 0) 1rem 1rem 1rem;
+}
+
+#app-content > * {
   max-width: 56rem;
   margin: 0 auto;
   width: 100%;
 }
 
-/* Bottom navigation wrapper - NOT fixed, part of flex flow */
-.bottom-nav-wrapper {
+/* ===========================================
+   NAVIGATION - Bottom on mobile, top on desktop
+   =========================================== */
+
+.nav-wrapper {
   flex-shrink: 0;
   background: var(--background);
-  /* Extend background into safe area */
-  padding-bottom: env(safe-area-inset-bottom, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0);
+  border-top: 1px solid rgba(148, 163, 184, 0.2);
 }
 
-/* Desktop: nav at top instead of bottom */
+.nav-wrapper nav {
+  height: 3.5rem;
+}
+
+/* Desktop: nav at top */
 @media (min-width: 768px) {
-  .app-main {
-    padding-top: 0;
-    order: 2;
+  #app-root {
+    flex-direction: column-reverse;
   }
 
-  .bottom-nav-wrapper {
-    order: 1;
+  .nav-wrapper {
     padding-bottom: 0;
-    padding-top: env(safe-area-inset-top, 0px);
+    padding-top: env(safe-area-inset-top, 0);
+    border-top: none;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+  }
+
+  #app-content {
+    padding-top: 1rem;
   }
 }
+
+/* ===========================================
+   UTILITY CLASSES
+   =========================================== */
 
 .touch-manipulation {
   touch-action: manipulation;
@@ -142,15 +135,15 @@ body {
 /* Prevent body scroll when modal is open */
 body.modal-open {
   overflow: hidden;
-  position: fixed;
-  width: 100%;
-  height: 100%;
 }
 
-/* Custom scrollbar */
+/* ===========================================
+   SCROLLBAR
+   =========================================== */
+
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -159,7 +152,7 @@ body.modal-open {
 
 ::-webkit-scrollbar-thumb {
   background: #cbd5e1;
-  border-radius: 4px;
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -176,77 +169,55 @@ body.modal-open {
   }
 }
 
-/* Animations */
+/* ===========================================
+   ANIMATIONS
+   =========================================== */
+
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(100%);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(100%); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes pulse-glow {
-  0%, 100% {
-    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4);
-  }
-  50% {
-    box-shadow: 0 0 0 8px rgba(99, 102, 241, 0);
-  }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(99, 102, 241, 0); }
 }
 
 @keyframes spin-slow {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
-.animate-fade-in {
-  animation: fadeIn 0.4s ease-out;
-}
+.animate-fade-in { animation: fadeIn 0.4s ease-out; }
+.animate-slide-up { animation: slideUp 0.3s ease-out; }
+.animate-pulse-glow { animation: pulse-glow 2s infinite; }
+.animate-spin-slow { animation: spin-slow 1.5s linear infinite; }
 
-.animate-slide-up {
-  animation: slideUp 0.3s ease-out;
-}
+/* ===========================================
+   GLASS EFFECT
+   =========================================== */
 
-.animate-pulse-glow {
-  animation: pulse-glow 2s infinite;
-}
-
-.animate-spin-slow {
-  animation: spin-slow 1.5s linear infinite;
-}
-
-/* Glass morphism effect */
 .glass {
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
 
 @media (prefers-color-scheme: dark) {
   .glass {
-    background: rgba(15, 23, 42, 0.7);
+    background: rgba(15, 23, 42, 0.8);
   }
 }
 
-/* Gradient text */
+/* ===========================================
+   UI COMPONENTS
+   =========================================== */
+
 .gradient-text {
   background: linear-gradient(135deg, var(--accent) 0%, #8b5cf6 50%, #ec4899 100%);
   -webkit-background-clip: text;
@@ -254,7 +225,6 @@ body.modal-open {
   background-clip: text;
 }
 
-/* Card hover effect */
 .card-hover {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -270,7 +240,6 @@ body.modal-open {
   }
 }
 
-/* Button press effect */
 .btn-press {
   transition: all 0.15s ease;
 }
@@ -279,44 +248,22 @@ body.modal-open {
   transform: scale(0.97);
 }
 
-/* Safe area padding for iPhone notch/Dynamic Island and home indicator */
-@supports (padding: env(safe-area-inset-top)) {
-  .safe-area-top {
-    padding-top: env(safe-area-inset-top);
-  }
+/* ===========================================
+   SAFE AREAS
+   =========================================== */
 
-  .safe-bottom {
-    padding-bottom: env(safe-area-inset-bottom);
-  }
-
-  .safe-area-bottom {
-    padding-bottom: env(safe-area-inset-bottom);
-  }
-
-  /* Navigation extends to bottom of screen */
-  .nav-safe-area {
-    padding-bottom: env(safe-area-inset-bottom);
-  }
+.safe-area-top {
+  padding-top: env(safe-area-inset-top, 0);
 }
 
-
-/* PWA standalone mode - same behavior as browser */
-@media (display-mode: standalone) {
-  /* iOS standalone needs the fixed body approach */
-  body {
-    /* Already handled by default body styles */
-  }
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0);
 }
 
-/* Legacy mobile scroll container (kept for compatibility) */
-.mobile-scroll-container {
-  flex: 1;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior-y: contain;
-}
+/* ===========================================
+   MODALS
+   =========================================== */
 
-/* Modal overlay - prevents scroll bleed */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -326,7 +273,6 @@ body.modal-open {
   -webkit-overflow-scrolling: touch;
 }
 
-/* Bottom sheet modal for mobile */
 .modal-bottom-sheet {
   position: fixed;
   inset: 0;
@@ -343,23 +289,23 @@ body.modal-open {
   }
 }
 
-/* Scrollable modal content */
 .modal-scroll-content {
   flex: 1;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
-  /* Prevent scroll chaining to parent */
   touch-action: pan-y;
 }
 
-/* Minimum touch target size for accessibility */
+/* ===========================================
+   TOUCH & ACCESSIBILITY
+   =========================================== */
+
 .touch-target {
   min-width: 44px;
   min-height: 44px;
 }
 
-/* Hide scrollbar but keep scroll functionality */
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -369,7 +315,6 @@ body.modal-open {
   display: none;
 }
 
-/* Touch device optimizations */
 @media (hover: none) and (pointer: coarse) {
   .btn-press:active {
     transform: scale(0.95);
@@ -381,7 +326,10 @@ body.modal-open {
   }
 }
 
-/* Focus styles */
+/* ===========================================
+   FOCUS & SELECTION
+   =========================================== */
+
 button:focus-visible,
 a:focus-visible,
 input:focus-visible,
@@ -391,13 +339,15 @@ select:focus-visible {
   outline-offset: 2px;
 }
 
-/* Selection */
 ::selection {
   background: var(--accent);
   color: white;
 }
 
-/* Number input hide arrows */
+/* ===========================================
+   FORM ELEMENTS
+   =========================================== */
+
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;

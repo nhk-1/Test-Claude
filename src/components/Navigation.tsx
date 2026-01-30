@@ -101,14 +101,14 @@ export default function Navigation() {
   };
 
   return (
-    <div className="bottom-nav-wrapper md:order-first">
+    <div className="nav-wrapper">
       {/* Sync indicator bar - Mobile */}
       {isCloudEnabled && isSyncing && (
         <div className="h-0.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-500 animate-pulse md:hidden" />
       )}
 
-      <nav className="glass border-t border-slate-200/50 dark:border-slate-700/50 md:border-t-0 md:border-b relative">
-        <div className="max-w-4xl mx-auto px-2 md:px-4">
+      <nav className="glass">
+        <div className="max-w-4xl mx-auto px-2 md:px-4 h-full">
           <div className="flex justify-around md:justify-start md:gap-2 items-center h-14 md:h-16">
             {/* Logo - Desktop only */}
             <Link href="/" className="hidden md:flex items-center gap-2 mr-6">
