@@ -2,7 +2,9 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
 import { AppProvider } from "@/context/AppContext";
+import { ThemeProvider } from "@/context/ThemeContext";
 import Navigation from "@/components/Navigation";
+import KeyboardShortcutsProvider from "@/components/KeyboardShortcutsProvider";
 
 export const metadata: Metadata = {
   title: "FitTracker - Gestion de séances de sport",
@@ -47,16 +49,20 @@ export default function RootLayout({
       <body
         className="font-sans antialiased bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 overscroll-none"
       >
-        <AuthProvider>
-          <AppProvider>
-            <Navigation />
-            <main className="pb-24 md:pb-4 md:pt-20 min-h-screen safe-area-bottom safe-area-top">
-              <div className="max-w-4xl mx-auto px-4 pt-2 pb-6">
-                {children}
-              </div>
-            </main>
-          </AppProvider>
-        </AuthProvider>
+        <ThemeProvider>
+          <AuthProvider>
+            <AppProvider>
+              <KeyboardShortcutsProvider>
+                <Navigation />
+                <main className="pb-24 md:pb-4 md:pt-20 min-h-screen safe-area-bottom safe-area-top">
+                  <div className="max-w-4xl mx-auto px-4 pt-2 pb-6">
+                    {children}
+                  </div>
+                </main>
+              </KeyboardShortcutsProvider>
+            </AppProvider>
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { SessionExercise, MUSCLE_CATEGORY_LABELS } from '@/lib/types';
 import { getExerciseById } from '@/lib/exercises';
 import RestTimer from './RestTimer';
+import { haptics } from '@/lib/haptics';
 
 interface SessionExerciseCardProps {
   exercise: SessionExercise;
@@ -52,6 +53,15 @@ export default function SessionExerciseCard({
 
   const handleCompleteSet = () => {
     if (!isCompleted) {
+      // Haptic feedback
+      if (exercise.completedSets + 1 === exercise.sets) {
+        // Last set - success pattern
+        haptics.success();
+      } else {
+        // Regular set - medium impact
+        haptics.setComplete();
+      }
+
       onCompleteSet();
       if (exercise.completedSets + 1 < exercise.sets) {
         setShowTimer(true);

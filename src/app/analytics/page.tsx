@@ -3,8 +3,10 @@
 import { useState, useMemo } from 'react';
 import { useApp } from '@/context/AppContext';
 import { getExerciseById } from '@/lib/exercises';
+import { MuscleCategory, MUSCLE_CATEGORY_LABELS } from '@/lib/types';
+import Link from 'next/link';
 
-type TabType = 'weight' | 'performance';
+type TabType = 'weight' | 'performance' | 'muscles';
 
 export default function AnalyticsPage() {
   const { data, addWeightEntry, deleteWeightEntry } = useApp();
@@ -86,6 +88,70 @@ export default function AnalyticsPage() {
     const w = exercise.actualWeight ?? exercise.weight;
     return Array(exercise.completedSets).fill(w);
   };
+
+  // Muscle groups stats
+  const muscleGroupStats = useMemo(() => {
+    const statsMap = new Map<MuscleCategory, {
+      category: MuscleCategory;
+      totalVolume: number;
+      sessionCount: number;
+      exerciseCount: number;
+      lastWorked: string | null;
+    }>();
+
+    // Initialize all muscle categories
+    const categories: MuscleCategory[] = ['chest', 'back', 'shoulders', 'biceps', 'triceps', 'legs', 'glutes', 'abs', 'cardio'];
+    categories.forEach(cat => {
+      statsMap.set(cat, {
+        category: cat,
+        totalVolume: 0,
+        sessionCount: 0,
+        exerciseCount: 0,
+        lastWorked: null,
+      });
+    });
+
+    // Process completed sessions
+    const completedSessions = data.sessions
+      .filter(s => s.status === 'completed')
+      .sort((a, b) => new Date(b.startedAt).getTime() - new Date(a.startedAt).getTime());
+
+    for (const session of completedSessions) {
+      const sessionDate = session.startedAt;
+      const processedCategoriesInSession = new Set<MuscleCategory>();
+
+      for (const exercise of session.exercises) {
+        const exerciseInfo = getExerciseById(exercise.exerciseId);
+        if (!exerciseInfo) continue;
+
+        const category = exerciseInfo.category;
+        const stats = statsMap.get(category)!;
+
+        // Calculate volume
+        const weights = getSessionWeights(exercise);
+        const volume = weights.reduce((total, w) => total + w * exercise.reps, 0);
+        stats.totalVolume += volume;
+
+        // Track last worked date
+        if (!stats.lastWorked || new Date(sessionDate) > new Date(stats.lastWorked)) {
+          stats.lastWorked = sessionDate;
+        }
+
+        // Count exercises
+        stats.exerciseCount++;
+
+        // Count session only once per muscle group
+        if (!processedCategoriesInSession.has(category)) {
+          stats.sessionCount++;
+          processedCategoriesInSession.add(category);
+        }
+      }
+    }
+
+    return Array.from(statsMap.values())
+      .filter(s => s.totalVolume > 0 || s.sessionCount > 0)
+      .sort((a, b) => b.totalVolume - a.totalVolume);
+  }, [data.sessions]);
 
   // Performance data for selected exercise
   const performanceData = useMemo(() => {
@@ -231,26 +297,36 @@ export default function AnalyticsPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-2 p-1 bg-gray-100 dark:bg-gray-800 rounded-xl">
+      <div className="flex gap-2 p-1 bg-gray-100 dark:bg-gray-800 rounded-xl overflow-x-auto">
         <button
           onClick={() => setActiveTab('weight')}
-          className={`flex-1 py-2.5 px-4 rounded-lg font-medium transition-all btn-press ${
+          className={`flex-1 py-2.5 px-4 rounded-lg font-medium transition-all btn-press whitespace-nowrap ${
             activeTab === 'weight'
               ? 'bg-white dark:bg-gray-700 text-indigo-600 dark:text-indigo-400 shadow-sm'
               : 'text-gray-600 dark:text-gray-400'
           }`}
         >
-          Poids corporel
+          Poids
         </button>
         <button
           onClick={() => setActiveTab('performance')}
-          className={`flex-1 py-2.5 px-4 rounded-lg font-medium transition-all btn-press ${
+          className={`flex-1 py-2.5 px-4 rounded-lg font-medium transition-all btn-press whitespace-nowrap ${
             activeTab === 'performance'
               ? 'bg-white dark:bg-gray-700 text-indigo-600 dark:text-indigo-400 shadow-sm'
               : 'text-gray-600 dark:text-gray-400'
           }`}
         >
           Performance
+        </button>
+        <button
+          onClick={() => setActiveTab('muscles')}
+          className={`flex-1 py-2.5 px-4 rounded-lg font-medium transition-all btn-press whitespace-nowrap ${
+            activeTab === 'muscles'
+              ? 'bg-white dark:bg-gray-700 text-indigo-600 dark:text-indigo-400 shadow-sm'
+              : 'text-gray-600 dark:text-gray-400'
+          }`}
+        >
+          Muscles
         </button>
       </div>
 
@@ -417,6 +493,27 @@ export default function AnalyticsPage() {
 
           {selectedExercise && performanceData ? (
             <>
+              {/* Link to PR History */}
+              <Link
+                href="/analytics/pr-history"
+                className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white rounded-xl p-4 shadow-sm flex items-center justify-between transition-all btn-press"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M5.166 2.621v.858c-1.035.148-2.059.33-3.071.543a.75.75 0 0 0-.584.859 6.753 6.753 0 0 0 6.138 5.6 6.73 6.73 0 0 0 2.743 1.346A6.707 6.707 0 0 1 9.279 15H8.54c-1.036 0-1.875.84-1.875 1.875V19.5h-.75a2.25 2.25 0 0 0-2.25 2.25c0 .414.336.75.75.75h15a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-2.25-2.25h-.75v-2.625c0-1.036-.84-1.875-1.875-1.875h-.739a6.706 6.706 0 0 1-1.112-3.173 6.73 6.73 0 0 0 2.743-1.347 6.753 6.753 0 0 0 6.139-5.6.75.75 0 0 0-.585-.858 47.077 47.077 0 0 0-3.07-.543V2.62a.75.75 0 0 0-.658-.744 49.22 49.22 0 0 0-6.093-.377c-2.063 0-4.096.128-6.093.377a.75.75 0 0 0-.657.744Zm0 2.629c0 1.196.312 2.32.857 3.294A5.266 5.266 0 0 1 3.16 5.337a45.6 45.6 0 0 1 2.006-.343v.256Zm13.5 0v-.256c.674.1 1.343.214 2.006.343a5.265 5.265 0 0 1-2.863 3.207 6.72 6.72 0 0 0 .857-3.294Z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold">Historique des Records</h3>
+                    <p className="text-sm text-white/80">Voir tous vos PRs</p>
+                  </div>
+                </div>
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                </svg>
+              </Link>
+
               {/* Performance stats */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm">
@@ -524,6 +621,165 @@ export default function AnalyticsPage() {
               <p className="text-gray-500">Aucune donnée pour cet exercice</p>
             </div>
           ) : null}
+        </div>
+      )}
+
+      {activeTab === 'muscles' && (
+        <div className="space-y-6">
+          {muscleGroupStats.length > 0 ? (
+            <>
+              {/* Overview stats */}
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm">
+                  <p className="text-sm text-gray-500 dark:text-gray-400">Groupes travaillés</p>
+                  <p className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
+                    {muscleGroupStats.length}
+                  </p>
+                </div>
+                <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm">
+                  <p className="text-sm text-gray-500 dark:text-gray-400">Plus travaillé</p>
+                  <p className="text-lg font-bold text-gray-900 dark:text-white">
+                    {MUSCLE_CATEGORY_LABELS[muscleGroupStats[0]?.category] || '-'}
+                  </p>
+                </div>
+                <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm col-span-2 md:col-span-1">
+                  <p className="text-sm text-gray-500 dark:text-gray-400">Volume total</p>
+                  <p className="text-2xl font-bold text-purple-600 dark:text-purple-400">
+                    {muscleGroupStats.reduce((sum, s) => sum + s.totalVolume, 0).toLocaleString()} kg
+                  </p>
+                </div>
+              </div>
+
+              {/* Volume distribution chart (bar chart) */}
+              <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm">
+                <h2 className="font-semibold text-gray-900 dark:text-white mb-4">Répartition du volume par groupe musculaire</h2>
+                <div className="space-y-3">
+                  {muscleGroupStats.map((stat) => {
+                    const maxVolume = muscleGroupStats[0]?.totalVolume || 1;
+                    const percentage = (stat.totalVolume / maxVolume) * 100;
+
+                    return (
+                      <div key={stat.category}>
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                            {MUSCLE_CATEGORY_LABELS[stat.category]}
+                          </span>
+                          <span className="text-sm text-gray-500 dark:text-gray-400">
+                            {stat.totalVolume.toLocaleString()} kg
+                          </span>
+                        </div>
+                        <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                          <div
+                            className="h-full bg-gradient-to-r from-indigo-500 to-purple-500 transition-all duration-500"
+                            style={{ width: `${percentage}%` }}
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Muscle groups cards */}
+              <div className="grid md:grid-cols-2 gap-4">
+                {muscleGroupStats.map((stat) => {
+                  const daysSinceWorked = stat.lastWorked
+                    ? Math.floor((new Date().getTime() - new Date(stat.lastWorked).getTime()) / (1000 * 60 * 60 * 24))
+                    : null;
+
+                  return (
+                    <div key={stat.category} className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm">
+                      <div className="flex items-center justify-between mb-3">
+                        <h3 className="font-semibold text-gray-900 dark:text-white">
+                          {MUSCLE_CATEGORY_LABELS[stat.category]}
+                        </h3>
+                        {daysSinceWorked !== null && (
+                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${
+                            daysSinceWorked === 0
+                              ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300'
+                              : daysSinceWorked <= 3
+                              ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300'
+                              : daysSinceWorked <= 7
+                              ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300'
+                              : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300'
+                          }`}>
+                            {daysSinceWorked === 0 ? "Aujourd'hui" : `Il y a ${daysSinceWorked}j`}
+                          </span>
+                        )}
+                      </div>
+
+                      <div className="grid grid-cols-3 gap-4">
+                        <div>
+                          <p className="text-xs text-gray-500 dark:text-gray-400">Volume</p>
+                          <p className="text-lg font-bold text-purple-600 dark:text-purple-400">
+                            {stat.totalVolume.toLocaleString()}
+                          </p>
+                          <p className="text-xs text-gray-400">kg</p>
+                        </div>
+                        <div>
+                          <p className="text-xs text-gray-500 dark:text-gray-400">Séances</p>
+                          <p className="text-lg font-bold text-indigo-600 dark:text-indigo-400">
+                            {stat.sessionCount}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-xs text-gray-500 dark:text-gray-400">Exercices</p>
+                          <p className="text-lg font-bold text-gray-900 dark:text-white">
+                            {stat.exerciseCount}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Balance warning */}
+              {muscleGroupStats.length >= 2 && (
+                (() => {
+                  const maxVolume = muscleGroupStats[0].totalVolume;
+                  const minVolume = muscleGroupStats[muscleGroupStats.length - 1].totalVolume;
+                  const ratio = maxVolume / (minVolume || 1);
+
+                  if (ratio > 3) {
+                    return (
+                      <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-4">
+                        <div className="flex gap-3">
+                          <svg className="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+                          </svg>
+                          <div>
+                            <h3 className="font-semibold text-amber-900 dark:text-amber-200 mb-1">
+                              Déséquilibre détecté
+                            </h3>
+                            <p className="text-sm text-amber-700 dark:text-amber-300">
+                              Il y a un déséquilibre important entre vos groupes musculaires.
+                              Pensez à rééquilibrer votre entraînement pour éviter les blessures et optimiser vos résultats.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  }
+                  return null;
+                })()
+              )}
+            </>
+          ) : (
+            <div className="bg-white dark:bg-gray-800 rounded-xl p-8 text-center shadow-sm">
+              <div className="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-gray-400" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                Aucune donnée disponible
+              </h3>
+              <p className="text-gray-600 dark:text-gray-400">
+                Complétez des séances pour voir vos statistiques par groupe musculaire
+              </p>
+            </div>
+          )}
         </div>
       )}
     </div>

@@ -4,6 +4,7 @@ import { useApp } from '@/context/AppContext';
 import TemplateCard from '@/components/TemplateCard';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useMemo } from 'react';
 
 export default function HomePage() {
   const { data, isLoading, startSession, getActiveSession } = useApp();
@@ -18,6 +19,36 @@ export default function HomePage() {
     weekAgo.setDate(weekAgo.getDate() - 7);
     return sessionDate >= weekAgo;
   });
+
+  // Calculate workout streak
+  const streak = useMemo(() => {
+    if (completedSessions.length === 0) return 0;
+
+    const sorted = [...completedSessions]
+      .sort((a, b) => new Date(b.completedAt || b.startedAt).getTime() - new Date(a.completedAt || a.startedAt).getTime());
+
+    let currentStreak = 0;
+    let checkDate = new Date();
+    checkDate.setHours(0, 0, 0, 0);
+
+    for (const session of sorted) {
+      const sessionDate = new Date(session.completedAt || session.startedAt);
+      sessionDate.setHours(0, 0, 0, 0);
+
+      const diffDays = Math.floor((checkDate.getTime() - sessionDate.getTime()) / (1000 * 60 * 60 * 24));
+
+      if (diffDays === currentStreak || diffDays === currentStreak + 1) {
+        if (diffDays === currentStreak + 1) {
+          currentStreak++;
+        }
+        checkDate = new Date(sessionDate);
+      } else {
+        break;
+      }
+    }
+
+    return currentStreak;
+  }, [completedSessions]);
 
   const handleStartSession = (template: typeof data.templates[0]) => {
     startSession(template);
@@ -67,6 +98,20 @@ export default function HomePage() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {/* Streak card - special styling */}
+        {streak > 0 && (
+          <div className="bg-gradient-to-br from-orange-500 to-red-500 rounded-xl p-4 shadow-sm text-white">
+            <div className="flex items-center gap-2 mb-1">
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12.378 1.602a.75.75 0 0 0-.756 0L3 6.632l9 5.25 9-5.25-8.622-5.03ZM21.75 7.93l-9 5.25v9l8.628-5.032a.75.75 0 0 0 .372-.648V7.93ZM11.25 22.18v-9l-9-5.25v8.57a.75.75 0 0 0 .372.648l8.628 5.033Z" />
+              </svg>
+              <p className="text-sm font-medium">Série en cours</p>
+            </div>
+            <p className="text-3xl font-bold">{streak}</p>
+            <p className="text-sm opacity-90">{streak === 1 ? 'jour' : 'jours'}</p>
+          </div>
+        )}
+
         <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm">
           <p className="text-sm text-gray-500 dark:text-gray-400">Cette semaine</p>
           <p className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
@@ -87,13 +132,6 @@ export default function HomePage() {
             {data.templates.length}
           </p>
           <p className="text-sm text-gray-600 dark:text-gray-400">créés</p>
-        </div>
-        <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm">
-          <p className="text-sm text-gray-500 dark:text-gray-400">Exercices</p>
-          <p className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
-            {data.templates.reduce((acc, t) => acc + t.exercises.length, 0)}
-          </p>
-          <p className="text-sm text-gray-600 dark:text-gray-400">planifiés</p>
         </div>
       </div>
 

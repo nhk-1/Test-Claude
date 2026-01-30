@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useApp } from '@/context/AppContext';
+import { useTheme } from '@/context/ThemeContext';
 
 const navItems = [
   { href: '/', label: 'Accueil', icon: HomeIcon },
@@ -68,9 +69,36 @@ function CloudIcon({ className, syncing }: { className?: string; syncing?: boole
   );
 }
 
+function SunIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
+    </svg>
+  );
+}
+
+function MoonIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
+    </svg>
+  );
+}
+
 export default function Navigation() {
   const pathname = usePathname();
   const { isSyncing, isCloudEnabled } = useApp();
+  const { theme, setTheme, resolvedTheme } = useTheme();
+
+  const toggleTheme = () => {
+    if (theme === 'light') {
+      setTheme('dark');
+    } else if (theme === 'dark') {
+      setTheme('system');
+    } else {
+      setTheme('light');
+    }
+  };
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 glass border-t border-slate-200/50 dark:border-slate-700/50 z-50 md:top-0 md:bottom-auto md:border-t-0 md:border-b nav-safe-area">
@@ -115,6 +143,43 @@ export default function Navigation() {
               </span>
             </div>
           )}
+
+          {/* Theme toggle - Desktop */}
+          <button
+            onClick={toggleTheme}
+            className="hidden md:flex items-center justify-center w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all btn-press ml-2"
+            aria-label="Toggle theme"
+            title={theme === 'system' ? 'Thème système' : theme === 'dark' ? 'Mode sombre' : 'Mode clair'}
+          >
+            {theme === 'system' ? (
+              <div className="relative w-5 h-5">
+                <SunIcon className="absolute inset-0 w-5 h-5 opacity-50" />
+                <MoonIcon className="absolute inset-0 w-5 h-5 opacity-50" />
+              </div>
+            ) : resolvedTheme === 'dark' ? (
+              <MoonIcon className="w-5 h-5" />
+            ) : (
+              <SunIcon className="w-5 h-5" />
+            )}
+          </button>
+
+          {/* Theme toggle - Mobile */}
+          <button
+            onClick={toggleTheme}
+            className="flex md:hidden items-center justify-center px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 transition-all btn-press"
+            aria-label="Toggle theme"
+          >
+            {theme === 'system' ? (
+              <div className="relative w-6 h-6">
+                <SunIcon className="absolute inset-0 w-6 h-6 opacity-50" />
+                <MoonIcon className="absolute inset-0 w-6 h-6 opacity-50" />
+              </div>
+            ) : resolvedTheme === 'dark' ? (
+              <MoonIcon className="w-6 h-6" />
+            ) : (
+              <SunIcon className="w-6 h-6" />
+            )}
+          </button>
         </div>
       </div>
 
