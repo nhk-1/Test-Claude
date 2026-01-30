@@ -211,7 +211,7 @@ export default function SessionPage() {
       </div>
 
       {/* Actions - Fixed at bottom */}
-      <div className="fixed bottom-14 md:bottom-auto md:relative left-0 right-0 bg-gray-50/95 dark:bg-gray-950/95 backdrop-blur-sm py-3 px-4 space-y-2 z-30 safe-area-bottom md:mt-6 md:bg-transparent md:backdrop-blur-none md:p-0">
+      <div className="fixed bottom-0 left-0 right-0 bg-gray-50/95 dark:bg-gray-950/95 backdrop-blur-sm py-3 px-4 space-y-2 z-30 md:relative md:bottom-auto md:mt-6 md:bg-transparent md:backdrop-blur-none md:p-0" style={{ paddingBottom: 'calc(3.5rem + env(safe-area-inset-bottom, 0px) + 0.75rem)' }}>
         <div className="max-w-4xl mx-auto space-y-2">
           {isSessionComplete ? (
             <button
@@ -240,7 +240,7 @@ export default function SessionPage() {
         </div>
       </div>
       {/* Spacer for fixed actions on mobile */}
-      <div className="h-32 md:hidden" />
+      <div className="h-40 md:hidden" />
 
       {/* Complete Modal */}
       {showCompleteModal && (

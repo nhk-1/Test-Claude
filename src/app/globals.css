@@ -34,14 +34,13 @@
 
 html {
   -webkit-text-size-adjust: 100%;
-  /* Use dvh for proper mobile viewport handling */
+  /* Fixed height for iOS - use 100% to fill container */
   height: 100%;
-  height: -webkit-fill-available;
 }
 
 html, body {
-  /* Prevent pull-to-refresh but allow normal scroll */
-  overscroll-behavior-y: contain;
+  /* Prevent overscroll bounce */
+  overscroll-behavior: none;
 }
 
 .touch-manipulation {
@@ -54,12 +53,62 @@ body {
   font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* Proper height for iOS Safari */
-  min-height: 100%;
-  min-height: -webkit-fill-available;
-  min-height: 100dvh;
-  /* Enable momentum scrolling */
+  /* Fixed height - fills entire viewport */
+  height: 100%;
+  height: 100dvh;
+  height: -webkit-fill-available;
+  /* No overflow on body - scroll happens in container */
+  overflow: hidden;
+  /* Prevent iOS rubber banding on body */
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+
+/* ============================================
+   iOS App Container Structure
+   ============================================ */
+
+/* Main app container - fills entire viewport */
+.ios-app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  height: 100dvh;
+  height: -webkit-fill-available;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Main content area - takes remaining space after nav */
+.ios-main-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0; /* Critical for flex children to shrink */
+  /* Space for bottom nav on mobile */
+  padding-bottom: calc(3.5rem + env(safe-area-inset-bottom, 0px));
+  overflow: hidden;
+}
+
+/* Desktop: nav is at top */
+@media (min-width: 768px) {
+  .ios-main-content {
+    padding-bottom: 1rem;
+    padding-top: 4rem; /* Space for top nav */
+  }
+}
+
+/* Scrollable content area */
+.ios-scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
+  /* Allow natural scrolling */
+  touch-action: pan-y;
 }
 
 /* Prevent body scroll when modal is open */
@@ -221,22 +270,15 @@ body.modal-open {
   }
 }
 
-/* PWA standalone mode */
+/* PWA standalone mode - same behavior as browser */
 @media (display-mode: standalone) {
-  html, body {
-    /* Proper height calculation for PWA */
-    height: 100%;
-    overflow: hidden;
-  }
-
-  #app-scroll-container {
-    height: 100%;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
+  /* iOS standalone needs the fixed body approach */
+  body {
+    /* Already handled by default body styles */
   }
 }
 
-/* Mobile scroll container */
+/* Legacy mobile scroll container (kept for compatibility) */
 .mobile-scroll-container {
   flex: 1;
   overflow-y: auto;
