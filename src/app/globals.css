@@ -34,13 +34,19 @@
 
 html {
   -webkit-text-size-adjust: 100%;
-  /* Fixed height for iOS - use 100% to fill container */
-  height: 100%;
+  /* Background on html to cover any gaps */
+  background: var(--background);
 }
 
 html, body {
+  margin: 0;
+  padding: 0;
   /* Prevent overscroll bounce */
   overscroll-behavior: none;
+  /* Fill entire viewport */
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
 }
 
 .touch-manipulation {
@@ -53,32 +59,23 @@ body {
   font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* Fixed height - fills entire viewport */
-  height: 100%;
-  height: 100dvh;
-  height: -webkit-fill-available;
-  /* No overflow on body - scroll happens in container */
-  overflow: hidden;
-  /* Prevent iOS rubber banding on body */
-  position: fixed;
-  width: 100%;
-  top: 0;
-  left: 0;
 }
 
 /* ============================================
    iOS App Container Structure
    ============================================ */
 
-/* Main app container - fills entire viewport */
+/* Main app container - fills entire viewport using fixed positioning */
 .ios-app-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: flex;
   flex-direction: column;
-  height: 100%;
-  height: 100dvh;
-  height: -webkit-fill-available;
-  position: relative;
   overflow: hidden;
+  background: var(--background);
 }
 
 /* Main content area - takes remaining space after nav */
@@ -87,7 +84,7 @@ body {
   flex-direction: column;
   flex: 1;
   min-height: 0; /* Critical for flex children to shrink */
-  /* Space for bottom nav on mobile */
+  /* Space for bottom nav on mobile: nav height (3.5rem) + safe area */
   padding-bottom: calc(3.5rem + env(safe-area-inset-bottom, 0px));
   overflow: hidden;
 }
