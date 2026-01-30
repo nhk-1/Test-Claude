@@ -210,37 +210,33 @@ export default function SessionPage() {
         ))}
       </div>
 
-      {/* Actions - Fixed at bottom */}
-      <div className="fixed bottom-0 left-0 right-0 bg-gray-50/95 dark:bg-gray-950/95 backdrop-blur-sm py-3 px-4 space-y-2 z-30 md:relative md:bottom-auto md:mt-6 md:bg-transparent md:backdrop-blur-none md:p-0" style={{ paddingBottom: 'calc(3.5rem + env(safe-area-inset-bottom, 0px) + 0.75rem)' }}>
-        <div className="max-w-4xl mx-auto space-y-2">
-          {isSessionComplete ? (
-            <button
-              onClick={() => setShowCompleteModal(true)}
-              className="w-full py-3 px-4 bg-green-600 hover:bg-green-700 text-white font-medium rounded-xl transition-colors flex items-center justify-center gap-2 touch-target"
-            >
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
-              </svg>
-              Terminer la séance
-            </button>
-          ) : (
-            <button
-              onClick={() => setShowCompleteModal(true)}
-              className="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl transition-colors touch-target"
-            >
-              Terminer la séance ({Math.round(progress)}% complété)
-            </button>
-          )}
+      {/* Actions */}
+      <div className="mt-6 space-y-2">
+        {isSessionComplete ? (
           <button
-            onClick={handleAbandonSession}
-            className="w-full py-3 px-4 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-xl transition-colors touch-target"
+            onClick={() => setShowCompleteModal(true)}
+            className="w-full py-3 px-4 bg-green-600 hover:bg-green-700 text-white font-medium rounded-xl transition-colors flex items-center justify-center gap-2 touch-target"
           >
-            Abandonner
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+            </svg>
+            Terminer la séance
           </button>
-        </div>
+        ) : (
+          <button
+            onClick={() => setShowCompleteModal(true)}
+            className="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl transition-colors touch-target"
+          >
+            Terminer la séance ({Math.round(progress)}% complété)
+          </button>
+        )}
+        <button
+          onClick={handleAbandonSession}
+          className="w-full py-3 px-4 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-xl transition-colors touch-target"
+        >
+          Abandonner
+        </button>
       </div>
-      {/* Spacer for fixed actions on mobile */}
-      <div className="h-40 md:hidden" />
 
       {/* Complete Modal */}
       {showCompleteModal && (
