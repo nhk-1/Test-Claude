@@ -297,14 +297,14 @@ export default function AnalyticsPage() {
   };
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-8 animate-fade-in">
       <div>
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Analyses</h1>
-        <p className="text-gray-600 dark:text-gray-400">Suivez vos progrès</p>
+        <p className="text-gray-600 dark:text-gray-400 mt-2">Suivez vos progrès</p>
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1.5 p-1 bg-gray-100 dark:bg-gray-800 rounded-xl overflow-x-auto scrollbar-hide">
+      <div className="flex gap-2 p-1.5 bg-gray-100 dark:bg-gray-800 rounded-2xl overflow-x-auto scrollbar-hide">
         <button
           onClick={() => setActiveTab('weight')}
           className={`flex-1 min-w-[70px] py-3 px-3 rounded-lg font-medium transition-all btn-press whitespace-nowrap text-sm ${
@@ -348,10 +348,10 @@ export default function AnalyticsPage() {
       </div>
 
       {activeTab === 'weight' && (
-        <div className="space-y-6">
+        <div className="space-y-8">
           {/* Add weight entry */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm">
-            <h2 className="font-semibold text-gray-900 dark:text-white mb-4">Ajouter une pesée</h2>
+          <div className="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-sm">
+            <h2 className="font-semibold text-gray-900 dark:text-white mb-5">Ajouter une pesée</h2>
             <div className="flex gap-2">
               <div className="flex-1 relative">
                 <input
@@ -378,15 +378,15 @@ export default function AnalyticsPage() {
           {weightStats ? (
             <>
               {/* Stats cards */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm">
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Actuel</p>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-sm">
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Actuel</p>
                   <p className="text-2xl font-bold text-gray-900 dark:text-white">
                     {weightStats.current.toFixed(1)} kg
                   </p>
                 </div>
-                <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm">
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Variation totale</p>
+                <div className="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-sm">
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Variation totale</p>
                   <p className={`text-2xl font-bold ${
                     weightStats.totalChange > 0
                       ? 'text-red-500'
@@ -397,19 +397,19 @@ export default function AnalyticsPage() {
                     {weightStats.totalChange > 0 ? '+' : ''}{weightStats.totalChange.toFixed(1)} kg
                   </p>
                 </div>
-                <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm">
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Min</p>
+                <div className="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-sm">
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Min</p>
                   <p className="text-2xl font-bold text-emerald-500">{weightStats.min.toFixed(1)} kg</p>
                 </div>
-                <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm">
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Max</p>
+                <div className="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-sm">
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Max</p>
                   <p className="text-2xl font-bold text-red-500">{weightStats.max.toFixed(1)} kg</p>
                 </div>
               </div>
 
               {/* Chart */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm">
-                <h2 className="font-semibold text-gray-900 dark:text-white mb-4">Évolution du poids</h2>
+              <div className="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-sm">
+                <h2 className="font-semibold text-gray-900 dark:text-white mb-5">Évolution du poids</h2>
                 <LineChart
                   data={weightStats.entries}
                   getY={(d) => d.weight}
@@ -418,8 +418,8 @@ export default function AnalyticsPage() {
               </div>
 
               {/* History */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm">
-                <h2 className="font-semibold text-gray-900 dark:text-white p-4 border-b border-gray-100 dark:border-gray-700">
+              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm">
+                <h2 className="font-semibold text-gray-900 dark:text-white p-5 border-b border-gray-100 dark:border-gray-700">
                   Historique ({weightStats.entries.length} entrées)
                 </h2>
                 <div className="max-h-64 overflow-y-auto">
@@ -429,7 +429,7 @@ export default function AnalyticsPage() {
                     return (
                       <div
                         key={entry.id}
-                        className="flex items-center justify-between p-4 border-b border-gray-100 dark:border-gray-700 last:border-b-0"
+                        className="flex items-center justify-between p-5 border-b border-gray-100 dark:border-gray-700 last:border-b-0"
                       >
                         <div>
                           <p className="font-medium text-gray-900 dark:text-white">
@@ -467,16 +467,16 @@ export default function AnalyticsPage() {
               </div>
             </>
           ) : (
-            <div className="bg-white dark:bg-gray-800 rounded-xl p-8 text-center shadow-sm">
-              <div className="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-gray-400" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl p-10 text-center shadow-sm">
+              <div className="w-20 h-20 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg className="w-10 h-10 text-gray-400" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0 0 12 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52 2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 0 1-2.031.352 5.988 5.988 0 0 1-2.031-.352c-.483-.174-.711-.703-.59-1.202L18.75 4.971Zm-16.5.52c.99-.203 1.99-.377 3-.52m0 0 2.62 10.726c.122.499-.106 1.028-.589 1.202a5.989 5.989 0 0 1-2.031.352 5.989 5.989 0 0 1-2.031-.352c-.483-.174-.711-.703-.59-1.202L5.25 4.971Z" />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
                 Aucune pesée enregistrée
               </h3>
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className="text-gray-600 dark:text-gray-400 max-w-sm mx-auto">
                 Commencez à suivre votre poids pour voir vos analyses
               </p>
             </div>
@@ -485,10 +485,10 @@ export default function AnalyticsPage() {
       )}
 
       {activeTab === 'performance' && (
-        <div className="space-y-6">
+        <div className="space-y-8">
           {/* Exercise selector */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm">
-            <h2 className="font-semibold text-gray-900 dark:text-white mb-4">Sélectionnez un exercice</h2>
+          <div className="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-sm">
+            <h2 className="font-semibold text-gray-900 dark:text-white mb-5">Sélectionnez un exercice</h2>
             {exercisesInSessions.length > 0 ? (
               <select
                 value={selectedExercise}
@@ -533,15 +533,15 @@ export default function AnalyticsPage() {
               </Link>
 
               {/* Performance stats */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm">
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Charge actuelle</p>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-sm">
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Charge actuelle</p>
                   <p className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
                     {performanceData.latestWeight} kg
                   </p>
                 </div>
-                <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm">
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Progression</p>
+                <div className="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-sm">
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Progression</p>
                   <p className={`text-2xl font-bold ${
                     performanceData.progression > 0
                       ? 'text-emerald-500'
@@ -552,12 +552,12 @@ export default function AnalyticsPage() {
                     {performanceData.progression > 0 ? '+' : ''}{performanceData.progression} kg
                   </p>
                 </div>
-                <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm">
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Record (PR)</p>
+                <div className="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-sm">
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Record (PR)</p>
                   <p className="text-2xl font-bold text-amber-500">{performanceData.maxWeight} kg</p>
                 </div>
-                <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm">
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Séances</p>
+                <div className="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-sm">
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Séances</p>
                   <p className="text-2xl font-bold text-gray-900 dark:text-white">
                     {performanceData.totalSessions}
                   </p>
@@ -565,8 +565,8 @@ export default function AnalyticsPage() {
               </div>
 
               {/* Weight progression chart */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm">
-                <h2 className="font-semibold text-gray-900 dark:text-white mb-4">Progression des charges (max par séance)</h2>
+              <div className="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-sm">
+                <h2 className="font-semibold text-gray-900 dark:text-white mb-5">Progression des charges (max par séance)</h2>
                 <LineChart
                   data={performanceData.dataPoints}
                   getY={(d) => d.maxWeight}
@@ -575,9 +575,9 @@ export default function AnalyticsPage() {
               </div>
 
               {/* Volume chart */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm">
-                <h2 className="font-semibold text-gray-900 dark:text-white mb-4">Volume d'entraînement</h2>
-                <p className="text-sm text-gray-500 mb-4">Volume = Poids x Reps x Séries</p>
+              <div className="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-sm">
+                <h2 className="font-semibold text-gray-900 dark:text-white mb-2">Volume d'entraînement</h2>
+                <p className="text-sm text-gray-500 mb-5">Volume = Poids x Reps x Séries</p>
                 <LineChart
                   data={performanceData.dataPoints}
                   getY={(d) => d.volume}
@@ -586,15 +586,15 @@ export default function AnalyticsPage() {
               </div>
 
               {/* Session history */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm">
-                <h2 className="font-semibold text-gray-900 dark:text-white p-4 border-b border-gray-100 dark:border-gray-700">
+              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm">
+                <h2 className="font-semibold text-gray-900 dark:text-white p-5 border-b border-gray-100 dark:border-gray-700">
                   Historique des séances
                 </h2>
                 <div className="max-h-80 overflow-y-auto">
                   {[...performanceData.dataPoints].reverse().map((dp, i) => (
                     <div
                       key={i}
-                      className="p-4 border-b border-gray-100 dark:border-gray-700 last:border-b-0"
+                      className="p-5 border-b border-gray-100 dark:border-gray-700 last:border-b-0"
                     >
                       <div className="flex items-center justify-between mb-2">
                         <div>
@@ -643,25 +643,25 @@ export default function AnalyticsPage() {
       )}
 
       {activeTab === 'muscles' && (
-        <div className="space-y-6">
+        <div className="space-y-8">
           {muscleGroupStats.length > 0 ? (
             <>
               {/* Overview stats */}
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm">
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Groupes travaillés</p>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div className="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-sm">
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Groupes travaillés</p>
                   <p className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
                     {muscleGroupStats.length}
                   </p>
                 </div>
-                <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm">
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Plus travaillé</p>
+                <div className="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-sm">
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Plus travaillé</p>
                   <p className="text-lg font-bold text-gray-900 dark:text-white">
                     {MUSCLE_CATEGORY_LABELS[muscleGroupStats[0]?.category] || '-'}
                   </p>
                 </div>
-                <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm col-span-2 md:col-span-1">
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Volume total</p>
+                <div className="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-sm col-span-2 md:col-span-1">
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Volume total</p>
                   <p className="text-2xl font-bold text-purple-600 dark:text-purple-400">
                     {muscleGroupStats.reduce((sum, s) => sum + s.totalVolume, 0).toLocaleString()} kg
                   </p>
@@ -669,9 +669,9 @@ export default function AnalyticsPage() {
               </div>
 
               {/* Volume distribution chart (bar chart) */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm">
-                <h2 className="font-semibold text-gray-900 dark:text-white mb-4">Répartition du volume par groupe musculaire</h2>
-                <div className="space-y-3">
+              <div className="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-sm">
+                <h2 className="font-semibold text-gray-900 dark:text-white mb-5">Répartition du volume par groupe musculaire</h2>
+                <div className="space-y-4">
                   {muscleGroupStats.map((stat) => {
                     const maxVolume = muscleGroupStats[0]?.totalVolume || 1;
                     const percentage = (stat.totalVolume / maxVolume) * 100;
@@ -699,15 +699,15 @@ export default function AnalyticsPage() {
               </div>
 
               {/* Muscle groups cards */}
-              <div className="grid md:grid-cols-2 gap-4">
+              <div className="grid md:grid-cols-2 gap-5">
                 {muscleGroupStats.map((stat) => {
                   const daysSinceWorked = stat.lastWorked
                     ? Math.floor((new Date().getTime() - new Date(stat.lastWorked).getTime()) / (1000 * 60 * 60 * 24))
                     : null;
 
                   return (
-                    <div key={stat.category} className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm">
-                      <div className="flex items-center justify-between mb-3">
+                    <div key={stat.category} className="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-sm">
+                      <div className="flex items-center justify-between mb-4">
                         <h3 className="font-semibold text-gray-900 dark:text-white">
                           {MUSCLE_CATEGORY_LABELS[stat.category]}
                         </h3>
@@ -761,7 +761,7 @@ export default function AnalyticsPage() {
 
                   if (ratio > 3) {
                     return (
-                      <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-4">
+                      <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-2xl p-5">
                         <div className="flex gap-3">
                           <svg className="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
@@ -784,16 +784,16 @@ export default function AnalyticsPage() {
               )}
             </>
           ) : (
-            <div className="bg-white dark:bg-gray-800 rounded-xl p-8 text-center shadow-sm">
-              <div className="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-gray-400" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl p-10 text-center shadow-sm">
+              <div className="w-20 h-20 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg className="w-10 h-10 text-gray-400" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
                 Aucune donnée disponible
               </h3>
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className="text-gray-600 dark:text-gray-400 max-w-sm mx-auto">
                 Complétez des séances pour voir vos statistiques par groupe musculaire
               </p>
             </div>
@@ -802,7 +802,7 @@ export default function AnalyticsPage() {
       )}
 
       {activeTab === 'advanced' && (
-        <div className="space-y-6">
+        <div className="space-y-8">
           {data.sessions.filter(s => s.status === 'completed').length > 0 ? (
             <>
               {/* Fatigue Index */}
@@ -814,7 +814,7 @@ export default function AnalyticsPage() {
                 return (
                   <>
                     {/* Fatigue Card */}
-                    <div className={`rounded-xl p-6 shadow-sm border-2 ${
+                    <div className={`rounded-2xl p-6 shadow-sm border-2 ${
                       fatigue.level === 'very_high'
                         ? 'bg-red-50 dark:bg-red-900/20 border-red-500'
                         : fatigue.level === 'high'
@@ -862,7 +862,7 @@ export default function AnalyticsPage() {
                     </div>
 
                     {/* Volume Trend */}
-                    <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
+                    <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm">
                       <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                         Tendance du Volume
                       </h3>
@@ -903,7 +903,7 @@ export default function AnalyticsPage() {
 
                     {/* Deload Recommendation */}
                     {deloadCheck.shouldDeload && (
-                      <div className="bg-amber-50 dark:bg-amber-900/20 border-2 border-amber-500 rounded-xl p-6">
+                      <div className="bg-amber-50 dark:bg-amber-900/20 border-2 border-amber-500 rounded-2xl p-6">
                         <div className="flex gap-3">
                           <svg className="w-6 h-6 text-amber-600 dark:text-amber-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
@@ -924,15 +924,15 @@ export default function AnalyticsPage() {
               })()}
 
               {/* 1RM Calculator */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+              <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
                   Estimations 1RM (One Rep Max)
                 </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-5">
                   Basé sur vos meilleurs performances récentes
                 </p>
 
-                <div className="space-y-3">
+                <div className="space-y-4">
                   {exercisesInSessions.slice(0, 5).map((ex) => {
                     const sessionsWithEx = data.sessions
                       .filter(s => s.status === 'completed')
@@ -1002,14 +1002,14 @@ export default function AnalyticsPage() {
                 if (exercisesWithPlateau.length === 0) return null;
 
                 return (
-                  <div className="bg-orange-50 dark:bg-orange-900/20 border-2 border-orange-500 rounded-xl p-6">
-                    <h3 className="text-lg font-semibold text-orange-900 dark:text-orange-200 mb-4">
+                  <div className="bg-orange-50 dark:bg-orange-900/20 border-2 border-orange-500 rounded-2xl p-6">
+                    <h3 className="text-lg font-semibold text-orange-900 dark:text-orange-200 mb-2">
                       Plateaux Détectés
                     </h3>
-                    <p className="text-sm text-orange-800 dark:text-orange-300 mb-4">
+                    <p className="text-sm text-orange-800 dark:text-orange-300 mb-5">
                       Ces exercices n'ont pas progressé depuis 4+ semaines
                     </p>
-                    <div className="space-y-2">
+                    <div className="space-y-3">
                       {exercisesWithPlateau.map((ex: any) => (
                         <div key={ex.id} className="flex items-center gap-2 text-sm text-orange-900 dark:text-orange-200">
                           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
@@ -1027,16 +1027,16 @@ export default function AnalyticsPage() {
               })()}
             </>
           ) : (
-            <div className="bg-white dark:bg-gray-800 rounded-xl p-8 text-center shadow-sm">
-              <div className="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-gray-400" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl p-10 text-center shadow-sm">
+              <div className="w-20 h-20 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg className="w-10 h-10 text-gray-400" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
                 Aucune donnée disponible
               </h3>
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className="text-gray-600 dark:text-gray-400 max-w-sm mx-auto">
                 Complétez des séances pour voir vos analyses avancées
               </p>
             </div>

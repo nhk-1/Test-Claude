@@ -119,7 +119,7 @@ export default function SessionExerciseCard({
   return (
     <>
       <div
-        className={`bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border-2 transition-all ${
+        className={`bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-sm border-2 transition-all ${
           isActive
             ? 'border-indigo-500 dark:border-indigo-400'
             : isCompleted
@@ -128,7 +128,7 @@ export default function SessionExerciseCard({
         }`}
       >
         {/* Header */}
-        <div className="flex items-start justify-between mb-3">
+        <div className="flex items-start justify-between mb-4">
           <div className="flex-1">
             <div className="flex items-center gap-2">
               <span className="w-6 h-6 rounded-full bg-indigo-100 dark:bg-indigo-900 text-indigo-600 dark:text-indigo-400 text-sm font-medium flex items-center justify-center">
@@ -167,24 +167,24 @@ export default function SessionExerciseCard({
         </div>
 
         {/* Progress Bar */}
-        <div className="mb-4">
+        <div className="mb-5">
           <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
             <div
               className="h-full bg-indigo-600 dark:bg-indigo-400 transition-all duration-300"
               style={{ width: `${progress}%` }}
             />
           </div>
-          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+          <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
             {exercise.completedSets} / {exercise.sets} séries
           </p>
         </div>
 
         {/* Poids par série */}
-        <div className="mb-4">
-          <p className="text-xs text-gray-500 dark:text-gray-400 mb-2 font-medium">
+        <div className="mb-5">
+          <p className="text-xs text-gray-500 dark:text-gray-400 mb-3 font-medium">
             Poids par série (cliquer pour modifier)
           </p>
-          <div className="space-y-2">
+          <div className="space-y-3">
             {Array.from({ length: exercise.sets }).map((_, setIdx) => {
               const isSetCompleted = setIdx < exercise.completedSets;
               const isCurrentSet = setIdx === exercise.completedSets;
@@ -322,7 +322,7 @@ export default function SessionExerciseCard({
 
         {/* Notes et Form Cues */}
         {(exercise.notes || exercise.formCues || exercise.videoUrl) && (
-          <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+          <div className="mb-5 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-200 dark:border-blue-800">
             {exercise.formCues && (
               <div className="mb-2">
                 <div className="flex items-center gap-2 mb-1">
@@ -362,7 +362,7 @@ export default function SessionExerciseCard({
         )}
 
         {/* Repos */}
-        <div className="flex items-center justify-between mb-4 text-sm text-gray-500 dark:text-gray-400">
+        <div className="flex items-center justify-between mb-5 text-sm text-gray-500 dark:text-gray-400">
           <span>Temps de repos</span>
           <span className="font-medium text-gray-900 dark:text-white">{exercise.restTime}s</span>
         </div>

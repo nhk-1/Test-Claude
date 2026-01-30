@@ -129,26 +129,26 @@ export default function SessionPage() {
 
   if (!activeSession) {
     return (
-      <div className="space-y-6 animate-fade-in">
+      <div className="space-y-8 animate-fade-in">
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
           Séance d'entraînement
         </h1>
 
-        <div className="bg-white dark:bg-gray-800 rounded-xl p-8 text-center shadow-sm">
-          <div className="w-16 h-16 bg-indigo-100 dark:bg-indigo-900/50 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg className="w-8 h-8 text-indigo-600 dark:text-indigo-400" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl p-10 text-center shadow-sm">
+          <div className="w-20 h-20 bg-indigo-100 dark:bg-indigo-900/50 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg className="w-10 h-10 text-indigo-600 dark:text-indigo-400" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
             </svg>
           </div>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
             Pas de séance en cours
           </h3>
-          <p className="text-gray-600 dark:text-gray-400 mb-4">
+          <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-sm mx-auto">
             Démarrez une séance à partir d'un de vos templates.
           </p>
           <Link
             href="/templates"
-            className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl transition-colors"
+            className="inline-flex items-center gap-2 px-5 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl transition-colors"
           >
             Voir les templates
           </Link>
@@ -158,15 +158,15 @@ export default function SessionPage() {
   }
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-8 animate-fade-in">
       {/* Header */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm">
-        <div className="flex items-center justify-between mb-3">
+      <div className="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-sm">
+        <div className="flex items-center justify-between mb-4">
           <div>
             <h1 className="text-xl font-bold text-gray-900 dark:text-white">
               {activeSession.templateName}
             </h1>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
               Séance en cours
             </p>
           </div>
@@ -174,13 +174,13 @@ export default function SessionPage() {
             <p className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
               {formatTime(elapsedTime)}
             </p>
-            <p className="text-sm text-gray-500 dark:text-gray-400">durée</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">durée</p>
           </div>
         </div>
 
         {/* Progress */}
         <div>
-          <div className="flex items-center justify-between text-sm mb-2">
+          <div className="flex items-center justify-between text-sm mb-3">
             <span className="text-gray-600 dark:text-gray-400">Progression</span>
             <span className="font-medium text-gray-900 dark:text-white">
               {completedSets}/{totalSets} séries
@@ -196,7 +196,7 @@ export default function SessionPage() {
       </div>
 
       {/* Exercises */}
-      <div className="space-y-4">
+      <div className="space-y-5">
         {activeSession.exercises.map((exercise, index) => (
           <SessionExerciseCard
             key={`${exercise.exerciseId}-${index}`}
@@ -211,11 +211,11 @@ export default function SessionPage() {
       </div>
 
       {/* Actions */}
-      <div className="mt-6 space-y-2">
+      <div className="mt-8 space-y-3">
         {isSessionComplete ? (
           <button
             onClick={() => setShowCompleteModal(true)}
-            className="w-full py-3 px-4 bg-green-600 hover:bg-green-700 text-white font-medium rounded-xl transition-colors flex items-center justify-center gap-2 touch-target"
+            className="w-full py-4 px-4 bg-green-600 hover:bg-green-700 text-white font-medium rounded-xl transition-colors flex items-center justify-center gap-2 touch-target"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
@@ -225,14 +225,14 @@ export default function SessionPage() {
         ) : (
           <button
             onClick={() => setShowCompleteModal(true)}
-            className="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl transition-colors touch-target"
+            className="w-full py-4 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl transition-colors touch-target"
           >
             Terminer la séance ({Math.round(progress)}% complété)
           </button>
         )}
         <button
           onClick={handleAbandonSession}
-          className="w-full py-3 px-4 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-xl transition-colors touch-target"
+          className="w-full py-4 px-4 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-xl transition-colors touch-target"
         >
           Abandonner
         </button>

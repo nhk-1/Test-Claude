@@ -39,14 +39,14 @@ export default function TemplateCard({ template, onStart, onDelete }: TemplateCa
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow">
-      <div className="flex items-start justify-between mb-3">
+    <div className="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow">
+      <div className="flex items-start justify-between mb-4">
         <div className="flex-1">
           <h3 className="font-semibold text-gray-900 dark:text-white text-lg">
             {template.name}
           </h3>
           {template.description && (
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
               {template.description}
             </p>
           )}
@@ -88,11 +88,11 @@ export default function TemplateCard({ template, onStart, onDelete }: TemplateCa
       </div>
 
       {/* Categories */}
-      <div className="flex flex-wrap gap-1 mb-3">
+      <div className="flex flex-wrap gap-2 mb-4">
         {categories.map((cat) => (
           <span
             key={cat}
-            className="px-2 py-0.5 bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 text-xs font-medium rounded-full"
+            className="px-3 py-1 bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 text-xs font-medium rounded-full"
           >
             {MUSCLE_CATEGORY_LABELS[cat]}
           </span>
@@ -100,14 +100,14 @@ export default function TemplateCard({ template, onStart, onDelete }: TemplateCa
       </div>
 
       {/* Stats */}
-      <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400 mb-4">
-        <span className="flex items-center gap-1">
+      <div className="flex items-center gap-5 text-sm text-gray-600 dark:text-gray-400 mb-5">
+        <span className="flex items-center gap-2">
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
           </svg>
           {exerciseCount} exercice{exerciseCount > 1 ? 's' : ''}
         </span>
-        <span className="flex items-center gap-1">
+        <span className="flex items-center gap-2">
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
           </svg>
@@ -119,7 +119,7 @@ export default function TemplateCard({ template, onStart, onDelete }: TemplateCa
       {onStart && (
         <button
           onClick={onStart}
-          className="w-full py-2.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl transition-colors flex items-center justify-center gap-2"
+          className="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl transition-colors flex items-center justify-center gap-2"
         >
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />

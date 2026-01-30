@@ -113,20 +113,20 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-8 animate-fade-in">
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
           Paramètres
         </h1>
-        <p className="text-gray-600 dark:text-gray-400 mt-1">
+        <p className="text-gray-600 dark:text-gray-400 mt-2">
           Gérez vos données et préférences
         </p>
       </div>
 
       {/* Account */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+      <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm">
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-5">
           Compte
         </h2>
         {user ? (
@@ -181,41 +181,41 @@ export default function SettingsPage() {
       </div>
 
       {/* Stats */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+      <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm">
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-5">
           Statistiques
         </h2>
         <div className="grid grid-cols-2 gap-4">
-          <div className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+          <div className="p-5 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
             <p className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
               {stats.templates}
             </p>
-            <p className="text-sm text-gray-600 dark:text-gray-400">Templates</p>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Templates</p>
           </div>
-          <div className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+          <div className="p-5 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
             <p className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
               {stats.completedSessions}
             </p>
-            <p className="text-sm text-gray-600 dark:text-gray-400">Séances terminées</p>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Séances terminées</p>
           </div>
-          <div className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+          <div className="p-5 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
             <p className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
               {stats.totalExercises}
             </p>
-            <p className="text-sm text-gray-600 dark:text-gray-400">Exercices planifiés</p>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Exercices planifiés</p>
           </div>
-          <div className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+          <div className="p-5 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
             <p className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
               {data.version}
             </p>
-            <p className="text-sm text-gray-600 dark:text-gray-400">Version données</p>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Version données</p>
           </div>
         </div>
       </div>
 
       {/* Data Management */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+      <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm">
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-5">
           Gestion des données
         </h2>
 
@@ -276,15 +276,15 @@ export default function SettingsPage() {
       </div>
 
       {/* Danger Zone */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border-2 border-red-200 dark:border-red-900">
-        <h2 className="text-lg font-semibold text-red-600 dark:text-red-400 mb-4">
+      <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border-2 border-red-200 dark:border-red-900">
+        <h2 className="text-lg font-semibold text-red-600 dark:text-red-400 mb-5">
           Zone dangereuse
         </h2>
 
-        <div className="flex items-center justify-between p-4 bg-red-50 dark:bg-red-900/20 rounded-xl">
+        <div className="flex items-center justify-between p-5 bg-red-50 dark:bg-red-900/20 rounded-xl">
           <div>
             <p className="font-medium text-gray-900 dark:text-white">Réinitialiser les données</p>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
               Supprimer tous les templates et l'historique
             </p>
           </div>
@@ -298,11 +298,11 @@ export default function SettingsPage() {
       </div>
 
       {/* About */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+      <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm">
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-5">
           À propos
         </h2>
-        <div className="space-y-2 text-gray-600 dark:text-gray-400">
+        <div className="space-y-3 text-gray-600 dark:text-gray-400">
           <p>
             <span className="font-medium text-gray-900 dark:text-white">FitTracker</span> - Application de gestion de séances de sport
           </p>
