@@ -5,7 +5,6 @@ import { AppProvider } from "@/context/AppContext";
 import { ThemeProvider } from "@/context/ThemeContext";
 import Navigation from "@/components/Navigation";
 import KeyboardShortcutsProvider from "@/components/KeyboardShortcutsProvider";
-import ViewportFix from "@/components/ViewportFix";
 
 export const metadata: Metadata = {
   title: "FitTracker - Gestion de séances de sport",
@@ -48,15 +47,15 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       </head>
       <body>
-        <ViewportFix />
         <ThemeProvider>
           <AuthProvider>
             <AppProvider>
               <KeyboardShortcutsProvider>
-                <div id="app-root">
-                  <main id="app-content">
+                {/* Simple wrapper - content + nav */}
+                <div className="app">
+                  <div className="content">
                     {children}
-                  </main>
+                  </div>
                   <Navigation />
                 </div>
               </KeyboardShortcutsProvider>

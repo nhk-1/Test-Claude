@@ -101,94 +101,89 @@ export default function Navigation() {
   };
 
   return (
-    <div className="nav-wrapper">
+    <div className="nav glass">
       {/* Sync indicator bar - Mobile */}
       {isCloudEnabled && isSyncing && (
         <div className="h-0.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-500 animate-pulse md:hidden" />
       )}
 
-      <nav className="glass">
-        <div className="max-w-4xl mx-auto px-2 md:px-4 h-full">
-          <div className="flex justify-around md:justify-start md:gap-2 items-center h-14 md:h-16">
-            {/* Logo - Desktop only */}
-            <Link href="/" className="hidden md:flex items-center gap-2 mr-6">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/25">
-                <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
-                </svg>
-              </div>
-              <span className="font-bold text-lg gradient-text">FitTracker</span>
-            </Link>
-
-            {/* Nav Items */}
-            {navItems.map((item) => {
-              const isActive = pathname === item.href;
-              const Icon = item.icon;
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={`flex flex-col md:flex-row items-center gap-1 md:gap-2 px-3 py-2 rounded-xl transition-all btn-press ${
-                    isActive
-                      ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/10'
-                      : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800'
-                  }`}
-                >
-                  <Icon className="w-6 h-6" />
-                  <span className="text-xs md:text-sm font-medium">{item.label}</span>
-                </Link>
-              );
-            })}
-
-            {/* Sync indicator - Desktop */}
-            {isCloudEnabled && (
-              <div className="hidden md:flex items-center gap-2 ml-auto px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800">
-                <CloudIcon className={`w-4 h-4 ${isSyncing ? 'text-indigo-500' : 'text-emerald-500'}`} syncing={isSyncing} />
-                <span className="text-xs font-medium text-slate-600 dark:text-slate-400">
-                  {isSyncing ? 'Sync...' : 'Cloud'}
-                </span>
-              </div>
-            )}
-
-            {/* Theme toggle - Desktop */}
-            <button
-              onClick={toggleTheme}
-              className="hidden md:flex items-center justify-center w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all btn-press ml-2"
-              aria-label="Toggle theme"
-              title={theme === 'system' ? 'Thème système' : theme === 'dark' ? 'Mode sombre' : 'Mode clair'}
-            >
-              {theme === 'system' ? (
-                <div className="relative w-5 h-5">
-                  <SunIcon className="absolute inset-0 w-5 h-5 opacity-50" />
-                  <MoonIcon className="absolute inset-0 w-5 h-5 opacity-50" />
-                </div>
-              ) : resolvedTheme === 'dark' ? (
-                <MoonIcon className="w-5 h-5" />
-              ) : (
-                <SunIcon className="w-5 h-5" />
-              )}
-            </button>
-
-            {/* Theme toggle - Mobile */}
-            <button
-              onClick={toggleTheme}
-              className="flex md:hidden items-center justify-center px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 transition-all btn-press"
-              aria-label="Toggle theme"
-            >
-              {theme === 'system' ? (
-                <div className="relative w-6 h-6">
-                  <SunIcon className="absolute inset-0 w-6 h-6 opacity-50" />
-                  <MoonIcon className="absolute inset-0 w-6 h-6 opacity-50" />
-                </div>
-              ) : resolvedTheme === 'dark' ? (
-                <MoonIcon className="w-6 h-6" />
-              ) : (
-                <SunIcon className="w-6 h-6" />
-              )}
-            </button>
+      <div className="nav-inner">
+        {/* Logo - Desktop only */}
+        <Link href="/" className="hidden md:flex items-center gap-2 mr-6">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/25">
+            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+            </svg>
           </div>
-        </div>
-      </nav>
+          <span className="font-bold text-lg gradient-text">FitTracker</span>
+        </Link>
+
+        {/* Nav Items */}
+        {navItems.map((item) => {
+          const isActive = pathname === item.href;
+          const Icon = item.icon;
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`flex flex-col md:flex-row items-center gap-1 md:gap-2 px-2 md:px-3 py-2 rounded-xl transition-all btn-press ${
+                isActive
+                  ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/10'
+                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800'
+              }`}
+            >
+              <Icon className="w-6 h-6" />
+              <span className="text-[10px] md:text-sm font-medium">{item.label}</span>
+            </Link>
+          );
+        })}
+
+        {/* Sync indicator - Desktop */}
+        {isCloudEnabled && (
+          <div className="hidden md:flex items-center gap-2 ml-auto px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800">
+            <CloudIcon className={`w-4 h-4 ${isSyncing ? 'text-indigo-500' : 'text-emerald-500'}`} syncing={isSyncing} />
+            <span className="text-xs font-medium text-slate-600 dark:text-slate-400">
+              {isSyncing ? 'Sync...' : 'Cloud'}
+            </span>
+          </div>
+        )}
+
+        {/* Theme toggle - Desktop */}
+        <button
+          onClick={toggleTheme}
+          className="hidden md:flex items-center justify-center w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all btn-press ml-2"
+          aria-label="Toggle theme"
+        >
+          {theme === 'system' ? (
+            <div className="relative w-5 h-5">
+              <SunIcon className="absolute inset-0 w-5 h-5 opacity-50" />
+              <MoonIcon className="absolute inset-0 w-5 h-5 opacity-50" />
+            </div>
+          ) : resolvedTheme === 'dark' ? (
+            <MoonIcon className="w-5 h-5" />
+          ) : (
+            <SunIcon className="w-5 h-5" />
+          )}
+        </button>
+
+        {/* Theme toggle - Mobile */}
+        <button
+          onClick={toggleTheme}
+          className="flex md:hidden items-center justify-center p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 transition-all btn-press"
+          aria-label="Toggle theme"
+        >
+          {theme === 'system' ? (
+            <div className="relative w-5 h-5">
+              <SunIcon className="absolute inset-0 w-5 h-5 opacity-50" />
+              <MoonIcon className="absolute inset-0 w-5 h-5 opacity-50" />
+            </div>
+          ) : resolvedTheme === 'dark' ? (
+            <MoonIcon className="w-5 h-5" />
+          ) : (
+            <SunIcon className="w-5 h-5" />
+          )}
+        </button>
+      </div>
     </div>
   );
 }
