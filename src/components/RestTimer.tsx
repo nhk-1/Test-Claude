@@ -143,16 +143,16 @@ export default function RestTimer({ initialTime, onComplete, onClose }: RestTime
       <div className={`${
         isFullscreen
           ? 'w-full h-full flex flex-col items-center justify-center safe-area-top safe-area-bottom'
-          : 'bg-white dark:bg-gray-800 rounded-2xl w-full max-w-sm p-6'
+          : 'bg-white dark:bg-gray-800 rounded-2xl w-full max-w-md p-8'
       } text-center`}>
         {!isFullscreen && (
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-8">
             Temps de repos
           </h2>
         )}
 
         {/* Circular Progress */}
-        <div className={`relative mx-auto mb-6 ${
+        <div className={`relative mx-auto mb-8 ${
           isFullscreen ? 'w-80 h-80' : 'w-48 h-48'
         }`}>
           <svg className="w-full h-full transform -rotate-90" viewBox="0 0 192 192">
@@ -182,7 +182,7 @@ export default function RestTimer({ initialTime, onComplete, onClose }: RestTime
               }`}
             />
           </svg>
-          <div className="absolute inset-0 flex items-center justify-center flex-col gap-2">
+          <div className="absolute inset-0 flex items-center justify-center flex-col gap-3">
             <span className={`font-bold ${
               isFullscreen
                 ? 'text-8xl text-white'
@@ -199,8 +199,8 @@ export default function RestTimer({ initialTime, onComplete, onClose }: RestTime
         </div>
 
         {/* Controls */}
-        <div className={`flex items-center justify-center gap-3 mb-6 ${
-          isFullscreen ? 'flex-wrap gap-4' : ''
+        <div className={`flex items-center justify-center gap-4 mb-8 ${
+          isFullscreen ? 'flex-wrap gap-5' : ''
         }`}>
           <button
             onClick={() => addTime(-15)}
@@ -241,10 +241,10 @@ export default function RestTimer({ initialTime, onComplete, onClose }: RestTime
         </div>
 
         {/* Action buttons */}
-        <div className={`flex gap-3 ${isFullscreen ? 'flex-col w-64' : 'flex-col'}`}>
+        <div className={`flex gap-4 ${isFullscreen ? 'flex-col w-64' : 'flex-col'}`}>
           <button
             onClick={() => setIsFullscreen(!isFullscreen)}
-            className={`py-3 px-4 rounded-xl font-medium transition-colors ${
+            className={`py-4 px-5 rounded-xl font-medium transition-colors ${
               isFullscreen
                 ? 'bg-gray-700 hover:bg-gray-600 text-gray-200'
                 : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
@@ -254,7 +254,7 @@ export default function RestTimer({ initialTime, onComplete, onClose }: RestTime
           </button>
           <button
             onClick={onClose}
-            className={`py-3 px-4 rounded-xl font-medium transition-colors ${
+            className={`py-4 px-5 rounded-xl font-medium transition-colors ${
               isFullscreen
                 ? 'bg-red-600 hover:bg-red-700 text-white'
                 : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'

@@ -39,19 +39,19 @@ export default function TemplateCard({ template, onStart, onDelete }: TemplateCa
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow">
-      <div className="flex items-start justify-between mb-4">
+    <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow">
+      <div className="flex items-start justify-between mb-5">
         <div className="flex-1">
           <h3 className="font-semibold text-gray-900 dark:text-white text-lg">
             {template.name}
           </h3>
           {template.description && (
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-3">
               {template.description}
             </p>
           )}
         </div>
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-2">
           <button
             onClick={handleShare}
             className="p-2 text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 rounded-lg transition-colors"
@@ -88,7 +88,7 @@ export default function TemplateCard({ template, onStart, onDelete }: TemplateCa
       </div>
 
       {/* Categories */}
-      <div className="flex flex-wrap gap-2 mb-4">
+      <div className="flex flex-wrap gap-3 mb-5">
         {categories.map((cat) => (
           <span
             key={cat}
@@ -100,7 +100,7 @@ export default function TemplateCard({ template, onStart, onDelete }: TemplateCa
       </div>
 
       {/* Stats */}
-      <div className="flex items-center gap-5 text-sm text-gray-600 dark:text-gray-400 mb-5">
+      <div className="flex items-center gap-6 text-sm text-gray-600 dark:text-gray-400 mb-6">
         <span className="flex items-center gap-2">
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
@@ -119,7 +119,7 @@ export default function TemplateCard({ template, onStart, onDelete }: TemplateCa
       {onStart && (
         <button
           onClick={onStart}
-          className="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl transition-colors flex items-center justify-center gap-2"
+          className="w-full py-4 px-5 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl transition-colors flex items-center justify-center gap-3"
         >
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
@@ -135,12 +135,12 @@ export default function TemplateCard({ template, onStart, onDelete }: TemplateCa
           onClick={() => setShowShareModal(false)}
         >
           <div
-            className="bg-white dark:bg-gray-800 rounded-t-2xl md:rounded-2xl w-full max-w-sm p-6 safe-area-bottom"
+            className="bg-white dark:bg-gray-800 rounded-t-2xl md:rounded-2xl w-full max-w-md p-8 safe-area-bottom"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-3">
+            <div className="flex items-center justify-between mb-8">
+              <div className="flex items-center gap-4">
                 <div className="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center">
                   <svg className="w-5 h-5 text-indigo-600 dark:text-indigo-400" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" />
@@ -188,7 +188,7 @@ export default function TemplateCard({ template, onStart, onDelete }: TemplateCa
             </button>
 
             {/* Info */}
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-4 text-center">
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-5 text-center">
               Partagez ce code à vos amis pour qu'ils importent le template
             </p>
           </div>

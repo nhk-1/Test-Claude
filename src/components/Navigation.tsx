@@ -126,7 +126,7 @@ export default function Navigation() {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex flex-col md:flex-row items-center gap-1 md:gap-2 px-2 md:px-3 py-2 rounded-xl transition-all btn-press ${
+              className={`flex flex-col md:flex-row items-center gap-1.5 md:gap-2 px-3 md:px-4 py-2.5 rounded-xl transition-all btn-press ${
                 isActive
                   ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/10'
                   : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800'
@@ -140,7 +140,7 @@ export default function Navigation() {
 
         {/* Sync indicator - Desktop */}
         {isCloudEnabled && (
-          <div className="hidden md:flex items-center gap-2 ml-auto px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800">
+          <div className="hidden md:flex items-center gap-3 ml-auto px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800">
             <CloudIcon className={`w-4 h-4 ${isSyncing ? 'text-indigo-500' : 'text-emerald-500'}`} syncing={isSyncing} />
             <span className="text-xs font-medium text-slate-600 dark:text-slate-400">
               {isSyncing ? 'Sync...' : 'Cloud'}
@@ -151,7 +151,7 @@ export default function Navigation() {
         {/* Theme toggle - Desktop */}
         <button
           onClick={toggleTheme}
-          className="hidden md:flex items-center justify-center w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all btn-press ml-2"
+          className="hidden md:flex items-center justify-center w-11 h-11 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all btn-press ml-3"
           aria-label="Toggle theme"
         >
           {theme === 'system' ? (
@@ -169,7 +169,7 @@ export default function Navigation() {
         {/* Theme toggle - Mobile */}
         <button
           onClick={toggleTheme}
-          className="flex md:hidden items-center justify-center p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 transition-all btn-press"
+          className="flex md:hidden items-center justify-center p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 transition-all btn-press"
           aria-label="Toggle theme"
         >
           {theme === 'system' ? (

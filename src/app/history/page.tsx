@@ -52,14 +52,14 @@ export default function HistoryPage() {
   const completedSessionsCount = data.sessions.filter((s) => s.status === 'completed').length;
 
   return (
-    <div className="space-y-8 animate-fade-in">
+    <div className="space-y-10 animate-fade-in">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
             Historique
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-2">
+          <p className="text-gray-600 dark:text-gray-400 mt-3">
             {completedSessionsCount} séance{completedSessionsCount > 1 ? 's' : ''} terminée{completedSessionsCount > 1 ? 's' : ''}
           </p>
         </div>
@@ -81,10 +81,10 @@ export default function HistoryPage() {
 
       {/* Sessions List */}
       {Object.keys(sessionsByMonth).length > 0 ? (
-        <div className="space-y-8">
+        <div className="space-y-10">
           {Object.entries(sessionsByMonth).map(([monthKey, sessions]) => (
             <div key={monthKey}>
-              <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-4">
+              <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-5">
                 {formatMonthYear(monthKey)}
               </h2>
               <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm divide-y divide-gray-100 dark:divide-gray-700">
@@ -97,7 +97,7 @@ export default function HistoryPage() {
                   return (
                     <div
                       key={session.id}
-                      className="p-5 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors cursor-pointer"
+                      className="p-6 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors cursor-pointer"
                       onClick={() => setSelectedSession(session)}
                     >
                       <div className="flex items-center justify-between">
@@ -122,7 +122,7 @@ export default function HistoryPage() {
                             {formatDuration(session.startedAt, session.completedAt)}
                           </p>
                         </div>
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-4">
                           <div className="text-right">
                             <p className={`font-semibold ${
                               progress === 100
@@ -148,13 +148,13 @@ export default function HistoryPage() {
           ))}
         </div>
       ) : (
-        <div className="bg-white dark:bg-gray-800 rounded-2xl p-10 text-center shadow-sm">
-          <div className="w-20 h-20 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-6">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl p-12 text-center shadow-sm">
+          <div className="w-20 h-20 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-8">
             <svg className="w-10 h-10 text-gray-400" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
             </svg>
           </div>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
             Aucun historique
           </h3>
           <p className="text-gray-600 dark:text-gray-400 max-w-sm mx-auto">
@@ -171,7 +171,7 @@ export default function HistoryPage() {
         >
           <div className="bg-white dark:bg-gray-800 rounded-t-2xl md:rounded-2xl w-full max-w-lg md:max-h-[85vh] md:mx-4 flex flex-col max-h-[92vh]">
             {/* Header - Fixed */}
-            <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 shrink-0">
+            <div className="flex items-center justify-between p-5 border-b border-gray-200 dark:border-gray-700 shrink-0">
               <div>
                 <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
                   {selectedSession.templateName}
@@ -196,8 +196,8 @@ export default function HistoryPage() {
             </div>
 
             {/* Stats - Fixed */}
-            <div className="p-4 border-b border-gray-200 dark:border-gray-700 shrink-0">
-              <div className="grid grid-cols-3 gap-4">
+            <div className="p-5 border-b border-gray-200 dark:border-gray-700 shrink-0">
+              <div className="grid grid-cols-3 gap-5">
                 <div className="text-center">
                   <p className="text-xl md:text-2xl font-bold text-indigo-600 dark:text-indigo-400">
                     {formatDuration(selectedSession.startedAt, selectedSession.completedAt)}
@@ -220,9 +220,9 @@ export default function HistoryPage() {
             </div>
 
             {/* Exercises - Scrollable */}
-            <div className="modal-scroll-content p-4">
-              <h3 className="font-medium text-gray-900 dark:text-white mb-3">Exercices</h3>
-              <div className="space-y-3">
+            <div className="modal-scroll-content p-5">
+              <h3 className="font-medium text-gray-900 dark:text-white mb-4">Exercices</h3>
+              <div className="space-y-4">
                 {selectedSession.exercises.map((exercise, index) => {
                   const exerciseData = getExerciseById(exercise.exerciseId);
                   if (!exerciseData) return null;
@@ -232,7 +232,7 @@ export default function HistoryPage() {
                   return (
                     <div
                       key={`${exercise.exerciseId}-${index}`}
-                      className={`p-3 rounded-lg border ${
+                      className={`p-4 rounded-lg border ${
                         isComplete
                           ? 'border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-900/20'
                           : 'border-gray-200 dark:border-gray-700'
@@ -260,9 +260,9 @@ export default function HistoryPage() {
 
               {/* Notes */}
               {selectedSession.notes && (
-                <div className="mt-4">
-                  <h3 className="font-medium text-gray-900 dark:text-white mb-2">Notes</h3>
-                  <p className="text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3">
+                <div className="mt-5">
+                  <h3 className="font-medium text-gray-900 dark:text-white mb-3">Notes</h3>
+                  <p className="text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
                     {selectedSession.notes}
                   </p>
                 </div>
@@ -270,12 +270,12 @@ export default function HistoryPage() {
             </div>
 
             {/* Actions - Fixed at bottom */}
-            <div className="p-4 border-t border-gray-200 dark:border-gray-700 space-y-2 shrink-0 safe-area-bottom">
+            <div className="p-5 border-t border-gray-200 dark:border-gray-700 space-y-3 shrink-0 safe-area-bottom">
               <button
                 onClick={() => {
                   exportSessionToPDF(selectedSession);
                 }}
-                className="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl transition-colors flex items-center justify-center gap-2 touch-target"
+                className="w-full py-4 px-5 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl transition-colors flex items-center justify-center gap-3 touch-target"
               >
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
@@ -289,7 +289,7 @@ export default function HistoryPage() {
                     setSelectedSession(null);
                   }
                 }}
-                className="w-full py-3 px-4 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30 text-red-600 dark:text-red-400 font-medium rounded-xl transition-colors touch-target"
+                className="w-full py-4 px-5 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30 text-red-600 dark:text-red-400 font-medium rounded-xl transition-colors touch-target"
               >
                 Supprimer de l'historique
               </button>
