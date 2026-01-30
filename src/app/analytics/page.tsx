@@ -304,10 +304,10 @@ export default function AnalyticsPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-2 p-1 bg-gray-100 dark:bg-gray-800 rounded-xl overflow-x-auto">
+      <div className="flex gap-1.5 p-1 bg-gray-100 dark:bg-gray-800 rounded-xl overflow-x-auto scrollbar-hide">
         <button
           onClick={() => setActiveTab('weight')}
-          className={`flex-1 py-2.5 px-4 rounded-lg font-medium transition-all btn-press whitespace-nowrap ${
+          className={`flex-1 min-w-[70px] py-3 px-3 rounded-lg font-medium transition-all btn-press whitespace-nowrap text-sm ${
             activeTab === 'weight'
               ? 'bg-white dark:bg-gray-700 text-indigo-600 dark:text-indigo-400 shadow-sm'
               : 'text-gray-600 dark:text-gray-400'
@@ -317,17 +317,17 @@ export default function AnalyticsPage() {
         </button>
         <button
           onClick={() => setActiveTab('performance')}
-          className={`flex-1 py-2.5 px-4 rounded-lg font-medium transition-all btn-press whitespace-nowrap ${
+          className={`flex-1 min-w-[70px] py-3 px-3 rounded-lg font-medium transition-all btn-press whitespace-nowrap text-sm ${
             activeTab === 'performance'
               ? 'bg-white dark:bg-gray-700 text-indigo-600 dark:text-indigo-400 shadow-sm'
               : 'text-gray-600 dark:text-gray-400'
           }`}
         >
-          Performance
+          Perf
         </button>
         <button
           onClick={() => setActiveTab('muscles')}
-          className={`flex-1 py-2.5 px-4 rounded-lg font-medium transition-all btn-press whitespace-nowrap ${
+          className={`flex-1 min-w-[70px] py-3 px-3 rounded-lg font-medium transition-all btn-press whitespace-nowrap text-sm ${
             activeTab === 'muscles'
               ? 'bg-white dark:bg-gray-700 text-indigo-600 dark:text-indigo-400 shadow-sm'
               : 'text-gray-600 dark:text-gray-400'
@@ -337,7 +337,7 @@ export default function AnalyticsPage() {
         </button>
         <button
           onClick={() => setActiveTab('advanced')}
-          className={`flex-1 py-2.5 px-4 rounded-lg font-medium transition-all btn-press whitespace-nowrap ${
+          className={`flex-1 min-w-[70px] py-3 px-3 rounded-lg font-medium transition-all btn-press whitespace-nowrap text-sm ${
             activeTab === 'advanced'
               ? 'bg-white dark:bg-gray-700 text-indigo-600 dark:text-indigo-400 shadow-sm'
               : 'text-gray-600 dark:text-gray-400'
@@ -352,22 +352,23 @@ export default function AnalyticsPage() {
           {/* Add weight entry */}
           <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm">
             <h2 className="font-semibold text-gray-900 dark:text-white mb-4">Ajouter une pesée</h2>
-            <div className="flex gap-3">
+            <div className="flex gap-2">
               <div className="flex-1 relative">
                 <input
                   type="number"
+                  inputMode="decimal"
                   step="0.1"
                   value={newWeight}
                   onChange={(e) => setNewWeight(e.target.value)}
                   placeholder="Votre poids"
-                  className="w-full px-4 py-3 pr-12 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full px-4 py-3 pr-12 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-base"
                 />
                 <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">kg</span>
               </div>
               <button
                 onClick={handleAddWeight}
                 disabled={!newWeight}
-                className="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-medium rounded-xl transition-colors btn-press"
+                className="px-5 py-3 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-medium rounded-xl transition-colors btn-press touch-target"
               >
                 Ajouter
               </button>

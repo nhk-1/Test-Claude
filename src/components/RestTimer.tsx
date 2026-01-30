@@ -15,6 +15,23 @@ export default function RestTimer({ initialTime, onComplete, onClose }: RestTime
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const hasNotifiedRef = useRef(false);
 
+  // Lock body scroll when timer is open
+  useEffect(() => {
+    const scrollY = window.scrollY;
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.width = '100%';
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      document.body.style.overflow = '';
+      window.scrollTo(0, scrollY);
+    };
+  }, []);
+
   // Initialize audio element
   useEffect(() => {
     // Create a simple beep sound using Web Audio API
@@ -113,12 +130,19 @@ export default function RestTimer({ initialTime, onComplete, onClose }: RestTime
   }, []);
 
   return (
-    <div className={`fixed inset-0 z-50 flex items-center justify-center p-4 ${
-      isFullscreen ? 'bg-gray-900' : 'bg-black/80'
-    }`}>
+    <div
+      className={`fixed inset-0 z-50 flex items-center justify-center p-4 overscroll-contain ${
+        isFullscreen ? 'bg-gray-900' : 'bg-black/80'
+      }`}
+      onClick={(e) => {
+        if (e.target === e.currentTarget && !isFullscreen) {
+          onClose();
+        }
+      }}
+    >
       <div className={`${
         isFullscreen
-          ? 'w-full h-full flex flex-col items-center justify-center'
+          ? 'w-full h-full flex flex-col items-center justify-center safe-area-top safe-area-bottom'
           : 'bg-white dark:bg-gray-800 rounded-2xl w-full max-w-sm p-6'
       } text-center`}>
         {!isFullscreen && (
@@ -175,41 +199,41 @@ export default function RestTimer({ initialTime, onComplete, onClose }: RestTime
         </div>
 
         {/* Controls */}
-        <div className={`flex items-center justify-center gap-4 mb-6 ${
-          isFullscreen ? 'flex-wrap' : ''
+        <div className={`flex items-center justify-center gap-3 mb-6 ${
+          isFullscreen ? 'flex-wrap gap-4' : ''
         }`}>
           <button
             onClick={() => addTime(-15)}
-            className={`px-4 py-2 rounded-lg transition-colors ${
+            className={`rounded-xl transition-colors touch-target flex items-center justify-center font-medium ${
               isFullscreen
-                ? 'bg-gray-700 text-gray-200 hover:bg-gray-600 text-lg py-3 px-6'
-                : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                ? 'bg-gray-700 text-gray-200 hover:bg-gray-600 text-lg min-w-[72px] py-3 px-5'
+                : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 min-w-[56px] py-2 px-4'
             }`}
           >
             -15s
           </button>
           <button
             onClick={() => setIsRunning(!isRunning)}
-            className={`rounded-full bg-indigo-600 hover:bg-indigo-700 text-white flex items-center justify-center transition-colors ${
-              isFullscreen ? 'w-20 h-20' : 'w-14 h-14'
+            className={`rounded-full bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white flex items-center justify-center transition-colors ${
+              isFullscreen ? 'w-20 h-20' : 'w-16 h-16'
             }`}
           >
             {isRunning ? (
-              <svg className={isFullscreen ? 'w-10 h-10' : 'w-6 h-6'} fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+              <svg className={isFullscreen ? 'w-10 h-10' : 'w-7 h-7'} fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5" />
               </svg>
             ) : (
-              <svg className={isFullscreen ? 'w-10 h-10' : 'w-6 h-6'} fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+              <svg className={isFullscreen ? 'w-10 h-10' : 'w-7 h-7'} fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
               </svg>
             )}
           </button>
           <button
             onClick={() => addTime(15)}
-            className={`px-4 py-2 rounded-lg transition-colors ${
+            className={`rounded-xl transition-colors touch-target flex items-center justify-center font-medium ${
               isFullscreen
-                ? 'bg-gray-700 text-gray-200 hover:bg-gray-600 text-lg py-3 px-6'
-                : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                ? 'bg-gray-700 text-gray-200 hover:bg-gray-600 text-lg min-w-[72px] py-3 px-5'
+                : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 min-w-[56px] py-2 px-4'
             }`}
           >
             +15s

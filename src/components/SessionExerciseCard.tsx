@@ -227,26 +227,27 @@ export default function SessionExerciseCard({
                         <div className="flex items-center gap-1">
                           <button
                             onClick={() => handleWeightChange(setIdx, Math.max(0, (tempWeights[setIdx] || 0) - 1))}
-                            className="w-6 h-6 rounded bg-gray-200 dark:bg-gray-600 flex items-center justify-center"
+                            className="w-9 h-9 rounded-lg bg-gray-200 dark:bg-gray-600 flex items-center justify-center active:bg-gray-300 dark:active:bg-gray-500 touch-target"
                           >
-                            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
                               <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14" />
                             </svg>
                           </button>
                           <input
                             type="number"
+                            inputMode="decimal"
                             value={tempWeights[setIdx] || 0}
                             onChange={(e) => handleWeightChange(setIdx, Number(e.target.value))}
                             onBlur={() => handleWeightSave(setIdx)}
                             onKeyDown={(e) => e.key === 'Enter' && handleWeightSave(setIdx)}
-                            className="w-12 text-center font-semibold text-sm bg-white dark:bg-gray-700 border border-indigo-500 rounded px-1 py-0.5"
+                            className="w-14 h-9 text-center font-semibold text-base bg-white dark:bg-gray-700 border-2 border-indigo-500 rounded-lg"
                             autoFocus
                           />
                           <button
                             onClick={() => handleWeightChange(setIdx, (tempWeights[setIdx] || 0) + 1)}
-                            className="w-6 h-6 rounded bg-gray-200 dark:bg-gray-600 flex items-center justify-center"
+                            className="w-9 h-9 rounded-lg bg-gray-200 dark:bg-gray-600 flex items-center justify-center active:bg-gray-300 dark:active:bg-gray-500 touch-target"
                           >
-                            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
                               <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                             </svg>
                           </button>
@@ -255,7 +256,7 @@ export default function SessionExerciseCard({
                       ) : (
                         <button
                           onClick={() => setEditingWeightIndex(setIdx)}
-                          className="px-2 py-0.5 bg-white dark:bg-gray-700 rounded font-semibold text-sm text-gray-900 dark:text-white hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-colors"
+                          className="px-3 py-1.5 bg-white dark:bg-gray-700 rounded-lg font-semibold text-sm text-gray-900 dark:text-white hover:bg-indigo-50 dark:hover:bg-indigo-900/30 active:bg-indigo-100 transition-colors min-h-[36px]"
                         >
                           {getWeightForSet(setIdx)} kg
                         </button>
@@ -276,26 +277,27 @@ export default function SessionExerciseCard({
                           <div className="flex items-center gap-1">
                             <button
                               onClick={() => handleSupersetWeightChange(setIdx, Math.max(0, (tempSupersetWeights[setIdx] || 0) - 1))}
-                              className="w-6 h-6 rounded bg-purple-200 dark:bg-purple-800 flex items-center justify-center"
+                              className="w-9 h-9 rounded-lg bg-purple-200 dark:bg-purple-800 flex items-center justify-center active:bg-purple-300 dark:active:bg-purple-700 touch-target"
                             >
-                              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14" />
                               </svg>
                             </button>
                             <input
                               type="number"
+                              inputMode="decimal"
                               value={tempSupersetWeights[setIdx] || 0}
                               onChange={(e) => handleSupersetWeightChange(setIdx, Number(e.target.value))}
                               onBlur={() => handleSupersetWeightSave(setIdx)}
                               onKeyDown={(e) => e.key === 'Enter' && handleSupersetWeightSave(setIdx)}
-                              className="w-12 text-center font-semibold text-sm bg-white dark:bg-gray-700 border border-purple-500 rounded px-1 py-0.5"
+                              className="w-14 h-9 text-center font-semibold text-base bg-white dark:bg-gray-700 border-2 border-purple-500 rounded-lg"
                               autoFocus
                             />
                             <button
                               onClick={() => handleSupersetWeightChange(setIdx, (tempSupersetWeights[setIdx] || 0) + 1)}
-                              className="w-6 h-6 rounded bg-purple-200 dark:bg-purple-800 flex items-center justify-center"
+                              className="w-9 h-9 rounded-lg bg-purple-200 dark:bg-purple-800 flex items-center justify-center active:bg-purple-300 dark:active:bg-purple-700 touch-target"
                             >
-                              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                               </svg>
                             </button>
@@ -304,7 +306,7 @@ export default function SessionExerciseCard({
                         ) : (
                           <button
                             onClick={() => setEditingSupersetWeightIndex(setIdx)}
-                            className="px-2 py-0.5 bg-purple-50 dark:bg-purple-900/30 rounded font-semibold text-sm text-purple-700 dark:text-purple-300 hover:bg-purple-100 dark:hover:bg-purple-900/50 transition-colors"
+                            className="px-3 py-1.5 bg-purple-50 dark:bg-purple-900/30 rounded-lg font-semibold text-sm text-purple-700 dark:text-purple-300 hover:bg-purple-100 dark:hover:bg-purple-900/50 active:bg-purple-200 transition-colors min-h-[36px]"
                           >
                             {getSupersetWeightForSet(setIdx)} kg
                           </button>
@@ -369,7 +371,7 @@ export default function SessionExerciseCard({
         {!isCompleted && (
           <button
             onClick={handleCompleteSet}
-            className="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl transition-colors flex items-center justify-center gap-2"
+            className="w-full py-4 px-4 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-medium rounded-xl transition-colors flex items-center justify-center gap-2 touch-target text-base"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />

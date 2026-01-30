@@ -54,8 +54,8 @@ export default function RootLayout({
             <AppProvider>
               <KeyboardShortcutsProvider>
                 <Navigation />
-                <main className="pb-24 md:pb-4 md:pt-20 min-h-screen safe-area-bottom safe-area-top">
-                  <div className="max-w-4xl mx-auto px-4 pt-2 pb-6">
+                <main className="flex flex-col pb-20 md:pb-4 md:pt-20 min-h-[100dvh] safe-area-bottom safe-area-top">
+                  <div className="flex-1 max-w-4xl mx-auto px-4 pt-2 pb-6 w-full">
                     {children}
                   </div>
                 </main>

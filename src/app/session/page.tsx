@@ -210,38 +210,45 @@ export default function SessionPage() {
         ))}
       </div>
 
-      {/* Actions */}
-      <div className="sticky bottom-20 md:bottom-4 bg-gray-50 dark:bg-gray-950 py-4 -mx-4 px-4 space-y-3">
-        {isSessionComplete ? (
+      {/* Actions - Fixed at bottom */}
+      <div className="fixed bottom-14 md:bottom-auto md:relative left-0 right-0 bg-gray-50/95 dark:bg-gray-950/95 backdrop-blur-sm py-3 px-4 space-y-2 z-30 safe-area-bottom md:mt-6 md:bg-transparent md:backdrop-blur-none md:p-0">
+        <div className="max-w-4xl mx-auto space-y-2">
+          {isSessionComplete ? (
+            <button
+              onClick={() => setShowCompleteModal(true)}
+              className="w-full py-3 px-4 bg-green-600 hover:bg-green-700 text-white font-medium rounded-xl transition-colors flex items-center justify-center gap-2 touch-target"
+            >
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+              </svg>
+              Terminer la séance
+            </button>
+          ) : (
+            <button
+              onClick={() => setShowCompleteModal(true)}
+              className="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl transition-colors touch-target"
+            >
+              Terminer la séance ({Math.round(progress)}% complété)
+            </button>
+          )}
           <button
-            onClick={() => setShowCompleteModal(true)}
-            className="w-full py-3 px-4 bg-green-600 hover:bg-green-700 text-white font-medium rounded-xl transition-colors flex items-center justify-center gap-2"
+            onClick={handleAbandonSession}
+            className="w-full py-3 px-4 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-xl transition-colors touch-target"
           >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
-            </svg>
-            Terminer la séance
+            Abandonner
           </button>
-        ) : (
-          <button
-            onClick={() => setShowCompleteModal(true)}
-            className="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl transition-colors"
-          >
-            Terminer la séance ({Math.round(progress)}% complété)
-          </button>
-        )}
-        <button
-          onClick={handleAbandonSession}
-          className="w-full py-3 px-4 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-xl transition-colors"
-        >
-          Abandonner
-        </button>
+        </div>
       </div>
+      {/* Spacer for fixed actions on mobile */}
+      <div className="h-32 md:hidden" />
 
       {/* Complete Modal */}
       {showCompleteModal && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl w-full max-w-md p-6">
+        <div
+          className="modal-bottom-sheet bg-black/50 p-4"
+          onClick={(e) => e.target === e.currentTarget && setShowCompleteModal(false)}
+        >
+          <div className="bg-white dark:bg-gray-800 rounded-t-2xl md:rounded-2xl w-full max-w-md p-6 max-h-[90vh] overflow-y-auto overscroll-contain">
             <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
               Terminer la séance
             </h2>
@@ -264,20 +271,20 @@ export default function SessionPage() {
                 onChange={(e) => setSessionNotes(e.target.value)}
                 placeholder="Comment s'est passée la séance ?"
                 rows={3}
-                className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none"
+                className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none text-base"
               />
             </div>
 
             <div className="flex gap-3">
               <button
                 onClick={() => setShowCompleteModal(false)}
-                className="flex-1 py-3 px-4 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-xl transition-colors"
+                className="flex-1 py-3 px-4 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-xl transition-colors touch-target"
               >
                 Annuler
               </button>
               <button
                 onClick={handleFinishSession}
-                className="flex-1 py-3 px-4 bg-green-600 hover:bg-green-700 text-white font-medium rounded-xl transition-colors"
+                className="flex-1 py-3 px-4 bg-green-600 hover:bg-green-700 text-white font-medium rounded-xl transition-colors touch-target"
               >
                 Confirmer
               </button>

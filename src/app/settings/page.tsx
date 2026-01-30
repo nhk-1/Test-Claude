@@ -1,17 +1,72 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useApp } from '@/context/AppContext';
 import { useAuth } from '@/context/AuthContext';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import {
+  isNotificationSupported,
+  getNotificationPermission,
+  requestNotificationPermission,
+  scheduleDailyReminder,
+  cancelScheduledReminder,
+  showWorkoutReminderNotification,
+} from '@/lib/notifications';
 
 export default function SettingsPage() {
-  const { data, exportData, importDataFromFile, resetData } = useApp();
+  const { data, exportData, importDataFromFile, resetData, getNotificationSettings, updateNotificationSettings } = useApp();
   const { user, isConfigured, signOut } = useAuth();
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [importStatus, setImportStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [notificationPermission, setNotificationPermission] = useState<'default' | 'granted' | 'denied'>('default');
+  const reminderTimerRef = useRef<number | null>(null);
+
+  const notificationSettings = getNotificationSettings();
+
+  // Check notification permission on mount
+  useEffect(() => {
+    if (isNotificationSupported()) {
+      setNotificationPermission(getNotificationPermission());
+    }
+  }, []);
+
+  // Set up daily reminders
+  useEffect(() => {
+    if (reminderTimerRef.current) {
+      cancelScheduledReminder(reminderTimerRef.current);
+    }
+
+    if (
+      notificationSettings.enabled &&
+      notificationSettings.dailyReminders &&
+      notificationPermission === 'granted' &&
+      notificationSettings.reminderTime
+    ) {
+      const { hour, minute } = notificationSettings.reminderTime;
+      const message = notificationSettings.reminderMessage || "C'est l'heure de votre entraînement !";
+      reminderTimerRef.current = scheduleDailyReminder(hour, minute, message);
+    }
+
+    return () => {
+      if (reminderTimerRef.current) {
+        cancelScheduledReminder(reminderTimerRef.current);
+      }
+    };
+  }, [notificationSettings, notificationPermission]);
+
+  const handleRequestPermission = async () => {
+    const permission = await requestNotificationPermission();
+    setNotificationPermission(permission);
+    if (permission === 'granted') {
+      updateNotificationSettings({ enabled: true });
+    }
+  };
+
+  const handleTestNotification = () => {
+    showWorkoutReminderNotification("Ceci est une notification de test !");
+  };
 
   const handleSignOut = async () => {
     await signOut();

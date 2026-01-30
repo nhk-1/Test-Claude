@@ -75,10 +75,20 @@ export interface WeightEntry {
   notes?: string;
 }
 
+export interface NotificationSettings {
+  enabled: boolean;
+  restTimerNotifications: boolean;
+  dailyReminders: boolean;
+  reminderTime?: { hour: number; minute: number };
+  reminderDays?: number[]; // 0-6 (Sunday-Saturday)
+  reminderMessage?: string;
+}
+
 export interface AppData {
   templates: WorkoutTemplate[];
   sessions: WorkoutSession[];
   weightEntries: WeightEntry[];
+  notificationSettings?: NotificationSettings;
   version: string;
 }
 

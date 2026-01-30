@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useApp } from '@/context/AppContext';
 import { WorkoutSession, MUSCLE_CATEGORY_LABELS, MuscleCategory } from '@/lib/types';
 import { getExerciseById } from '@/lib/exercises';
+import { exportSessionToPDF, exportMultipleSessionsToPDF } from '@/lib/pdfExport';
 
 export default function HistoryPage() {
   const { data, isLoading, deleteSession } = useApp();
@@ -53,13 +54,29 @@ export default function HistoryPage() {
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-          Historique
-        </h1>
-        <p className="text-gray-600 dark:text-gray-400 mt-1">
-          {completedSessionsCount} séance{completedSessionsCount > 1 ? 's' : ''} terminée{completedSessionsCount > 1 ? 's' : ''}
-        </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+            Historique
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400 mt-1">
+            {completedSessionsCount} séance{completedSessionsCount > 1 ? 's' : ''} terminée{completedSessionsCount > 1 ? 's' : ''}
+          </p>
+        </div>
+        {completedSessionsCount > 0 && (
+          <button
+            onClick={() => {
+              const completedSessions = data.sessions.filter((s) => s.status !== 'in_progress');
+              exportMultipleSessionsToPDF(completedSessions, 'Historique');
+            }}
+            className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors flex items-center gap-2"
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+            </svg>
+            Tout exporter (PDF)
+          </button>
+        )}
       </div>
 
       {/* Sessions List */}
@@ -148,10 +165,13 @@ export default function HistoryPage() {
 
       {/* Session Detail Modal */}
       {selectedSession && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-end md:items-center justify-center p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-t-2xl md:rounded-2xl w-full max-w-lg max-h-[85vh] flex flex-col">
-            {/* Header */}
-            <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+        <div
+          className="modal-bottom-sheet bg-black/50"
+          onClick={(e) => e.target === e.currentTarget && setSelectedSession(null)}
+        >
+          <div className="bg-white dark:bg-gray-800 rounded-t-2xl md:rounded-2xl w-full max-w-lg md:max-h-[85vh] md:mx-4 flex flex-col max-h-[92vh]">
+            {/* Header - Fixed */}
+            <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 shrink-0">
               <div>
                 <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
                   {selectedSession.templateName}
@@ -167,31 +187,31 @@ export default function HistoryPage() {
               </div>
               <button
                 onClick={() => setSelectedSession(null)}
-                className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors"
+                className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors touch-target flex items-center justify-center"
               >
-                <svg className="w-5 h-5 text-gray-500" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                <svg className="w-6 h-6 text-gray-500" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
                 </svg>
               </button>
             </div>
 
-            {/* Stats */}
-            <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+            {/* Stats - Fixed */}
+            <div className="p-4 border-b border-gray-200 dark:border-gray-700 shrink-0">
               <div className="grid grid-cols-3 gap-4">
                 <div className="text-center">
-                  <p className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
+                  <p className="text-xl md:text-2xl font-bold text-indigo-600 dark:text-indigo-400">
                     {formatDuration(selectedSession.startedAt, selectedSession.completedAt)}
                   </p>
                   <p className="text-sm text-gray-500 dark:text-gray-400">Durée</p>
                 </div>
                 <div className="text-center">
-                  <p className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
+                  <p className="text-xl md:text-2xl font-bold text-indigo-600 dark:text-indigo-400">
                     {selectedSession.exercises.reduce((acc, e) => acc + e.completedSets, 0)}
                   </p>
                   <p className="text-sm text-gray-500 dark:text-gray-400">Séries</p>
                 </div>
                 <div className="text-center">
-                  <p className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
+                  <p className="text-xl md:text-2xl font-bold text-indigo-600 dark:text-indigo-400">
                     {selectedSession.exercises.length}
                   </p>
                   <p className="text-sm text-gray-500 dark:text-gray-400">Exercices</p>
@@ -199,8 +219,8 @@ export default function HistoryPage() {
               </div>
             </div>
 
-            {/* Exercises */}
-            <div className="flex-1 overflow-y-auto p-4">
+            {/* Exercises - Scrollable */}
+            <div className="modal-scroll-content p-4">
               <h3 className="font-medium text-gray-900 dark:text-white mb-3">Exercices</h3>
               <div className="space-y-3">
                 {selectedSession.exercises.map((exercise, index) => {
@@ -228,7 +248,7 @@ export default function HistoryPage() {
                           </p>
                         </div>
                         {isComplete && (
-                          <svg className="w-5 h-5 text-green-600 dark:text-green-400" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                          <svg className="w-5 h-5 text-green-600 dark:text-green-400 shrink-0" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
                           </svg>
                         )}
@@ -249,8 +269,19 @@ export default function HistoryPage() {
               )}
             </div>
 
-            {/* Actions */}
-            <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+            {/* Actions - Fixed at bottom */}
+            <div className="p-4 border-t border-gray-200 dark:border-gray-700 space-y-2 shrink-0 safe-area-bottom">
+              <button
+                onClick={() => {
+                  exportSessionToPDF(selectedSession);
+                }}
+                className="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl transition-colors flex items-center justify-center gap-2 touch-target"
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+                </svg>
+                Exporter en PDF
+              </button>
               <button
                 onClick={() => {
                   if (confirm('Supprimer cette séance de l\'historique ?')) {
@@ -258,7 +289,7 @@ export default function HistoryPage() {
                     setSelectedSession(null);
                   }
                 }}
-                className="w-full py-3 px-4 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30 text-red-600 dark:text-red-400 font-medium rounded-xl transition-colors"
+                className="w-full py-3 px-4 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30 text-red-600 dark:text-red-400 font-medium rounded-xl transition-colors touch-target"
               >
                 Supprimer de l'historique
               </button>

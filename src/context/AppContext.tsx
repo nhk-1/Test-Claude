@@ -1,7 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState, useCallback, useRef } from 'react';
-import { AppData, WorkoutTemplate, WorkoutSession, TemplateExercise, SessionExercise, WeightEntry } from '@/lib/types';
+import { AppData, WorkoutTemplate, WorkoutSession, TemplateExercise, SessionExercise, WeightEntry, NotificationSettings } from '@/lib/types';
 import {
   loadData,
   saveData,
@@ -43,6 +43,10 @@ interface AppContextType {
   addWeightEntry: (weight: number, notes?: string) => void;
   updateWeightEntry: (id: string, updates: Partial<WeightEntry>) => void;
   deleteWeightEntry: (id: string) => void;
+
+  // Notification settings
+  getNotificationSettings: () => NotificationSettings;
+  updateNotificationSettings: (settings: Partial<NotificationSettings>) => void;
 
   // Data management
   exportData: () => void;
@@ -363,6 +367,28 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     }));
   }, []);
 
+  // Notification settings
+  const getNotificationSettings = useCallback((): NotificationSettings => {
+    return data.notificationSettings || {
+      enabled: false,
+      restTimerNotifications: true,
+      dailyReminders: false,
+      reminderTime: { hour: 18, minute: 0 },
+      reminderDays: [1, 2, 3, 4, 5], // Monday to Friday
+      reminderMessage: "C'est l'heure de votre entraînement !",
+    };
+  }, [data.notificationSettings]);
+
+  const updateNotificationSettings = useCallback((settings: Partial<NotificationSettings>) => {
+    setData((prev) => ({
+      ...prev,
+      notificationSettings: {
+        ...getNotificationSettings(),
+        ...settings,
+      },
+    }));
+  }, [getNotificationSettings]);
+
   // Data management
   const exportDataFn = useCallback(() => {
     const date = new Date().toISOString().split('T')[0];
@@ -434,6 +460,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     addWeightEntry,
     updateWeightEntry,
     deleteWeightEntry,
+    getNotificationSettings,
+    updateNotificationSettings,
     exportData: exportDataFn,
     importDataFromFile,
     resetData,
