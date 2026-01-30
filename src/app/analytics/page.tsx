@@ -5,8 +5,15 @@ import { useApp } from '@/context/AppContext';
 import { getExerciseById } from '@/lib/exercises';
 import { MuscleCategory, MUSCLE_CATEGORY_LABELS } from '@/lib/types';
 import Link from 'next/link';
+import {
+  calculateEstimated1RM,
+  calculateFatigueIndex,
+  calculateVolumeTrend,
+  shouldDeload,
+  detectPlateauForExercise,
+} from '@/lib/analytics';
 
-type TabType = 'weight' | 'performance' | 'muscles';
+type TabType = 'weight' | 'performance' | 'muscles' | 'advanced';
 
 export default function AnalyticsPage() {
   const { data, addWeightEntry, deleteWeightEntry } = useApp();
@@ -327,6 +334,16 @@ export default function AnalyticsPage() {
           }`}
         >
           Muscles
+        </button>
+        <button
+          onClick={() => setActiveTab('advanced')}
+          className={`flex-1 py-2.5 px-4 rounded-lg font-medium transition-all btn-press whitespace-nowrap ${
+            activeTab === 'advanced'
+              ? 'bg-white dark:bg-gray-700 text-indigo-600 dark:text-indigo-400 shadow-sm'
+              : 'text-gray-600 dark:text-gray-400'
+          }`}
+        >
+          Avancé
         </button>
       </div>
 
@@ -777,6 +794,249 @@ export default function AnalyticsPage() {
               </h3>
               <p className="text-gray-600 dark:text-gray-400">
                 Complétez des séances pour voir vos statistiques par groupe musculaire
+              </p>
+            </div>
+          )}
+        </div>
+      )}
+
+      {activeTab === 'advanced' && (
+        <div className="space-y-6">
+          {data.sessions.filter(s => s.status === 'completed').length > 0 ? (
+            <>
+              {/* Fatigue Index */}
+              {(() => {
+                const fatigue = calculateFatigueIndex(data.sessions);
+                const volumeTrend = calculateVolumeTrend(data.sessions);
+                const deloadCheck = shouldDeload(data.sessions);
+
+                return (
+                  <>
+                    {/* Fatigue Card */}
+                    <div className={`rounded-xl p-6 shadow-sm border-2 ${
+                      fatigue.level === 'very_high'
+                        ? 'bg-red-50 dark:bg-red-900/20 border-red-500'
+                        : fatigue.level === 'high'
+                        ? 'bg-orange-50 dark:bg-orange-900/20 border-orange-500'
+                        : fatigue.level === 'moderate'
+                        ? 'bg-yellow-50 dark:bg-yellow-900/20 border-yellow-500'
+                        : 'bg-green-50 dark:bg-green-900/20 border-green-500'
+                    }`}>
+                      <div className="flex items-start justify-between mb-4">
+                        <div>
+                          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
+                            Index de Fatigue
+                          </h3>
+                          <p className="text-sm text-gray-600 dark:text-gray-400">
+                            Basé sur les 14 derniers jours
+                          </p>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-3xl font-bold text-gray-900 dark:text-white">
+                            {fatigue.score}
+                          </p>
+                          <p className="text-sm text-gray-600 dark:text-gray-400">/ 100</p>
+                        </div>
+                      </div>
+
+                      {/* Progress Bar */}
+                      <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden mb-4">
+                        <div
+                          className={`h-full transition-all duration-500 ${
+                            fatigue.level === 'very_high'
+                              ? 'bg-red-500'
+                              : fatigue.level === 'high'
+                              ? 'bg-orange-500'
+                              : fatigue.level === 'moderate'
+                              ? 'bg-yellow-500'
+                              : 'bg-green-500'
+                          }`}
+                          style={{ width: `${fatigue.score}%` }}
+                        />
+                      </div>
+
+                      <p className="text-sm font-medium text-gray-900 dark:text-white">
+                        {fatigue.recommendation}
+                      </p>
+                    </div>
+
+                    {/* Volume Trend */}
+                    <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
+                      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                        Tendance du Volume
+                      </h3>
+                      <div className="flex items-center gap-4">
+                        <div className={`w-16 h-16 rounded-full flex items-center justify-center ${
+                          volumeTrend.trend === 'increasing'
+                            ? 'bg-green-100 dark:bg-green-900/30'
+                            : volumeTrend.trend === 'decreasing'
+                            ? 'bg-red-100 dark:bg-red-900/30'
+                            : 'bg-gray-100 dark:bg-gray-700'
+                        }`}>
+                          <svg className={`w-8 h-8 ${
+                            volumeTrend.trend === 'increasing'
+                              ? 'text-green-600 dark:text-green-400'
+                              : volumeTrend.trend === 'decreasing'
+                              ? 'text-red-600 dark:text-red-400'
+                              : 'text-gray-600 dark:text-gray-400'
+                          }`} fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                            {volumeTrend.trend === 'increasing' ? (
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941" />
+                            ) : volumeTrend.trend === 'decreasing' ? (
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6 9 12.75l4.286-4.286a11.948 11.948 0 0 1 4.306 6.43l.776 2.898m0 0 3.182-5.511m-3.182 5.51-5.511-3.181" />
+                            ) : (
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14" />
+                            )}
+                          </svg>
+                        </div>
+                        <div>
+                          <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                            {volumeTrend.trend === 'increasing' ? 'En hausse' : volumeTrend.trend === 'decreasing' ? 'En baisse' : 'Stable'}
+                          </p>
+                          <p className="text-sm text-gray-600 dark:text-gray-400">
+                            {volumeTrend.percentChange > 0 ? '+' : ''}{volumeTrend.percentChange}% sur 4 semaines
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Deload Recommendation */}
+                    {deloadCheck.shouldDeload && (
+                      <div className="bg-amber-50 dark:bg-amber-900/20 border-2 border-amber-500 rounded-xl p-6">
+                        <div className="flex gap-3">
+                          <svg className="w-6 h-6 text-amber-600 dark:text-amber-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+                          </svg>
+                          <div>
+                            <h3 className="font-semibold text-amber-900 dark:text-amber-200 mb-1">
+                              Semaine de Décharge Recommandée
+                            </h3>
+                            <p className="text-sm text-amber-800 dark:text-amber-300">
+                              {deloadCheck.reason}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </>
+                );
+              })()}
+
+              {/* 1RM Calculator */}
+              <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                  Estimations 1RM (One Rep Max)
+                </h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                  Basé sur vos meilleurs performances récentes
+                </p>
+
+                <div className="space-y-3">
+                  {exercisesInSessions.slice(0, 5).map((ex) => {
+                    const sessionsWithEx = data.sessions
+                      .filter(s => s.status === 'completed')
+                      .filter(s => s.exercises.some(e => e.exerciseId === ex.id))
+                      .map(s => {
+                        const exercise = s.exercises.find(e => e.exerciseId === ex.id)!;
+                        const weights = exercise.actualWeightsPerSet ||
+                                       exercise.weightsPerSet ||
+                                       [exercise.actualWeight || exercise.weight];
+                        return {
+                          weight: Math.max(...weights),
+                          reps: exercise.reps,
+                        };
+                      })
+                      .sort((a, b) => b.weight - a.weight);
+
+                    if (sessionsWithEx.length === 0) return null;
+
+                    const best = sessionsWithEx[0];
+                    const estimated1RM = calculateEstimated1RM(best.weight, best.reps);
+
+                    return (
+                      <div key={ex.id} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                        <div>
+                          <p className="font-medium text-gray-900 dark:text-white">{ex.name}</p>
+                          <p className="text-xs text-gray-500 dark:text-gray-400">
+                            Meilleure : {best.weight}kg × {best.reps} reps
+                          </p>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
+                            {estimated1RM}kg
+                          </p>
+                          <p className="text-xs text-gray-500 dark:text-gray-400">1RM estimé</p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Plateau Detection */}
+              {(() => {
+                const exercisesWithPlateau = exercisesInSessions
+                  .map(ex => {
+                    const sessionData = data.sessions
+                      .filter(s => s.status === 'completed')
+                      .map(s => {
+                        const exercise = s.exercises.find(e => e.exerciseId === ex.id);
+                        if (!exercise) return null;
+
+                        const weights = exercise.actualWeightsPerSet ||
+                                       exercise.weightsPerSet ||
+                                       [exercise.actualWeight || exercise.weight];
+                        return {
+                          date: s.startedAt,
+                          maxWeight: Math.max(...weights),
+                        };
+                      })
+                      .filter(Boolean) as Array<{ date: string; maxWeight: number }>;
+
+                    const hasPlateau = detectPlateauForExercise(sessionData, 4);
+                    return hasPlateau ? { ...ex, sessionData } : null;
+                  })
+                  .filter(Boolean);
+
+                if (exercisesWithPlateau.length === 0) return null;
+
+                return (
+                  <div className="bg-orange-50 dark:bg-orange-900/20 border-2 border-orange-500 rounded-xl p-6">
+                    <h3 className="text-lg font-semibold text-orange-900 dark:text-orange-200 mb-4">
+                      Plateaux Détectés
+                    </h3>
+                    <p className="text-sm text-orange-800 dark:text-orange-300 mb-4">
+                      Ces exercices n'ont pas progressé depuis 4+ semaines
+                    </p>
+                    <div className="space-y-2">
+                      {exercisesWithPlateau.map((ex: any) => (
+                        <div key={ex.id} className="flex items-center gap-2 text-sm text-orange-900 dark:text-orange-200">
+                          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14" />
+                          </svg>
+                          {ex.name}
+                        </div>
+                      ))}
+                    </div>
+                    <p className="text-xs text-orange-700 dark:text-orange-400 mt-4">
+                      💡 Conseil : Essayez de varier les exercices, augmenter le volume ou prendre une semaine de décharge
+                    </p>
+                  </div>
+                );
+              })()}
+            </>
+          ) : (
+            <div className="bg-white dark:bg-gray-800 rounded-xl p-8 text-center shadow-sm">
+              <div className="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-gray-400" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                Aucune donnée disponible
+              </h3>
+              <p className="text-gray-600 dark:text-gray-400">
+                Complétez des séances pour voir vos analyses avancées
               </p>
             </div>
           )}
