@@ -47,18 +47,22 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       </head>
       <body
-        className="font-sans antialiased bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 overscroll-none"
+        className="font-sans antialiased bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100"
       >
         <ThemeProvider>
           <AuthProvider>
             <AppProvider>
               <KeyboardShortcutsProvider>
-                <Navigation />
-                <main className="flex flex-col pb-20 md:pb-4 md:pt-20 min-h-[100dvh] safe-area-bottom safe-area-top">
-                  <div className="flex-1 max-w-4xl mx-auto px-4 pt-2 pb-6 w-full">
-                    {children}
-                  </div>
-                </main>
+                <div className="ios-app-container">
+                  <Navigation />
+                  <main className="ios-main-content safe-area-top">
+                    <div className="ios-scroll-area">
+                      <div className="max-w-4xl mx-auto px-4 pt-2 pb-6 w-full">
+                        {children}
+                      </div>
+                    </div>
+                  </main>
+                </div>
               </KeyboardShortcutsProvider>
             </AppProvider>
           </AuthProvider>
