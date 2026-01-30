@@ -262,10 +262,12 @@ body.modal-open {
     padding-bottom: env(safe-area-inset-bottom);
   }
 
+  /* Navigation extends to bottom of screen */
   .nav-safe-area {
     padding-bottom: env(safe-area-inset-bottom);
   }
 }
+
 
 /* PWA standalone mode - same behavior as browser */
 @media (display-mode: standalone) {

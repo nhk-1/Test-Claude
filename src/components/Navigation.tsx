@@ -101,7 +101,11 @@ export default function Navigation() {
   };
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 glass border-t border-slate-200/50 dark:border-slate-700/50 z-40 md:top-0 md:bottom-auto md:border-t-0 md:border-b nav-safe-area">
+    <>
+      {/* Background that extends to the very bottom of the screen */}
+      <div className="fixed bottom-0 left-0 right-0 h-24 bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl z-30 md:hidden"
+           style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }} />
+      <nav className="fixed bottom-0 left-0 right-0 glass border-t border-slate-200/50 dark:border-slate-700/50 z-40 md:top-0 md:bottom-auto md:border-t-0 md:border-b nav-safe-area">
       <div className="max-w-4xl mx-auto px-2 md:px-4">
         <div className="flex justify-around md:justify-start md:gap-2 items-center h-14 md:h-16">
           {/* Logo - Desktop only */}
@@ -188,5 +192,6 @@ export default function Navigation() {
         <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-500 animate-pulse" />
       )}
     </nav>
+    </>
   );
 }
