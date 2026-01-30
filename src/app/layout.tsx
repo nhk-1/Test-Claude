@@ -46,22 +46,25 @@ export default function RootLayout({
         <meta name="format-detection" content="telephone=no" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       </head>
-      <body
-        className="font-sans antialiased bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100"
-      >
+      <body className="font-sans antialiased">
         <ThemeProvider>
           <AuthProvider>
             <AppProvider>
               <KeyboardShortcutsProvider>
-                <div className="ios-app-container">
-                  <Navigation />
-                  <main className="ios-main-content safe-area-top">
-                    <div className="ios-scroll-area">
-                      <div className="max-w-4xl mx-auto px-4 pt-2 pb-6 w-full">
-                        {children}
-                      </div>
+                {/* Full screen background layer */}
+                <div className="app-bg" />
+
+                {/* Main app container */}
+                <div className="app-container">
+                  {/* Scrollable content */}
+                  <main className="app-main">
+                    <div className="app-content">
+                      {children}
                     </div>
                   </main>
+
+                  {/* Navigation at bottom (mobile) or top (desktop) */}
+                  <Navigation />
                 </div>
               </KeyboardShortcutsProvider>
             </AppProvider>
