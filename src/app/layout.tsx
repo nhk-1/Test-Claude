@@ -5,6 +5,7 @@ import { AppProvider } from "@/context/AppContext";
 import { ThemeProvider } from "@/context/ThemeContext";
 import Navigation from "@/components/Navigation";
 import KeyboardShortcutsProvider from "@/components/KeyboardShortcutsProvider";
+import ViewportFix from "@/components/ViewportFix";
 
 export const metadata: Metadata = {
   title: "FitTracker - Gestion de séances de sport",
@@ -39,31 +40,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr" className="touch-manipulation">
+    <html lang="fr">
       <head>
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="format-detection" content="telephone=no" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       </head>
-      <body className="font-sans antialiased">
+      <body>
+        <ViewportFix />
         <ThemeProvider>
           <AuthProvider>
             <AppProvider>
               <KeyboardShortcutsProvider>
-                {/* Full screen background layer */}
-                <div className="app-bg" />
-
-                {/* Main app container */}
-                <div className="app-container">
-                  {/* Scrollable content */}
-                  <main className="app-main">
-                    <div className="app-content">
-                      {children}
-                    </div>
+                <div id="app-root">
+                  <main id="app-content">
+                    {children}
                   </main>
-
-                  {/* Navigation at bottom (mobile) or top (desktop) */}
                   <Navigation />
                 </div>
               </KeyboardShortcutsProvider>
