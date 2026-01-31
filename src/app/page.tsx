@@ -66,11 +66,11 @@ export default function HomePage() {
   return (
     <div className="animate-fade-in">
       {/* Page Header */}
-      <header className="page-header">
+      <header className="page-header mb-10 md:mb-14">
         <h1 className="page-title">
           Bienvenue !
         </h1>
-        <p className="page-subtitle">
+        <p className="page-subtitle mt-3">
           Prêt pour ton entraînement ?
         </p>
       </header>
@@ -79,17 +79,17 @@ export default function HomePage() {
       {activeSession && (
         <Link
           href="/session"
-          className="block gradient-bg rounded-2xl p-6 md:p-8 text-white shadow-xl shadow-indigo-500/20 hover:shadow-indigo-500/30 transition-all duration-300 hover:-translate-y-0.5 mb-8"
+          className="block gradient-bg rounded-2xl p-7 md:p-10 text-white shadow-xl shadow-indigo-500/20 hover:shadow-indigo-500/30 transition-all duration-300 hover:-translate-y-1 mb-12"
         >
-          <div className="flex items-center justify-between">
-            <div className="space-y-1.5">
-              <p className="text-sm font-medium text-white/80">Séance en cours</p>
-              <p className="text-xl md:text-2xl font-bold">{activeSession.templateName}</p>
+          <div className="flex items-center justify-between gap-6">
+            <div className="space-y-2">
+              <p className="text-sm font-semibold text-white/80 tracking-wide">Séance en cours</p>
+              <p className="text-2xl md:text-3xl font-bold">{activeSession.templateName}</p>
             </div>
-            <div className="flex items-center gap-4">
-              <span className="text-sm font-medium text-white/90 hidden sm:block">Continuer</span>
-              <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor">
+            <div className="flex items-center gap-5">
+              <span className="text-base font-semibold text-white/90 hidden sm:block">Continuer</span>
+              <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
                 </svg>
               </div>
@@ -99,41 +99,41 @@ export default function HomePage() {
       )}
 
       {/* Stats Grid */}
-      <section className="mb-10">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+      <section className="mb-14 md:mb-16">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 md:gap-8">
           {/* Streak Card - Special styling */}
           {streak > 0 && (
-            <div className="gradient-bg-warm rounded-2xl p-5 md:p-6 text-white shadow-lg shadow-orange-500/20">
-              <div className="flex items-center gap-2.5 mb-4">
-                <div className="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center">
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+            <div className="gradient-bg-warm rounded-2xl p-6 md:p-8 text-white shadow-lg shadow-orange-500/20">
+              <div className="flex items-center gap-3 mb-5">
+                <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center">
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.2 3.2.8-1.3-4.5-2.7V7z" />
                   </svg>
                 </div>
-                <p className="text-sm font-semibold text-white/90">Série</p>
+                <p className="text-base font-bold text-white/90">Série</p>
               </div>
-              <p className="text-4xl md:text-5xl font-bold tracking-tight">{streak}</p>
-              <p className="text-sm text-white/80 mt-2 font-medium">{streak === 1 ? 'jour' : 'jours'} consécutifs</p>
+              <p className="text-5xl md:text-6xl font-bold tracking-tight">{streak}</p>
+              <p className="text-base text-white/80 mt-3 font-semibold">{streak === 1 ? 'jour' : 'jours'} consécutifs</p>
             </div>
           )}
 
           {/* This Week */}
           <div className="stat-card">
-            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-3">Cette semaine</p>
+            <p className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-4">Cette semaine</p>
             <p className="stat-value">{thisWeekSessions.length}</p>
             <p className="stat-label">séances</p>
           </div>
 
           {/* Total Sessions */}
           <div className="stat-card">
-            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-3">Total</p>
+            <p className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-4">Total</p>
             <p className="stat-value">{completedSessions.length}</p>
             <p className="stat-label">séances</p>
           </div>
 
           {/* Templates */}
           <div className="stat-card">
-            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-3">Templates</p>
+            <p className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-4">Templates</p>
             <p className="stat-value">{data.templates.length}</p>
             <p className="stat-label">créés</p>
           </div>
@@ -142,14 +142,14 @@ export default function HomePage() {
 
       {/* Quick Start Section */}
       {recentTemplates.length > 0 ? (
-        <section>
+        <section className="mb-14 md:mb-16">
           <div className="section-header">
             <h2 className="section-title">Démarrage rapide</h2>
             <Link href="/templates" className="section-link">
               Voir tout
             </Link>
           </div>
-          <div className="grid gap-5 md:gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 md:gap-8 md:grid-cols-2 lg:grid-cols-3">
             {recentTemplates.map((template, index) => (
               <div key={template.id} className={`stagger-${index + 1}`}>
                 <TemplateCard
@@ -161,9 +161,9 @@ export default function HomePage() {
           </div>
         </section>
       ) : (
-        <section className="card p-10 md:p-16 text-center">
+        <section className="card text-center mb-14">
           <div className="empty-state-icon mx-auto">
-            <svg className="w-9 h-9 text-indigo-500" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+            <svg className="w-10 h-10 text-indigo-500" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
             </svg>
           </div>
@@ -175,7 +175,7 @@ export default function HomePage() {
           </p>
           <Link
             href="/templates/new"
-            className="btn btn-primary px-8 py-4"
+            className="btn btn-primary px-10 py-5 text-lg"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -187,14 +187,14 @@ export default function HomePage() {
 
       {/* Recent Activity */}
       {completedSessions.length > 0 && (
-        <section className="mt-10 md:mt-12">
+        <section>
           <div className="section-header">
             <h2 className="section-title">Activité récente</h2>
             <Link href="/history" className="section-link">
               Historique
             </Link>
           </div>
-          <div className="card overflow-hidden">
+          <div className="card card-flush overflow-hidden">
             {completedSessions.slice(-5).reverse().map((session, index, array) => {
               const date = new Date(session.completedAt || session.startedAt);
               const totalSets = session.exercises.reduce((acc, e) => acc + e.sets, 0);
@@ -205,22 +205,22 @@ export default function HomePage() {
                 <div
                   key={session.id}
                   className={`
-                    p-5 md:p-6 flex items-center justify-between
+                    p-6 md:p-8 flex items-center justify-between gap-4
                     ${!isLast ? 'border-b border-slate-100 dark:border-slate-800' : ''}
                     hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors
                   `}
                 >
-                  <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 flex items-center justify-center flex-shrink-0">
-                      <svg className="w-5 h-5 text-indigo-500" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor">
+                  <div className="flex items-center gap-5">
+                    <div className="w-12 h-12 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 flex items-center justify-center flex-shrink-0">
+                      <svg className="w-6 h-6 text-indigo-500" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
                       </svg>
                     </div>
                     <div>
-                      <p className="font-semibold text-slate-900 dark:text-white">
+                      <p className="font-bold text-lg text-slate-900 dark:text-white">
                         {session.templateName}
                       </p>
-                      <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">
+                      <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
                         {date.toLocaleDateString('fr-FR', {
                           weekday: 'short',
                           day: 'numeric',
@@ -230,10 +230,10 @@ export default function HomePage() {
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="font-bold text-indigo-600 dark:text-indigo-400">
+                    <p className="font-bold text-xl text-indigo-600 dark:text-indigo-400">
                       {completedSets}/{totalSets}
                     </p>
-                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">séries</p>
+                    <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">séries</p>
                   </div>
                 </div>
               );

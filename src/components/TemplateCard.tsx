@@ -39,15 +39,15 @@ export default function TemplateCard({ template, onStart, onDelete }: TemplateCa
   };
 
   return (
-    <div className="card card-interactive p-6 md:p-7 flex flex-col h-full">
+    <div className="card card-interactive flex flex-col h-full">
       {/* Header */}
-      <div className="flex items-start justify-between gap-4 mb-5">
+      <div className="flex items-start justify-between gap-5 mb-6">
         <div className="flex-1 min-w-0">
-          <h3 className="font-bold text-lg text-slate-900 dark:text-white truncate">
+          <h3 className="font-bold text-xl text-slate-900 dark:text-white truncate">
             {template.name}
           </h3>
           {template.description && (
-            <p className="text-sm text-slate-500 dark:text-slate-400 mt-2 truncate-2">
+            <p className="text-base text-slate-500 dark:text-slate-400 mt-3 truncate-2 leading-relaxed">
               {template.description}
             </p>
           )}
@@ -94,14 +94,14 @@ export default function TemplateCard({ template, onStart, onDelete }: TemplateCa
 
       {/* Categories */}
       {categories.length > 0 && (
-        <div className="flex flex-wrap gap-2 mb-5">
+        <div className="flex flex-wrap gap-2.5 mb-6">
           {categories.slice(0, 3).map((cat) => (
-            <span key={cat} className="badge">
+            <span key={cat} className="badge text-sm py-1.5 px-3">
               {MUSCLE_CATEGORY_LABELS[cat]}
             </span>
           ))}
           {categories.length > 3 && (
-            <span className="badge">
+            <span className="badge text-sm py-1.5 px-3">
               +{categories.length - 3}
             </span>
           )}
@@ -109,18 +109,18 @@ export default function TemplateCard({ template, onStart, onDelete }: TemplateCa
       )}
 
       {/* Stats */}
-      <div className="flex items-center gap-6 text-sm text-slate-500 dark:text-slate-400 mb-6 mt-auto">
-        <span className="flex items-center gap-2">
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor">
+      <div className="flex items-center gap-8 text-base text-slate-500 dark:text-slate-400 mb-8 mt-auto pt-4 border-t border-slate-100 dark:border-slate-800">
+        <span className="flex items-center gap-3">
+          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
           </svg>
-          <span className="font-medium">{exerciseCount}</span> exercice{exerciseCount > 1 ? 's' : ''}
+          <span><span className="font-bold text-slate-900 dark:text-white">{exerciseCount}</span> exercice{exerciseCount > 1 ? 's' : ''}</span>
         </span>
-        <span className="flex items-center gap-2">
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor">
+        <span className="flex items-center gap-3">
+          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
           </svg>
-          <span className="font-medium">{totalSets}</span> série{totalSets > 1 ? 's' : ''}
+          <span><span className="font-bold text-slate-900 dark:text-white">{totalSets}</span> série{totalSets > 1 ? 's' : ''}</span>
         </span>
       </div>
 
@@ -128,7 +128,7 @@ export default function TemplateCard({ template, onStart, onDelete }: TemplateCa
       {onStart && (
         <button
           onClick={onStart}
-          className="btn btn-primary w-full py-4 text-base"
+          className="btn btn-primary w-full py-5 text-base"
         >
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
