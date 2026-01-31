@@ -39,33 +39,37 @@ export default function TemplateCard({ template, onStart, onDelete }: TemplateCa
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow">
-      <div className="flex items-start justify-between mb-5">
-        <div className="flex-1">
-          <h3 className="font-semibold text-gray-900 dark:text-white text-lg">
+    <div className="card card-interactive p-6 md:p-7 flex flex-col h-full">
+      {/* Header */}
+      <div className="flex items-start justify-between gap-4 mb-5">
+        <div className="flex-1 min-w-0">
+          <h3 className="font-bold text-lg text-slate-900 dark:text-white truncate">
             {template.name}
           </h3>
           {template.description && (
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-3">
+            <p className="text-sm text-slate-500 dark:text-slate-400 mt-2 truncate-2">
               {template.description}
             </p>
           )}
         </div>
-        <div className="flex items-center gap-2">
+
+        {/* Actions */}
+        <div className="flex items-center gap-1 flex-shrink-0">
           <button
             onClick={handleShare}
-            className="p-2 text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 rounded-lg transition-colors"
+            className="p-2.5 text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 rounded-xl transition-all duration-200"
             title="Partager ce template"
           >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" />
             </svg>
           </button>
           <Link
             href={`/templates/${template.id}`}
-            className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+            className="p-2.5 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition-all duration-200"
+            title="Modifier"
           >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
             </svg>
           </Link>
@@ -77,9 +81,10 @@ export default function TemplateCard({ template, onStart, onDelete }: TemplateCa
                   onDelete();
                 }
               }}
-              className="p-2 text-gray-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+              className="p-2.5 text-slate-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-xl transition-all duration-200"
+              title="Supprimer"
             >
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
               </svg>
             </button>
@@ -88,30 +93,34 @@ export default function TemplateCard({ template, onStart, onDelete }: TemplateCa
       </div>
 
       {/* Categories */}
-      <div className="flex flex-wrap gap-3 mb-5">
-        {categories.map((cat) => (
-          <span
-            key={cat}
-            className="px-3 py-1 bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 text-xs font-medium rounded-full"
-          >
-            {MUSCLE_CATEGORY_LABELS[cat]}
-          </span>
-        ))}
-      </div>
+      {categories.length > 0 && (
+        <div className="flex flex-wrap gap-2 mb-5">
+          {categories.slice(0, 3).map((cat) => (
+            <span key={cat} className="badge">
+              {MUSCLE_CATEGORY_LABELS[cat]}
+            </span>
+          ))}
+          {categories.length > 3 && (
+            <span className="badge">
+              +{categories.length - 3}
+            </span>
+          )}
+        </div>
+      )}
 
       {/* Stats */}
-      <div className="flex items-center gap-6 text-sm text-gray-600 dark:text-gray-400 mb-6">
+      <div className="flex items-center gap-6 text-sm text-slate-500 dark:text-slate-400 mb-6 mt-auto">
         <span className="flex items-center gap-2">
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
           </svg>
-          {exerciseCount} exercice{exerciseCount > 1 ? 's' : ''}
+          <span className="font-medium">{exerciseCount}</span> exercice{exerciseCount > 1 ? 's' : ''}
         </span>
         <span className="flex items-center gap-2">
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
           </svg>
-          {totalSets} série{totalSets > 1 ? 's' : ''}
+          <span className="font-medium">{totalSets}</span> série{totalSets > 1 ? 's' : ''}
         </span>
       </div>
 
@@ -119,7 +128,7 @@ export default function TemplateCard({ template, onStart, onDelete }: TemplateCa
       {onStart && (
         <button
           onClick={onStart}
-          className="w-full py-4 px-5 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl transition-colors flex items-center justify-center gap-3"
+          className="btn btn-primary w-full py-4 text-base"
         >
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
@@ -131,31 +140,31 @@ export default function TemplateCard({ template, onStart, onDelete }: TemplateCa
       {/* Share Modal */}
       {showShareModal && (
         <div
-          className="fixed inset-0 bg-black/50 z-50 flex items-end md:items-center justify-center p-4"
+          className="modal-bottom-sheet"
           onClick={() => setShowShareModal(false)}
         >
           <div
-            className="bg-white dark:bg-gray-800 rounded-t-2xl md:rounded-2xl w-full max-w-md p-8 safe-area-bottom"
+            className="modal-content p-8 md:p-10 safe-area-bottom"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
             <div className="flex items-center justify-between mb-8">
               <div className="flex items-center gap-4">
-                <div className="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center">
-                  <svg className="w-5 h-5 text-indigo-600 dark:text-indigo-400" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                <div className="w-12 h-12 rounded-2xl gradient-bg flex items-center justify-center shadow-lg shadow-indigo-500/20">
+                  <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" />
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Partager</h3>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">{template.name}</p>
+                  <h3 className="text-xl font-bold text-slate-900 dark:text-white">Partager</h3>
+                  <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">{template.name}</p>
                 </div>
               </div>
               <button
                 onClick={() => setShowShareModal(false)}
-                className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors touch-target flex items-center justify-center"
+                className="p-2.5 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition-colors touch-target flex items-center justify-center"
               >
-                <svg className="w-6 h-6 text-gray-500" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                <svg className="w-6 h-6 text-slate-400" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
                 </svg>
               </button>
@@ -164,15 +173,18 @@ export default function TemplateCard({ template, onStart, onDelete }: TemplateCa
             {/* Copy Button */}
             <button
               onClick={handleCopyCode}
-              className={`w-full py-4 px-4 font-medium rounded-xl transition-all flex items-center justify-center gap-3 touch-target text-lg ${
-                copied
-                  ? 'bg-green-500 text-white'
-                  : 'bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white'
-              }`}
+              className={`
+                w-full py-4 px-6 font-semibold rounded-xl transition-all duration-300
+                flex items-center justify-center gap-3 touch-target text-lg
+                ${copied
+                  ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/30'
+                  : 'btn btn-primary'
+                }
+              `}
             >
               {copied ? (
                 <>
-                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
                   </svg>
                   Code copié !
@@ -188,8 +200,8 @@ export default function TemplateCard({ template, onStart, onDelete }: TemplateCa
             </button>
 
             {/* Info */}
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-5 text-center">
-              Partagez ce code à vos amis pour qu'ils importent le template
+            <p className="text-sm text-slate-500 dark:text-slate-400 mt-6 text-center leading-relaxed">
+              Partagez ce code à vos amis pour qu'ils puissent importer votre template
             </p>
           </div>
         </div>

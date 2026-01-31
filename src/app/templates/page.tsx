@@ -17,27 +17,27 @@ export default function TemplatesPage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin" />
+        <div className="spinner" />
       </div>
     );
   }
 
   return (
-    <div className="space-y-10 animate-fade-in">
+    <div className="animate-fade-in">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-            Templates de séances
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-3">
+      <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8 md:mb-10">
+        <div className="page-header mb-0">
+          <h1 className="page-title">Templates de séances</h1>
+          <p className="page-subtitle">
             Créez et gérez vos programmes d'entraînement
           </p>
         </div>
-        <div className="flex items-center gap-3">
+
+        {/* Actions */}
+        <div className="flex items-center gap-3 flex-shrink-0">
           <Link
             href="/templates/share"
-            className="flex items-center gap-2 px-5 py-2.5 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 font-medium rounded-xl transition-colors"
+            className="btn btn-secondary py-3 px-5"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
@@ -46,7 +46,7 @@ export default function TemplatesPage() {
           </Link>
           <Link
             href="/templates/new"
-            className="flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl transition-colors"
+            className="btn btn-primary py-3 px-5"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -54,43 +54,42 @@ export default function TemplatesPage() {
             <span className="hidden sm:inline">Nouveau</span>
           </Link>
         </div>
-      </div>
+      </header>
 
       {/* Templates Grid */}
       {data.templates.length > 0 ? (
-        <div className="grid gap-6 md:grid-cols-2">
-          {data.templates.map((template) => (
-            <TemplateCard
-              key={template.id}
-              template={template}
-              onStart={() => handleStartSession(template)}
-              onDelete={() => deleteTemplate(template.id)}
-            />
+        <div className="grid gap-5 md:gap-6 md:grid-cols-2">
+          {data.templates.map((template, index) => (
+            <div key={template.id} className={`animate-fade-in stagger-${Math.min(index + 1, 5)}`}>
+              <TemplateCard
+                template={template}
+                onStart={() => handleStartSession(template)}
+                onDelete={() => deleteTemplate(template.id)}
+              />
+            </div>
           ))}
         </div>
       ) : (
-        <div className="bg-white dark:bg-gray-800 rounded-2xl p-12 text-center shadow-sm">
-          <div className="w-20 h-20 bg-indigo-100 dark:bg-indigo-900/50 rounded-full flex items-center justify-center mx-auto mb-8">
-            <svg className="w-10 h-10 text-indigo-600 dark:text-indigo-400" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+        <section className="card p-10 md:p-16 text-center">
+          <div className="empty-state-icon mx-auto">
+            <svg className="w-9 h-9 text-indigo-500" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
             </svg>
           </div>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-            Aucun template créé
-          </h3>
-          <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-sm mx-auto">
+          <h3 className="empty-state-title">Aucun template créé</h3>
+          <p className="empty-state-description mx-auto">
             Créez votre premier template pour commencer à organiser vos séances.
           </p>
           <Link
             href="/templates/new"
-            className="inline-flex items-center gap-3 px-6 py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl transition-colors"
+            className="btn btn-primary px-8 py-4"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
             </svg>
             Créer un template
           </Link>
-        </div>
+        </section>
       )}
     </div>
   );
