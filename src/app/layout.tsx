@@ -28,8 +28,8 @@ export const viewport: Viewport = {
   userScalable: false,
   viewportFit: "cover",
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f8fafc" },
-    { media: "(prefers-color-scheme: dark)", color: "#0f172a" },
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#0c0f17" },
   ],
 };
 
@@ -39,25 +39,31 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr">
+    <html lang="fr" suppressHydrationWarning>
       <head>
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="format-detection" content="telephone=no" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
       </head>
-      <body>
+      <body className="antialiased">
         <ThemeProvider>
           <AuthProvider>
             <AppProvider>
               <KeyboardShortcutsProvider>
-                {/* App wrapper */}
+                {/* App Shell */}
                 <div className="app">
+                  {/* Main Content Area */}
                   <main className="content">
                     <div className="page-container">
                       {children}
                     </div>
                   </main>
+
+                  {/* Navigation Bar */}
                   <Navigation />
                 </div>
               </KeyboardShortcutsProvider>

@@ -69,7 +69,6 @@ export default function SessionPage() {
     const exercise = activeSession.exercises[exerciseIndex];
 
     if (setIndex !== undefined) {
-      // Mise à jour du poids pour une série spécifique
       const currentWeights = exercise.actualWeightsPerSet ||
         exercise.weightsPerSet ||
         Array(exercise.sets).fill(exercise.actualWeight ?? exercise.weight);
@@ -77,7 +76,6 @@ export default function SessionPage() {
       newWeights[setIndex] = weight;
       updateSessionExercise(activeSession.id, exerciseIndex, { actualWeightsPerSet: newWeights });
     } else {
-      // Mise à jour du poids global (rétrocompatibilité)
       updateSessionExercise(activeSession.id, exerciseIndex, { actualWeight: weight });
     }
   };
@@ -122,81 +120,81 @@ export default function SessionPage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin" />
+        <div className="spinner" />
       </div>
     );
   }
 
   if (!activeSession) {
     return (
-      <div className="space-y-10 animate-fade-in">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-          Séance d'entraînement
-        </h1>
+      <div className="animate-fade-in">
+        <header className="page-header">
+          <h1 className="page-title">Séance d'entraînement</h1>
+        </header>
 
-        <div className="bg-white dark:bg-gray-800 rounded-2xl p-12 text-center shadow-sm">
-          <div className="w-20 h-20 bg-indigo-100 dark:bg-indigo-900/50 rounded-full flex items-center justify-center mx-auto mb-8">
-            <svg className="w-10 h-10 text-indigo-600 dark:text-indigo-400" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+        <section className="card p-10 md:p-16 text-center">
+          <div className="empty-state-icon mx-auto">
+            <svg className="w-9 h-9 text-indigo-500" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
             </svg>
           </div>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-            Pas de séance en cours
-          </h3>
-          <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-sm mx-auto">
+          <h3 className="empty-state-title">Pas de séance en cours</h3>
+          <p className="empty-state-description mx-auto">
             Démarrez une séance à partir d'un de vos templates.
           </p>
           <Link
             href="/templates"
-            className="inline-flex items-center gap-3 px-6 py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl transition-colors"
+            className="btn btn-primary px-8 py-4"
           >
             Voir les templates
           </Link>
-        </div>
+        </section>
       </div>
     );
   }
 
   return (
-    <div className="space-y-10 animate-fade-in">
-      {/* Header */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm">
-        <div className="flex items-center justify-between mb-6">
+    <div className="animate-fade-in">
+      {/* Session Header Card */}
+      <section className="card-elevated p-6 md:p-8 mb-8">
+        {/* Title Row */}
+        <div className="flex items-start justify-between gap-4 mb-6">
           <div>
-            <h1 className="text-xl font-bold text-gray-900 dark:text-white">
+            <h1 className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white">
               {activeSession.templateName}
             </h1>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1.5 flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
               Séance en cours
             </p>
           </div>
           <div className="text-right">
-            <p className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
+            <p className="text-3xl md:text-4xl font-bold gradient-text tabular-nums">
               {formatTime(elapsedTime)}
             </p>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">durée</p>
+            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">durée</p>
           </div>
         </div>
 
-        {/* Progress */}
-        <div>
-          <div className="flex items-center justify-between text-sm mb-4">
-            <span className="text-gray-600 dark:text-gray-400">Progression</span>
-            <span className="font-medium text-gray-900 dark:text-white">
+        {/* Progress Section */}
+        <div className="space-y-3">
+          <div className="flex items-center justify-between text-sm">
+            <span className="text-slate-500 dark:text-slate-400 font-medium">Progression</span>
+            <span className="font-bold text-slate-900 dark:text-white">
               {completedSets}/{totalSets} séries
             </span>
           </div>
-          <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+          <div className="progress-bar">
             <div
-              className="h-full bg-gradient-to-r from-indigo-600 to-purple-600 transition-all duration-500"
+              className="progress-bar-fill"
               style={{ width: `${progress}%` }}
             />
           </div>
         </div>
-      </div>
+      </section>
 
       {/* Exercises */}
-      <div className="space-y-6">
+      <section className="space-y-5">
         {activeSession.exercises.map((exercise, index) => (
           <SessionExerciseCard
             key={`${exercise.exerciseId}-${index}`}
@@ -208,16 +206,16 @@ export default function SessionPage() {
             onUpdateSupersetWeight={(weight, setIndex) => handleUpdateSupersetWeight(index, weight, setIndex)}
           />
         ))}
-      </div>
+      </section>
 
       {/* Actions */}
-      <div className="mt-10 space-y-4">
+      <section className="mt-10 space-y-4">
         {isSessionComplete ? (
           <button
             onClick={() => setShowCompleteModal(true)}
-            className="w-full py-4 px-5 bg-green-600 hover:bg-green-700 text-white font-medium rounded-xl transition-colors flex items-center justify-center gap-3 touch-target"
+            className="w-full py-4 px-6 bg-emerald-500 hover:bg-emerald-600 text-white font-semibold rounded-xl transition-all duration-200 flex items-center justify-center gap-3 touch-target shadow-lg shadow-emerald-500/25"
           >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
             </svg>
             Terminer la séance
@@ -225,62 +223,65 @@ export default function SessionPage() {
         ) : (
           <button
             onClick={() => setShowCompleteModal(true)}
-            className="w-full py-4 px-5 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl transition-colors touch-target"
+            className="btn btn-primary w-full py-4 text-base"
           >
             Terminer la séance ({Math.round(progress)}% complété)
           </button>
         )}
         <button
           onClick={handleAbandonSession}
-          className="w-full py-4 px-5 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-xl transition-colors touch-target"
+          className="btn btn-secondary w-full py-4 text-base"
         >
           Abandonner
         </button>
-      </div>
+      </section>
 
       {/* Complete Modal */}
       {showCompleteModal && (
         <div
-          className="modal-bottom-sheet bg-black/50 p-4"
+          className="modal-bottom-sheet"
           onClick={(e) => e.target === e.currentTarget && setShowCompleteModal(false)}
         >
-          <div className="bg-white dark:bg-gray-800 rounded-t-2xl md:rounded-2xl w-full max-w-md p-8 max-h-[90vh] overflow-y-auto overscroll-contain">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">
+          <div className="modal-content p-8 md:p-10 safe-area-bottom">
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-8">
               Terminer la séance
             </h2>
 
-            <div className="mb-5">
-              <div className="flex items-center justify-between p-4 bg-indigo-50 dark:bg-indigo-900/30 rounded-xl">
-                <span className="text-gray-700 dark:text-gray-300">Progression</span>
-                <span className="font-bold text-indigo-600 dark:text-indigo-400">
+            {/* Progress Summary */}
+            <div className="mb-8">
+              <div className="flex items-center justify-between p-5 bg-indigo-50 dark:bg-indigo-500/10 rounded-xl">
+                <span className="text-slate-700 dark:text-slate-300 font-medium">Progression</span>
+                <span className="font-bold text-indigo-600 dark:text-indigo-400 text-lg">
                   {completedSets}/{totalSets} séries ({Math.round(progress)}%)
                 </span>
               </div>
             </div>
 
+            {/* Notes Input */}
             <div className="mb-8">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">
                 Notes (optionnel)
               </label>
               <textarea
                 value={sessionNotes}
                 onChange={(e) => setSessionNotes(e.target.value)}
                 placeholder="Comment s'est passée la séance ?"
-                rows={3}
-                className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none text-base"
+                rows={4}
+                className="input resize-none"
               />
             </div>
 
+            {/* Actions */}
             <div className="flex gap-4">
               <button
                 onClick={() => setShowCompleteModal(false)}
-                className="flex-1 py-4 px-5 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-xl transition-colors touch-target"
+                className="btn btn-secondary flex-1 py-4"
               >
                 Annuler
               </button>
               <button
                 onClick={handleFinishSession}
-                className="flex-1 py-4 px-5 bg-green-600 hover:bg-green-700 text-white font-medium rounded-xl transition-colors touch-target"
+                className="flex-1 py-4 px-6 bg-emerald-500 hover:bg-emerald-600 text-white font-semibold rounded-xl transition-all duration-200 touch-target"
               >
                 Confirmer
               </button>
