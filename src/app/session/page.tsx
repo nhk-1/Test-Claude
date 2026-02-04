@@ -144,7 +144,7 @@ export default function SessionPage() {
           </p>
           <Link
             href="/templates"
-            className="btn btn-primary px-8 py-4"
+            className="btn btn-primary px-8 py-5"
           >
             Voir les templates
           </Link>
@@ -156,14 +156,14 @@ export default function SessionPage() {
   return (
     <div className="animate-fade-in">
       {/* Session Header Card */}
-      <section className="card-elevated p-6 md:p-8 mb-8">
+      <section className="card-elevated p-7 md:p-9 mb-10">
         {/* Title Row */}
-        <div className="flex items-start justify-between gap-4 mb-6">
+        <div className="flex items-start justify-between gap-5 mb-8">
           <div>
             <h1 className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white">
               {activeSession.templateName}
             </h1>
-            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1.5 flex items-center gap-2">
+            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1.5 flex items-center gap-3">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
               Séance en cours
             </p>
@@ -172,12 +172,12 @@ export default function SessionPage() {
             <p className="text-3xl md:text-4xl font-bold gradient-text tabular-nums">
               {formatTime(elapsedTime)}
             </p>
-            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">durée</p>
+            <p className="text-sm text-slate-500 dark:text-slate-400 mt-2">durée</p>
           </div>
         </div>
 
         {/* Progress Section */}
-        <div className="space-y-3">
+        <div className="space-y-4">
           <div className="flex items-center justify-between text-sm">
             <span className="text-slate-500 dark:text-slate-400 font-medium">Progression</span>
             <span className="font-bold text-slate-900 dark:text-white">
@@ -194,7 +194,7 @@ export default function SessionPage() {
       </section>
 
       {/* Exercises */}
-      <section className="space-y-5">
+      <section className="space-y-7">
         {activeSession.exercises.map((exercise, index) => (
           <SessionExerciseCard
             key={`${exercise.exerciseId}-${index}`}
@@ -209,11 +209,11 @@ export default function SessionPage() {
       </section>
 
       {/* Actions */}
-      <section className="mt-10 space-y-4">
+      <section className="mt-12 space-y-5">
         {isSessionComplete ? (
           <button
             onClick={() => setShowCompleteModal(true)}
-            className="w-full py-4 px-6 bg-emerald-500 hover:bg-emerald-600 text-white font-semibold rounded-xl transition-all duration-200 flex items-center justify-center gap-3 touch-target shadow-lg shadow-emerald-500/25"
+            className="w-full py-5 px-6 bg-emerald-500 hover:bg-emerald-600 text-white font-semibold rounded-xl transition-all duration-200 flex items-center justify-center gap-4 touch-target shadow-lg shadow-emerald-500/25"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
@@ -223,14 +223,14 @@ export default function SessionPage() {
         ) : (
           <button
             onClick={() => setShowCompleteModal(true)}
-            className="btn btn-primary w-full py-4 text-base"
+            className="btn btn-primary w-full py-5 text-base"
           >
             Terminer la séance ({Math.round(progress)}% complété)
           </button>
         )}
         <button
           onClick={handleAbandonSession}
-          className="btn btn-secondary w-full py-4 text-base"
+          className="btn btn-secondary w-full py-5 text-base"
         >
           Abandonner
         </button>
@@ -243,13 +243,13 @@ export default function SessionPage() {
           onClick={(e) => e.target === e.currentTarget && setShowCompleteModal(false)}
         >
           <div className="modal-content p-8 md:p-10 safe-area-bottom">
-            <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-8">
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-10">
               Terminer la séance
             </h2>
 
             {/* Progress Summary */}
-            <div className="mb-8">
-              <div className="flex items-center justify-between p-5 bg-indigo-50 dark:bg-indigo-500/10 rounded-xl">
+            <div className="mb-10">
+              <div className="flex items-center justify-between p-6 bg-indigo-50 dark:bg-indigo-500/10 rounded-xl">
                 <span className="text-slate-700 dark:text-slate-300 font-medium">Progression</span>
                 <span className="font-bold text-indigo-600 dark:text-indigo-400 text-lg">
                   {completedSets}/{totalSets} séries ({Math.round(progress)}%)
@@ -258,8 +258,8 @@ export default function SessionPage() {
             </div>
 
             {/* Notes Input */}
-            <div className="mb-8">
-              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">
+            <div className="mb-10">
+              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-4">
                 Notes (optionnel)
               </label>
               <textarea
@@ -272,16 +272,16 @@ export default function SessionPage() {
             </div>
 
             {/* Actions */}
-            <div className="flex gap-4">
+            <div className="flex gap-5">
               <button
                 onClick={() => setShowCompleteModal(false)}
-                className="btn btn-secondary flex-1 py-4"
+                className="btn btn-secondary flex-1 py-5"
               >
                 Annuler
               </button>
               <button
                 onClick={handleFinishSession}
-                className="flex-1 py-4 px-6 bg-emerald-500 hover:bg-emerald-600 text-white font-semibold rounded-xl transition-all duration-200 touch-target"
+                className="flex-1 py-5 px-6 bg-emerald-500 hover:bg-emerald-600 text-white font-semibold rounded-xl transition-all duration-200 touch-target"
               >
                 Confirmer
               </button>

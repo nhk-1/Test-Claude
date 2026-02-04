@@ -25,7 +25,7 @@ export default function TemplatesPage() {
   return (
     <div className="animate-fade-in">
       {/* Header */}
-      <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8 md:mb-10">
+      <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5 mb-10 md:mb-12">
         <div className="page-header mb-0">
           <h1 className="page-title">Templates de séances</h1>
           <p className="page-subtitle">
@@ -34,10 +34,10 @@ export default function TemplatesPage() {
         </div>
 
         {/* Actions */}
-        <div className="flex items-center gap-3 flex-shrink-0">
+        <div className="flex items-center gap-4 flex-shrink-0">
           <Link
             href="/templates/share"
-            className="btn btn-secondary py-3 px-5"
+            className="btn btn-secondary py-4 px-5"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
@@ -46,7 +46,7 @@ export default function TemplatesPage() {
           </Link>
           <Link
             href="/templates/new"
-            className="btn btn-primary py-3 px-5"
+            className="btn btn-primary py-4 px-5"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -58,7 +58,7 @@ export default function TemplatesPage() {
 
       {/* Templates Grid */}
       {data.templates.length > 0 ? (
-        <div className="grid gap-5 md:gap-6 md:grid-cols-2">
+        <div className="grid gap-6 md:gap-8 md:grid-cols-2">
           {data.templates.map((template, index) => (
             <div key={template.id} className={`animate-fade-in stagger-${Math.min(index + 1, 5)}`}>
               <TemplateCard
@@ -82,7 +82,7 @@ export default function TemplatesPage() {
           </p>
           <Link
             href="/templates/new"
-            className="btn btn-primary px-8 py-4"
+            className="btn btn-primary px-8 py-5"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />

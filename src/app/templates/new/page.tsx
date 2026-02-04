@@ -54,7 +54,7 @@ export default function NewTemplatePage() {
   };
 
   return (
-    <div className="space-y-8 animate-fade-in">
+    <div className="space-y-10 animate-fade-in">
       {/* Header */}
       <div className="flex items-center gap-4">
         <button
@@ -71,9 +71,9 @@ export default function NewTemplatePage() {
       </div>
 
       {/* Form */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm space-y-5">
+      <div className="bg-white dark:bg-gray-800 rounded-2xl p-7 shadow-sm space-y-7">
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
             Nom du template *
           </label>
           <input
@@ -81,11 +81,11 @@ export default function NewTemplatePage() {
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Ex: Push Day, Leg Day..."
-            className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            className="w-full px-4 py-4 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
             Description (optionnel)
           </label>
           <textarea
@@ -93,20 +93,20 @@ export default function NewTemplatePage() {
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Description de la séance..."
             rows={2}
-            className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none"
+            className="w-full px-4 py-4 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none"
           />
         </div>
       </div>
 
       {/* Exercises */}
       <div>
-        <div className="flex items-center justify-between mb-5">
+        <div className="flex items-center justify-between mb-7">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
             Exercices ({exercises.length})
           </h2>
           <button
             onClick={() => setShowExerciseSelector(true)}
-            className="flex items-center gap-2 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-colors"
+            className="flex items-center gap-3 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-colors"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -116,7 +116,7 @@ export default function NewTemplatePage() {
         </div>
 
         {exercises.length > 0 ? (
-          <div className="space-y-4">
+          <div className="space-y-5">
             {exercises.map((exercise, index) => {
               const exerciseData = getExerciseById(exercise.exerciseId);
               if (!exerciseData) return null;
@@ -126,8 +126,8 @@ export default function NewTemplatePage() {
                   key={`${exercise.exerciseId}-${index}`}
                   className="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-sm"
                 >
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex items-center gap-3">
+                  <div className="flex items-start justify-between mb-6">
+                    <div className="flex items-center gap-4">
                       <div className="flex flex-col gap-1">
                         {index > 0 && (
                           <button
@@ -171,11 +171,11 @@ export default function NewTemplatePage() {
 
                   {/* Superset indicator */}
                   {exercise.supersetExerciseId && (
-                    <div className="mb-3 pl-3 border-l-2 border-purple-400">
+                    <div className="mb-4 pl-3 border-l-2 border-purple-400">
                       {(() => {
                         const supersetData = getExerciseById(exercise.supersetExerciseId!);
                         return supersetData ? (
-                          <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-3">
                             <span className="px-2 py-0.5 bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300 text-xs font-medium rounded-full">
                               Superset
                             </span>
@@ -193,7 +193,7 @@ export default function NewTemplatePage() {
 
                   {/* Weights per set indicator */}
                   {exercise.weightsPerSet && (
-                    <div className="mb-3 text-xs text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-700/30 rounded-lg p-2">
+                    <div className="mb-4 text-xs text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-700/30 rounded-lg p-3">
                       <span className="font-medium">Poids par série:</span>{' '}
                       {exercise.weightsPerSet.map((w, i) => (
                         <span key={i}>
@@ -205,9 +205,9 @@ export default function NewTemplatePage() {
                   )}
 
                   {/* Exercise Config */}
-                  <div className="grid grid-cols-4 gap-2">
-                    <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-2">
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Séries</p>
+                  <div className="grid grid-cols-4 gap-3">
+                    <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3">
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">Séries</p>
                       <input
                         type="number"
                         value={exercise.sets}
@@ -216,8 +216,8 @@ export default function NewTemplatePage() {
                         className="w-full bg-transparent font-semibold text-gray-900 dark:text-white focus:outline-none"
                       />
                     </div>
-                    <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-2">
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Reps</p>
+                    <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3">
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">Reps</p>
                       <div className="flex items-center gap-1">
                         <input
                           type="number"
@@ -247,8 +247,8 @@ export default function NewTemplatePage() {
                         />
                       </div>
                     </div>
-                    <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-2">
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Poids (kg)</p>
+                    <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3">
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">Poids (kg)</p>
                       <input
                         type="number"
                         value={exercise.weightsPerSet ? exercise.weightsPerSet[0] : exercise.weight}
@@ -258,8 +258,8 @@ export default function NewTemplatePage() {
                         className="w-full bg-transparent font-semibold text-gray-900 dark:text-white focus:outline-none"
                       />
                     </div>
-                    <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-2">
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Repos (s)</p>
+                    <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3">
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">Repos (s)</p>
                       <input
                         type="number"
                         value={exercise.restTime}
@@ -276,7 +276,7 @@ export default function NewTemplatePage() {
           </div>
         ) : (
           <div className="bg-white dark:bg-gray-800 rounded-2xl p-10 text-center shadow-sm">
-            <div className="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-5">
+            <div className="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-7">
               <svg className="w-8 h-8 text-gray-400" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
               </svg>
@@ -293,7 +293,7 @@ export default function NewTemplatePage() {
         <button
           onClick={handleSave}
           disabled={!name.trim()}
-          className="w-full py-4 px-4 bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium rounded-xl transition-colors"
+          className="w-full py-5 px-4 bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium rounded-xl transition-colors"
         >
           Créer le template
         </button>

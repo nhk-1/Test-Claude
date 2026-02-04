@@ -119,19 +119,19 @@ export default function ExerciseSelector({ onSelect, onClose }: ExerciseSelector
   const renderExerciseList = () => (
     <>
       {/* Search */}
-      <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+      <div className="p-5 border-b border-gray-200 dark:border-gray-700">
         <input
           type="text"
           placeholder="Rechercher un exercice..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+          className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
         />
       </div>
 
       {/* Categories */}
-      <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-        <div className="flex gap-2 overflow-x-auto pb-2">
+      <div className="p-5 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex gap-3 overflow-x-auto pb-2">
           <button
             onClick={() => setSelectedCategory('all')}
             className={`px-3 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${
@@ -159,13 +159,13 @@ export default function ExerciseSelector({ onSelect, onClose }: ExerciseSelector
       </div>
 
       {/* Exercise List */}
-      <div className="flex-1 overflow-y-auto p-4">
-        <div className="space-y-2">
+      <div className="flex-1 overflow-y-auto p-5">
+        <div className="space-y-3">
           {filteredExercises.map((exercise) => (
             <button
               key={exercise.id}
               onClick={() => handleSelectExercise(exercise)}
-              className="w-full p-3 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-indigo-500 dark:hover:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 transition-all text-left"
+              className="w-full p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-indigo-500 dark:hover:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 transition-all text-left"
             >
               <div className="flex items-center justify-between">
                 <div>
@@ -193,8 +193,8 @@ export default function ExerciseSelector({ onSelect, onClose }: ExerciseSelector
   // Vue de configuration de l'exercice
   const renderExerciseConfig = () => (
     <>
-      <div className="flex-1 overflow-y-auto p-4">
-        <div className="mb-4">
+      <div className="flex-1 overflow-y-auto p-5">
+        <div className="mb-6">
           <button
             onClick={() => {
               if (selectingSupersetExercise) {
@@ -205,7 +205,7 @@ export default function ExerciseSelector({ onSelect, onClose }: ExerciseSelector
                 setSupersetExercise(null);
               }
             }}
-            className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 hover:underline"
+            className="flex items-center gap-3 text-indigo-600 dark:text-indigo-400 hover:underline"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
@@ -215,7 +215,7 @@ export default function ExerciseSelector({ onSelect, onClose }: ExerciseSelector
         </div>
 
         {/* Exercice principal */}
-        <div className="bg-indigo-50 dark:bg-indigo-900/30 rounded-xl p-4 mb-4">
+        <div className="bg-indigo-50 dark:bg-indigo-900/30 rounded-xl p-5 mb-6">
           <h3 className="font-semibold text-gray-900 dark:text-white">{selectedExercise?.name}</h3>
           <p className="text-sm text-gray-600 dark:text-gray-400">
             {selectedExercise?.description}
@@ -223,7 +223,7 @@ export default function ExerciseSelector({ onSelect, onClose }: ExerciseSelector
         </div>
 
         {/* Toggle Superset */}
-        <div className="mb-6">
+        <div className="mb-8">
           <button
             onClick={() => {
               setIsSuperset(!isSuperset);
@@ -233,13 +233,13 @@ export default function ExerciseSelector({ onSelect, onClose }: ExerciseSelector
                 setSupersetExercise(null);
               }
             }}
-            className={`w-full p-3 rounded-xl border-2 transition-all flex items-center justify-between ${
+            className={`w-full p-4 rounded-xl border-2 transition-all flex items-center justify-between ${
               isSuperset
                 ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20'
                 : 'border-gray-200 dark:border-gray-700 hover:border-purple-300'
             }`}
           >
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-4">
               <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
                 isSuperset ? 'bg-purple-500 text-white' : 'bg-gray-200 dark:bg-gray-700'
               }`}>
@@ -262,12 +262,12 @@ export default function ExerciseSelector({ onSelect, onClose }: ExerciseSelector
 
         {/* Superset Exercise Selection */}
         {isSuperset && (
-          <div className="mb-6">
+          <div className="mb-8">
             {supersetExercise ? (
-              <div className="bg-purple-50 dark:bg-purple-900/30 rounded-xl p-4">
+              <div className="bg-purple-50 dark:bg-purple-900/30 rounded-xl p-5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-xs text-purple-600 dark:text-purple-400 mb-1">2ème exercice</p>
+                    <p className="text-xs text-purple-600 dark:text-purple-400 mb-2">2ème exercice</p>
                     <h4 className="font-semibold text-gray-900 dark:text-white">{supersetExercise.name}</h4>
                   </div>
                   <button
@@ -281,7 +281,7 @@ export default function ExerciseSelector({ onSelect, onClose }: ExerciseSelector
             ) : (
               <button
                 onClick={() => setSelectingSupersetExercise(true)}
-                className="w-full p-4 border-2 border-dashed border-purple-300 dark:border-purple-700 rounded-xl text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-colors"
+                className="w-full p-5 border-2 border-dashed border-purple-300 dark:border-purple-700 rounded-xl text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-colors"
               >
                 + Sélectionner le 2ème exercice
               </button>
@@ -290,12 +290,12 @@ export default function ExerciseSelector({ onSelect, onClose }: ExerciseSelector
         )}
 
         {/* Notes et indices - Collapsible Section */}
-        <div className="mb-6">
+        <div className="mb-8">
           <button
             onClick={() => setShowNotes(!showNotes)}
-            className="w-full p-3 rounded-xl border-2 border-gray-200 dark:border-gray-700 hover:border-indigo-300 dark:hover:border-indigo-700 transition-all flex items-center justify-between"
+            className="w-full p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700 hover:border-indigo-300 dark:hover:border-indigo-700 transition-all flex items-center justify-between"
           >
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-4">
               <div className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
                 <svg className="w-5 h-5 text-gray-600 dark:text-gray-400" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
@@ -320,10 +320,10 @@ export default function ExerciseSelector({ onSelect, onClose }: ExerciseSelector
           </button>
 
           {showNotes && (
-            <div className="mt-3 space-y-4 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+            <div className="mt-4 space-y-5 p-5 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
               {/* Notes */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
                   Notes techniques
                 </label>
                 <textarea
@@ -331,13 +331,13 @@ export default function ExerciseSelector({ onSelect, onClose }: ExerciseSelector
                   onChange={(e) => setNotes(e.target.value)}
                   placeholder="Ex: Bien creuser le bas du dos, coudes serrés..."
                   rows={3}
-                  className="w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none"
+                  className="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none"
                 />
               </div>
 
               {/* Form Cues */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
                   Rappels de forme
                 </label>
                 <textarea
@@ -345,13 +345,13 @@ export default function ExerciseSelector({ onSelect, onClose }: ExerciseSelector
                   onChange={(e) => setFormCues(e.target.value)}
                   placeholder="Ex: Pousser avec les talons, engagement des abdos..."
                   rows={2}
-                  className="w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none"
+                  className="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none"
                 />
               </div>
 
               {/* Video URL */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
                   URL vidéo de référence
                 </label>
                 <input
@@ -359,17 +359,17 @@ export default function ExerciseSelector({ onSelect, onClose }: ExerciseSelector
                   value={videoUrl}
                   onChange={(e) => setVideoUrl(e.target.value)}
                   placeholder="https://youtube.com/..."
-                  className="w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                 />
               </div>
             </div>
           )}
         </div>
 
-        <div className="space-y-6">
+        <div className="space-y-8">
           {/* Sets */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
               Nombre de séries
             </label>
             <div className="flex items-center gap-4">
@@ -395,7 +395,7 @@ export default function ExerciseSelector({ onSelect, onClose }: ExerciseSelector
 
           {/* Reps - Exercice 1 */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
               Répétitions {isSuperset && supersetExercise && `(${selectedExercise?.name})`}
             </label>
             <div className="flex items-center gap-4">
@@ -422,7 +422,7 @@ export default function ExerciseSelector({ onSelect, onClose }: ExerciseSelector
           {/* Reps - Exercice 2 (Superset) */}
           {isSuperset && supersetExercise && (
             <div>
-              <label className="block text-sm font-medium text-purple-700 dark:text-purple-300 mb-2">
+              <label className="block text-sm font-medium text-purple-700 dark:text-purple-300 mb-3">
                 Répétitions ({supersetExercise.name})
               </label>
               <div className="flex items-center gap-4">
@@ -449,7 +449,7 @@ export default function ExerciseSelector({ onSelect, onClose }: ExerciseSelector
 
           {/* Weight - Exercice 1 */}
           <div>
-            <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center justify-between mb-3">
               <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
                 Poids (kg) {isSuperset && supersetExercise && `- ${selectedExercise?.name}`}
               </label>
@@ -466,7 +466,7 @@ export default function ExerciseSelector({ onSelect, onClose }: ExerciseSelector
             </div>
 
             {useWeightsPerSet ? (
-              <div className="space-y-2">
+              <div className="space-y-3">
                 {weightsPerSet.map((w, i) => (
                   <div key={i} className="flex items-center gap-3">
                     <span className="text-sm text-gray-500 dark:text-gray-400 w-16">Série {i + 1}</span>
@@ -517,7 +517,7 @@ export default function ExerciseSelector({ onSelect, onClose }: ExerciseSelector
           {/* Weight - Exercice 2 (Superset) */}
           {isSuperset && supersetExercise && (
             <div>
-              <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center justify-between mb-3">
                 <label className="text-sm font-medium text-purple-700 dark:text-purple-300">
                   Poids (kg) - {supersetExercise.name}
                 </label>
@@ -534,7 +534,7 @@ export default function ExerciseSelector({ onSelect, onClose }: ExerciseSelector
               </div>
 
               {useSupersetWeightsPerSet ? (
-                <div className="space-y-2">
+                <div className="space-y-3">
                   {supersetWeightsPerSet.map((w, i) => (
                     <div key={i} className="flex items-center gap-3">
                       <span className="text-sm text-purple-500 dark:text-purple-400 w-16">Série {i + 1}</span>
@@ -585,7 +585,7 @@ export default function ExerciseSelector({ onSelect, onClose }: ExerciseSelector
 
           {/* Rest Time */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
               Temps de repos (secondes)
             </label>
             <div className="flex items-center gap-4">
@@ -612,11 +612,11 @@ export default function ExerciseSelector({ onSelect, onClose }: ExerciseSelector
       </div>
 
       {/* Confirm Button */}
-      <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+      <div className="p-5 border-t border-gray-200 dark:border-gray-700">
         <button
           onClick={handleConfirm}
           disabled={isSuperset && !supersetExercise}
-          className="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium rounded-xl transition-colors"
+          className="w-full py-4 px-5 bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium rounded-xl transition-colors"
         >
           {isSuperset && supersetExercise
             ? 'Ajouter le superset'
@@ -627,10 +627,10 @@ export default function ExerciseSelector({ onSelect, onClose }: ExerciseSelector
   );
 
   return (
-    <div className="fixed inset-0 bg-black/50 z-50 flex items-end md:items-center justify-center p-4">
+    <div className="fixed inset-0 bg-black/50 z-50 flex items-end md:items-center justify-center p-5">
       <div className="bg-white dark:bg-gray-800 rounded-t-2xl md:rounded-2xl w-full max-w-lg max-h-[85vh] flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex items-center justify-between p-5 border-b border-gray-200 dark:border-gray-700">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
             {selectingSupersetExercise
               ? 'Choisir le 2ème exercice'

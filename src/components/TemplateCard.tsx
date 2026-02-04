@@ -39,22 +39,22 @@ export default function TemplateCard({ template, onStart, onDelete }: TemplateCa
   };
 
   return (
-    <div className="card card-interactive p-6 md:p-7 flex flex-col h-full">
+    <div className="card card-interactive p-7 md:p-8 flex flex-col h-full">
       {/* Header */}
-      <div className="flex items-start justify-between gap-4 mb-5">
+      <div className="flex items-start justify-between gap-5 mb-7">
         <div className="flex-1 min-w-0">
           <h3 className="font-bold text-lg text-slate-900 dark:text-white truncate">
             {template.name}
           </h3>
           {template.description && (
-            <p className="text-sm text-slate-500 dark:text-slate-400 mt-2 truncate-2">
+            <p className="text-sm text-slate-500 dark:text-slate-400 mt-3 truncate-2">
               {template.description}
             </p>
           )}
         </div>
 
         {/* Actions */}
-        <div className="flex items-center gap-1 flex-shrink-0">
+        <div className="flex items-center gap-2 flex-shrink-0">
           <button
             onClick={handleShare}
             className="p-2.5 text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 rounded-xl transition-all duration-200"
@@ -94,7 +94,7 @@ export default function TemplateCard({ template, onStart, onDelete }: TemplateCa
 
       {/* Categories */}
       {categories.length > 0 && (
-        <div className="flex flex-wrap gap-2 mb-5">
+        <div className="flex flex-wrap gap-3 mb-6">
           {categories.slice(0, 3).map((cat) => (
             <span key={cat} className="badge">
               {MUSCLE_CATEGORY_LABELS[cat]}
@@ -109,14 +109,14 @@ export default function TemplateCard({ template, onStart, onDelete }: TemplateCa
       )}
 
       {/* Stats */}
-      <div className="flex items-center gap-6 text-sm text-slate-500 dark:text-slate-400 mb-6 mt-auto">
-        <span className="flex items-center gap-2">
+      <div className="flex items-center gap-8 text-sm text-slate-500 dark:text-slate-400 mb-8 mt-auto">
+        <span className="flex items-center gap-3">
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
           </svg>
           <span className="font-medium">{exerciseCount}</span> exercice{exerciseCount > 1 ? 's' : ''}
         </span>
-        <span className="flex items-center gap-2">
+        <span className="flex items-center gap-3">
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
           </svg>
@@ -149,7 +149,7 @@ export default function TemplateCard({ template, onStart, onDelete }: TemplateCa
           >
             {/* Header */}
             <div className="flex items-center justify-between mb-8">
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-5">
                 <div className="w-12 h-12 rounded-2xl gradient-bg flex items-center justify-center shadow-lg shadow-indigo-500/20">
                   <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" />
@@ -175,7 +175,7 @@ export default function TemplateCard({ template, onStart, onDelete }: TemplateCa
               onClick={handleCopyCode}
               className={`
                 w-full py-4 px-6 font-semibold rounded-xl transition-all duration-300
-                flex items-center justify-center gap-3 touch-target text-lg
+                flex items-center justify-center gap-4 touch-target text-lg
                 ${copied
                   ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/30'
                   : 'btn btn-primary'

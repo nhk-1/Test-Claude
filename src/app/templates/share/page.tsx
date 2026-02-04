@@ -59,9 +59,9 @@ function SharePageContent() {
   };
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-8 animate-fade-in">
       {/* Header */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-4">
         <Link href="/templates" className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">
           <svg className="w-5 h-5 text-gray-600 dark:text-gray-400" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
@@ -74,38 +74,38 @@ function SharePageContent() {
       </div>
 
       {/* Input Code */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+      <div className="bg-white dark:bg-gray-800 rounded-xl p-7 shadow-sm">
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
           Code de partage
         </label>
-        <div className="flex gap-3">
+        <div className="flex gap-4">
           <input
             type="text"
             value={code}
             onChange={(e) => setCode(e.target.value)}
             placeholder="Collez le code de partage ici..."
-            className="flex-1 px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            className="flex-1 px-4 py-4 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
             onKeyDown={(e) => e.key === 'Enter' && handleDecode()}
           />
           <button
             onClick={() => handleDecode()}
-            className="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl transition-colors"
+            className="px-6 py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl transition-colors"
           >
             Décoder
           </button>
         </div>
         {error && (
-          <p className="mt-2 text-sm text-red-600 dark:text-red-400">{error}</p>
+          <p className="mt-3 text-sm text-red-600 dark:text-red-400">{error}</p>
         )}
       </div>
 
       {/* Preview */}
       {decodedTemplate && (
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden">
-          <div className="p-6 border-b border-gray-100 dark:border-gray-700">
+          <div className="p-7 border-b border-gray-100 dark:border-gray-700">
             <div className="flex items-start justify-between">
               <div className="flex-1">
-                <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
                   {decodedTemplate.name}
                 </h2>
                 {decodedTemplate.description && (
@@ -116,20 +116,20 @@ function SharePageContent() {
           </div>
 
           {/* Exercises List */}
-          <div className="p-6">
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-4">
+          <div className="p-7">
+            <h3 className="font-semibold text-gray-900 dark:text-white mb-6">
               Exercices ({decodedTemplate.exercises.length})
             </h3>
-            <div className="space-y-3">
+            <div className="space-y-4">
               {decodedTemplate.exercises.map((ex, index) => {
                 const exerciseInfo = getExerciseById(ex.exerciseId);
                 const supersetInfo = ex.supersetExerciseId ? getExerciseById(ex.supersetExerciseId) : null;
 
                 return (
-                  <div key={index} className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                  <div key={index} className="p-5 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
+                        <div className="flex items-center gap-3 mb-2">
                           <span className="font-medium text-gray-900 dark:text-white">
                             {exerciseInfo?.name || 'Exercice inconnu'}
                           </span>
@@ -145,7 +145,7 @@ function SharePageContent() {
                           </p>
                         )}
                         {supersetInfo && (
-                          <p className="text-sm text-purple-600 dark:text-purple-400 mt-1">
+                          <p className="text-sm text-purple-600 dark:text-purple-400 mt-2">
                             + {supersetInfo.name}
                           </p>
                         )}
@@ -160,9 +160,9 @@ function SharePageContent() {
                       </div>
                     </div>
                     {(ex.notes || ex.formCues) && (
-                      <div className="mt-2 pt-2 border-t border-gray-200 dark:border-gray-600">
+                      <div className="mt-3 pt-2 border-t border-gray-200 dark:border-gray-600">
                         {ex.formCues && (
-                          <p className="text-xs text-blue-700 dark:text-blue-300 mb-1">
+                          <p className="text-xs text-blue-700 dark:text-blue-300 mb-2">
                             💡 {ex.formCues}
                           </p>
                         )}
@@ -180,11 +180,11 @@ function SharePageContent() {
           </div>
 
           {/* Import Button */}
-          <div className="p-6 border-t border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/30">
+          <div className="p-7 border-t border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/30">
             <button
               onClick={handleImport}
               disabled={importing}
-              className="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium rounded-xl transition-colors flex items-center justify-center gap-2"
+              className="w-full py-4 px-4 bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium rounded-xl transition-colors flex items-center justify-center gap-3"
             >
               {importing ? (
                 <>
@@ -200,7 +200,7 @@ function SharePageContent() {
                 </>
               )}
             </button>
-            <p className="text-xs text-gray-500 dark:text-gray-400 text-center mt-2">
+            <p className="text-xs text-gray-500 dark:text-gray-400 text-center mt-3">
               Le template sera ajouté à vos templates
             </p>
           </div>
@@ -209,16 +209,16 @@ function SharePageContent() {
 
       {/* Help */}
       {!decodedTemplate && (
-        <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-6">
-          <div className="flex gap-3">
+        <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-7">
+          <div className="flex gap-4">
             <svg className="w-6 h-6 text-blue-600 dark:text-blue-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z" />
             </svg>
             <div>
-              <h3 className="font-semibold text-blue-900 dark:text-blue-200 mb-2">
+              <h3 className="font-semibold text-blue-900 dark:text-blue-200 mb-3">
                 Comment ça marche ?
               </h3>
-              <ul className="text-sm text-blue-800 dark:text-blue-300 space-y-1">
+              <ul className="text-sm text-blue-800 dark:text-blue-300 space-y-2">
                 <li>1. Demandez à quelqu'un de partager un template depuis l'application</li>
                 <li>2. Copiez le code de partage qu'il vous envoie</li>
                 <li>3. Collez-le dans le champ ci-dessus et cliquez sur "Décoder"</li>
