@@ -120,7 +120,7 @@ export default function SessionExerciseCard({
     <>
       <div
         className={`
-          card p-6 md:p-7 transition-all duration-300
+          card p-7 md:p-8 transition-all duration-300
           ${isActive
             ? 'ring-2 ring-indigo-500 dark:ring-indigo-400 shadow-lg shadow-indigo-500/10'
             : isCompleted
@@ -130,9 +130,9 @@ export default function SessionExerciseCard({
         `}
       >
         {/* Header */}
-        <div className="flex items-start justify-between gap-4 mb-6">
+        <div className="flex items-start justify-between gap-5 mb-8">
           <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-3 mb-2">
+            <div className="flex items-center gap-4 mb-3">
               <span className="w-8 h-8 rounded-xl gradient-bg text-white text-sm font-bold flex items-center justify-center flex-shrink-0">
                 {index + 1}
               </span>
@@ -169,7 +169,7 @@ export default function SessionExerciseCard({
         </div>
 
         {/* Progress Bar */}
-        <div className="mb-6">
+        <div className="mb-8">
           <div className="progress-bar">
             <div
               className="progress-bar-fill"
@@ -182,11 +182,11 @@ export default function SessionExerciseCard({
         </div>
 
         {/* Poids par série */}
-        <div className="mb-6">
-          <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-4 uppercase tracking-wider">
+        <div className="mb-8">
+          <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-6 uppercase tracking-wider">
             Poids par série
           </p>
-          <div className="space-y-3">
+          <div className="space-y-4">
             {Array.from({ length: exercise.sets }).map((_, setIdx) => {
               const isSetCompleted = setIdx < exercise.completedSets;
               const isCurrentSet = setIdx === exercise.completedSets;
@@ -195,7 +195,7 @@ export default function SessionExerciseCard({
                 <div
                   key={setIdx}
                   className={`
-                    flex items-center gap-3 p-4 rounded-xl transition-all duration-200
+                    flex items-center gap-4 p-5 rounded-xl transition-all duration-200
                     ${isSetCompleted
                       ? 'bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20'
                       : isCurrentSet
@@ -225,12 +225,12 @@ export default function SessionExerciseCard({
 
                   {/* Exercice principal */}
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-3 flex-wrap">
+                    <div className="flex items-center gap-4 flex-wrap">
                       <span className="text-xs font-medium text-slate-500 dark:text-slate-400 w-16">
                         {exercise.maxReps ? `${exercise.minReps ?? exercise.reps}-${exercise.maxReps}` : exercise.reps} reps
                       </span>
                       {editingWeightIndex === setIdx ? (
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-3">
                           <button
                             onClick={() => handleWeightChange(setIdx, Math.max(0, (tempWeights[setIdx] || 0) - 1))}
                             className="w-10 h-10 rounded-lg bg-slate-200 dark:bg-slate-700 flex items-center justify-center hover:bg-slate-300 dark:hover:bg-slate-600 active:scale-95 transition-all touch-target"
@@ -262,7 +262,7 @@ export default function SessionExerciseCard({
                       ) : (
                         <button
                           onClick={() => setEditingWeightIndex(setIdx)}
-                          className="px-4 py-2 bg-white dark:bg-slate-800 rounded-lg font-bold text-sm text-slate-900 dark:text-white hover:bg-indigo-50 dark:hover:bg-indigo-500/10 active:scale-95 transition-all border border-slate-200 dark:border-slate-700"
+                          className="px-4 py-3 bg-white dark:bg-slate-800 rounded-lg font-bold text-sm text-slate-900 dark:text-white hover:bg-indigo-50 dark:hover:bg-indigo-500/10 active:scale-95 transition-all border border-slate-200 dark:border-slate-700"
                         >
                           {getWeightForSet(setIdx)} kg
                         </button>
@@ -273,14 +273,14 @@ export default function SessionExerciseCard({
                   {/* Superset */}
                   {isSuperset && supersetExerciseData && (
                     <div className="flex-1 min-w-0 pl-3 border-l-2 border-purple-200 dark:border-purple-700">
-                      <div className="flex items-center gap-3 flex-wrap">
+                      <div className="flex items-center gap-4 flex-wrap">
                         <span className="text-xs font-medium text-purple-500 dark:text-purple-400 w-16">
                           {exercise.supersetMaxReps
                             ? `${exercise.supersetMinReps ?? exercise.supersetReps}-${exercise.supersetMaxReps}`
                             : exercise.supersetReps} reps
                         </span>
                         {editingSupersetWeightIndex === setIdx ? (
-                          <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-3">
                             <button
                               onClick={() => handleSupersetWeightChange(setIdx, Math.max(0, (tempSupersetWeights[setIdx] || 0) - 1))}
                               className="w-10 h-10 rounded-lg bg-purple-200 dark:bg-purple-800 flex items-center justify-center hover:bg-purple-300 dark:hover:bg-purple-700 active:scale-95 transition-all touch-target"
@@ -312,7 +312,7 @@ export default function SessionExerciseCard({
                         ) : (
                           <button
                             onClick={() => setEditingSupersetWeightIndex(setIdx)}
-                            className="px-4 py-2 bg-purple-50 dark:bg-purple-500/10 rounded-lg font-bold text-sm text-purple-700 dark:text-purple-300 hover:bg-purple-100 dark:hover:bg-purple-500/20 active:scale-95 transition-all border border-purple-200 dark:border-purple-500/30"
+                            className="px-4 py-3 bg-purple-50 dark:bg-purple-500/10 rounded-lg font-bold text-sm text-purple-700 dark:text-purple-300 hover:bg-purple-100 dark:hover:bg-purple-500/20 active:scale-95 transition-all border border-purple-200 dark:border-purple-500/30"
                           >
                             {getSupersetWeightForSet(setIdx)} kg
                           </button>
@@ -328,10 +328,10 @@ export default function SessionExerciseCard({
 
         {/* Notes et Form Cues */}
         {(exercise.notes || exercise.formCues || exercise.videoUrl) && (
-          <div className="mb-6 p-5 bg-sky-50 dark:bg-sky-500/10 rounded-xl border border-sky-200 dark:border-sky-500/20">
+          <div className="mb-8 p-5 bg-sky-50 dark:bg-sky-500/10 rounded-xl border border-sky-200 dark:border-sky-500/20">
             {exercise.formCues && (
-              <div className="mb-4">
-                <div className="flex items-center gap-2 mb-2">
+              <div className="mb-6">
+                <div className="flex items-center gap-3 mb-3">
                   <svg className="w-4 h-4 text-sky-600 dark:text-sky-400" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z" />
                   </svg>
@@ -341,8 +341,8 @@ export default function SessionExerciseCard({
               </div>
             )}
             {exercise.notes && (
-              <div className="mb-4">
-                <div className="flex items-center gap-2 mb-2">
+              <div className="mb-6">
+                <div className="flex items-center gap-3 mb-3">
                   <svg className="w-4 h-4 text-sky-600 dark:text-sky-400" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
                   </svg>
@@ -356,7 +356,7 @@ export default function SessionExerciseCard({
                 href={exercise.videoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-sm font-semibold text-sky-600 dark:text-sky-400 hover:text-sky-700 dark:hover:text-sky-300 transition-colors"
+                className="inline-flex items-center gap-3 text-sm font-semibold text-sky-600 dark:text-sky-400 hover:text-sky-700 dark:hover:text-sky-300 transition-colors"
               >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z" />
@@ -368,8 +368,8 @@ export default function SessionExerciseCard({
         )}
 
         {/* Repos */}
-        <div className="flex items-center justify-between mb-6 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl">
-          <div className="flex items-center gap-3">
+        <div className="flex items-center justify-between mb-8 p-5 bg-slate-50 dark:bg-slate-800/50 rounded-xl">
+          <div className="flex items-center gap-4">
             <div className="w-8 h-8 rounded-lg bg-slate-200 dark:bg-slate-700 flex items-center justify-center">
               <svg className="w-4 h-4 text-slate-500 dark:text-slate-400" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
